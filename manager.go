@@ -7,8 +7,8 @@ import (
 )
 
 type manager struct {
-	alarms    []*lib.Alarm
-	playlists []*lib.Playlist
+	Alarms    []*lib.Alarm
+	Playlists []*lib.Playlist
 }
 
 var Manager *manager
@@ -33,6 +33,18 @@ func (m *manager) AddPlaylist(playlist *lib.Playlist) error {
 	return nil
 }
 
-func Run() {
-scheduler.
+func (m *manager) GetPlaylist(uuid string) (*lib.Playlist, error) {
+	id, err := uuid.Parse(uuid)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, p := range m.Playlists {
+		if p.id == id {
+			return p, nil
+		}
+	}
+
+	return nil, errors.New("playlist not found")
 }

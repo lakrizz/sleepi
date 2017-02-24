@@ -9,9 +9,9 @@ import (
 )
 
 var tmpFolder = "/tmp"
-var destFolder = ""
+var destFolder = "/home/krizz/piclocker/"
 
-func YoutubeDLInstalles() bool {
+func YoutubeDLInstalled() bool {
 	return true
 }
 
@@ -28,8 +28,19 @@ func DownloadVideo(link string) (*os.File, error) {
 
 }
 
-func cpFile(fl *os.File, slammer string) (string, error) {
-	destfname := path.Join(destFolder, slammer+".mp3")
+func GetTitle(url string) (string, error) {
+
+	cmd := exec.Command("youtube-dl", url, "-e")
+	t, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", err
+	}
+	return string(t), nil
+
+}
+
+func CpFile(fl *os.File, title string) (string, error) {
+	destfname := path.Join(destFolder, title+".mp3")
 	destFile, err := os.Create(destfname)
 	if err != nil {
 		return "", err
