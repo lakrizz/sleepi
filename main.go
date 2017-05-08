@@ -1,26 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"time"
-
-	"./lib"
+	"./lib/http"
 )
 
 func main() {
-	Init()
-	a, e := lib.CreateAlarm(time.Now(), nil)
-	if e != nil {
-		panic(e)
+	// Initialize Server
+	s, err := http.NewServer("8080")
+	if err != nil {
+		panic(err)
 	}
 
-	Manager.AddAlarm(a)
+	// Load Modules and add them
+	s.AddModule(testmodule.TestModule)
 
-	pl, _ := lib.CreatePlaylist()
-	pl.AddVideo("https://www.youtube.com/watch?v=u5CVsCnxyXg")
-
-	Manager.AddPlaylist(pl)
-	fmt.Println(Manager)
-	fmt.Println(Manager.playlists[0])
-
+	// Start Server
+	s.Start()
 }
