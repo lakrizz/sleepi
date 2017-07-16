@@ -9,5 +9,5 @@ type Route struct {
 
 type Module interface {
 	GetName() string
-	GetRoutes() []*Route
+	GetRoutes() []Route
 }

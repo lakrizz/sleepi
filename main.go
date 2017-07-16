@@ -1,7 +1,12 @@
 package main
 
 import (
+	"log"
+
+	"github.com/unrolled/render"
+
 	"./lib/http"
+	"./modules/alarm"
 )
 
 func main() {
@@ -12,8 +17,12 @@ func main() {
 	}
 
 	// Load Modules and add them
-	s.AddModule(testmodule.TestModule)
+	render := render.New(render.Options{
+		Directory: "./pub/",
+		Layout:    "layout",
+	})
+	s.AddModule(alarm.AlarmModule(render))
 
 	// Start Server
-	s.Start()
+	log.Panic(s.Start())
 }

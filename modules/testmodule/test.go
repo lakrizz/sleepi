@@ -1,29 +1,33 @@
 package testmodule
 
-import "net/http"
+import (
+	"net/http"
 
-type TestModule struct {
-	routes []*Route
+	"../"
+)
+
+type testModule struct {
+	routes []modules.Route
 }
 
-func TestModule() *TestModule {
-	t := &TestModule{}
+func TestModule() *testModule {
+	t := &testModule{}
 	t.initRoutes()
 	return t
 }
 
-func (t *TestModule) GetName() string {
-	return "testmodule"
+func (t *testModule) GetName() string {
+	return "TestModule"
 }
 
-func (t *TestModule) GetRoutes() []*Route {
+func (t *testModule) GetRoutes() []modules.Route {
 	return t.routes
 }
 
-func (t *TestModule) initRoutes() {
-	t.routes = append(t.routes, &Route{"/", t.MainRoute})
+func (t *testModule) initRoutes() {
+	t.routes = append(t.routes, modules.Route{"/", t.MainRoute})
 }
 
-func (t *TestModule) MainRoute(r http.ResponseWriter, req *http.Request) {
+func (t *testModule) MainRoute(r http.ResponseWriter, req *http.Request) {
 	r.Write([]byte("Hola Amigo!"))
 }
