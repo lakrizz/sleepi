@@ -1,7 +1,9 @@
 package main
 
 import (
+	"html/template"
 	"log"
+	"time"
 
 	"github.com/unrolled/render"
 
@@ -20,6 +22,17 @@ func main() {
 	render := render.New(render.Options{
 		Directory: "./pub/",
 		Layout:    "layout",
+		Funcs: []template.FuncMap{
+			template.FuncMap{
+				"join": func(days []time.Weekday) string {
+					rets := ""
+					for _, d := range days {
+						rets = rets + ", " + d.String()[:3]
+					}
+					return rets[1:]
+				},
+			},
+		},
 	})
 	s.AddModule(alarm.AlarmModule(render))
 

@@ -26,18 +26,14 @@ func AlarmModule(ren *render.Render) *alarmModule {
 	c.ListPlaylists()
 
 	t := &alarmModule{}
+	err = t.Load()
+	if err != nil {
+		log.Println(err.Error())
+	}
 	t.initRoutes()
 	t.mc = c
 	t.r = ren
-	t.alarms = t.createAlarms(10)
 	return t
-}
-
-func (a *alarmModule) createAlarms(amount int) []*alarm {
-	// alarms := make([]*alarm, 0)
-	// for i := 0; i <= amount; i++ {
-	// }
-	return nil
 }
 
 func (a *alarmModule) GetName() string {
@@ -59,26 +55,26 @@ func (a *alarmModule) initRoutes() {
 }
 
 func (a *alarmModule) MainRoute(r http.ResponseWriter, req *http.Request) {
-	// overview, huh?
+	// a.AddAlarm(CreateAlarm(
+	// 	a.mc,
+	// 	"wakeywakey (by 1121749173)",
+	// 	[]time.Weekday{time.Monday, time.Tuesday, time.Wednesday},
+	// 	6,  // *06*:30
+	// 	30, // 06:_30_
+	// 	0,
+	// 	100,
+	// 	30, // minutes
+	// ))
 	a.r.HTML(r, http.StatusOK, "alarm/main", a.alarms)
 }
 
 func (a *alarmModule) TestRoute(r http.ResponseWriter, req *http.Request) {
-	_ = CreateAlarm(a.mc, "wakeywakey (by 1121749173)")
-
-	// pl, err := a.mc.ListPlaylists()
-	// if err != nil {
-	// 	return
-	// }
-
-	// for _, i := range pl[1:] { // the first playlist is always ".plu8", so skip it :D
-	// 	r.Write([]byte(i["playlist"] + "\n"))
-	// }
 }
 
 func (a *alarmModule) AddAlarmRoute(r http.ResponseWriter, req *http.Request) {
 	pl, err := a.mc.ListPlaylists()
 	if err != nil {
+		log.Println(err.Error())
 		a.r.HTML(r, http.StatusOK, "alarm/add", nil)
 		return
 	}
