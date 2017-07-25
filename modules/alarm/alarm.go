@@ -3,6 +3,9 @@ package alarm
 import (
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
+	"time"
 
 	"../"
 	"github.com/fhs/gompd/mpd"
@@ -50,6 +53,7 @@ func (a *alarmModule) initRoutes() {
 			modules.Route{"test", a.TestRoute},
 			modules.Route{"", a.MainRoute},
 			modules.Route{"add", a.AddAlarmRoute},
+			modules.Route{"put", a.PutAlarmRoute},
 		}...,
 	)
 }
@@ -79,4 +83,44 @@ func (a *alarmModule) AddAlarmRoute(r http.ResponseWriter, req *http.Request) {
 		return
 	}
 	a.r.HTML(r, http.StatusOK, "alarm/add", pl[1:])
+}
+
+func (a *alarmModule) PutAlarmRoute(r http.ResponseWriter, req *http.Request) {
+	err := req.ParseForm()
+	if err != nil {
+		a.r.JSON(r, http.StatusBadRequest, "Kapotttt!")
+		return
+	}
+	// now we can use the form values
+	log.Println("postform:", req.PostForm)
+
+	days := make([]time.Weekday, 0)
+	pf := strings.Split(req.PostFormValue("weekday"), " ")
+	log.Println(pf)
+	for _, d := range pf {
+		log.Println(d)
+		cv, err := strconv.Atoi(d)
+		if err != nil {
+			log.Println(err.Error())
+		} else {
+			days = append(days, time.Weekday(cv))
+		}
+	}
+	log.Println(days)
+
+	plname := req.PostFormValue("playlist")
+	// validity check if pl exists
+
+	alarm_hh, err := strconv.Atoi(req.PostFormValue("time_hh"))
+	alarm_mm, err := strconv.Atoi(req.PostFormValue("time_mm"))
+
+	err = a.AddAlarm(CreateAlarm(a.mc, plname, []time.Weekday(days), alarm_hh, alarm_mm, 0, 100, 15))
+	if err != nil {
+		log.Println(err.Error())
+	}
+	err = a.Save()
+	if err != nil {
+		log.Println(err.Error())
+	}
+
 }

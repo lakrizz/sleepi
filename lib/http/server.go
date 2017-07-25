@@ -9,7 +9,6 @@ import (
 	"../../lib/helper"
 	"../../modules"
 	"github.com/gorilla/mux"
-	"github.com/k0kubun/pp"
 	"github.com/urfave/negroni"
 )
 
@@ -91,7 +90,6 @@ func (s *Server) start() error {
 	s.mux.PathPrefix("/img/").Handler(http.StripPrefix("/img/", http.FileServer(http.Dir("./pub/img"))))
 
 	s.neg.UseHandler(s.mux)
-	pp.Println(s.mux)
 	return http.ListenAndServe(":"+s.Port, s.neg)
 }
 
