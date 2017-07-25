@@ -1,0 +1,8 @@
+# Backlog
+- More Logging? (use logrus you stupid idiot)
+- Check if files exist already
+
+# Doing
+
+
+# Done

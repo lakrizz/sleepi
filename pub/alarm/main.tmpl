@@ -16,11 +16,13 @@
 			<tr>
 				<td>
 					<span class="icon">
-						{{ if .Active }}
-							<a href="#"><i class="fa fa-clock-o" style="color: #27ae60;"></i></a>
-						{{ else }}
-							<a href="#"><i class="fa fa-clock-o" style="color: #c0392b;"></i></a>
-						{{ end }}
+						<a href="/alarm/changestatus/{{.ID.Hex}}">
+							{{ if .Active }}
+								<i class="fa fa-clock-o" style="color: #27ae60;"></i>
+							{{ else }}
+								<i class="fa fa-clock-o" style="color: #c0392b;"></i>
+							{{ end }}
+						</a>
 					</span>
 				</td>
 				<td><a href="#">{{.PlaylistName}}</a></td>

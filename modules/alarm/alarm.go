@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"../"
 	"github.com/fhs/gompd/mpd"
+	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 )
 
@@ -50,25 +50,16 @@ func (a *alarmModule) GetRoutes() []modules.Route {
 func (a *alarmModule) initRoutes() {
 	a.routes = append(a.routes,
 		[]modules.Route{
-			modules.Route{"test", a.TestRoute},
-			modules.Route{"", a.MainRoute},
-			modules.Route{"add", a.AddAlarmRoute},
-			modules.Route{"put", a.PutAlarmRoute},
+			modules.Route{"/test/", a.TestRoute},
+			modules.Route{"/", a.MainRoute},
+			modules.Route{"/add", a.AddAlarmRoute},
+			modules.Route{"/put", a.PutAlarmRoute},
+			modules.Route{"/changestatus/{id}", a.ChangeStatusRoute},
 		}...,
 	)
 }
 
 func (a *alarmModule) MainRoute(r http.ResponseWriter, req *http.Request) {
-	// a.AddAlarm(CreateAlarm(
-	// 	a.mc,
-	// 	"wakeywakey (by 1121749173)",
-	// 	[]time.Weekday{time.Monday, time.Tuesday, time.Wednesday},
-	// 	6,  // *06*:30
-	// 	30, // 06:_30_
-	// 	0,
-	// 	100,
-	// 	30, // minutes
-	// ))
 	a.r.HTML(r, http.StatusOK, "alarm/main", a.alarms)
 }
 
@@ -85,6 +76,34 @@ func (a *alarmModule) AddAlarmRoute(r http.ResponseWriter, req *http.Request) {
 	a.r.HTML(r, http.StatusOK, "alarm/add", pl[1:])
 }
 
+func (a *alarmModule) ChangeStatusRoute(r http.ResponseWriter, req *http.Request) {
+	log.Println("bin ich hier?")
+	for _, alarm := range a.alarms {
+		log.Println(alarm.ID.Hex(), mux.Vars(req)["id"])
+		if alarm.ID.Hex() == mux.Vars(req)["id"] {
+			// remove the shit out of it :D
+			alarm.Active = !alarm.Active
+			log.Println("new", alarm.Active)
+			a.Save()
+		}
+	}
+	http.Redirect(r, req, "/alarm/", 301)
+}
+
+func (a *alarmModule) DeleteAlarmRoute(r http.ResponseWriter, req *http.Request) {
+	err := req.ParseForm()
+	if err != nil {
+		//error
+	}
+
+	for i, alarm := range a.alarms {
+		if alarm.ID.Hex() == req.Form["alarm_id"][0] {
+			// remove the shit out of it :D
+			a.alarms = append(a.alarms[:i], a.alarms[i:]...)
+		}
+	}
+}
+
 func (a *alarmModule) PutAlarmRoute(r http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
 	if err != nil {
@@ -92,13 +111,9 @@ func (a *alarmModule) PutAlarmRoute(r http.ResponseWriter, req *http.Request) {
 		return
 	}
 	// now we can use the form values
-	log.Println("postform:", req.PostForm)
-
 	days := make([]time.Weekday, 0)
-	pf := strings.Split(req.PostFormValue("weekday"), " ")
-	log.Println(pf)
-	for _, d := range pf {
-		log.Println(d)
+
+	for _, d := range req.PostForm["weekday"] {
 		cv, err := strconv.Atoi(d)
 		if err != nil {
 			log.Println(err.Error())
@@ -122,5 +137,6 @@ func (a *alarmModule) PutAlarmRoute(r http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 	}
-
+	// everything is fine, so redirect :D
+	http.Redirect(r, req, "/alarm/", 301)
 }

@@ -78,7 +78,7 @@ func (s *Server) start() error {
 	// TODO(@krizzle): What happens when the routes are already added? look at gorilla docs/src
 	for _, m := range s.Modules {
 		for _, r := range m.GetRoutes() {
-			s.mux.HandleFunc(strings.Join(stringhelper.Map([]string{"/" + m.GetName(), r.Path}, strings.ToLower), "/"), r.Func)
+			s.mux.HandleFunc(strings.Join(stringhelper.Map([]string{"/" + m.GetName(), r.Path}, strings.ToLower), ""), r.Func)
 			fmt.Println("adding route", m.GetName(), r.Path)
 		}
 	}

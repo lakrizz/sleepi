@@ -1,7 +1,6 @@
 package alarm
 
 import (
-	"log"
 	"strings"
 	"time"
 
@@ -45,7 +44,6 @@ func (a *alarm) calcNextRun() {
 
 	// today, but later
 	if inWeekdays(a.WakeDays, now.Weekday()) && now.Hour() <= a.WakeHour && now.Minute() < a.WakeMinute {
-		log.Println("heute")
 		a.nextrun = time.Date(now.Year(), now.Month(), now.Day(), a.WakeHour, a.WakeMinute, 0, 0, now.Location())
 		return
 	}
