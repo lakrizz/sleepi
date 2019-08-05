@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"../../lib/helper"
-	"../../modules"
+	modules "../../controllers"
+
+	stringhelper "../../lib/helper"
 	"github.com/gorilla/mux"
 	"github.com/urfave/negroni"
 )
@@ -51,6 +52,7 @@ func (s *Server) Start() error {
 	if s.Port == "" {
 		return errors.New("No port given, how did you do that?")
 	}
+
 	if s.Running {
 		return errors.New("server is already running, how did you do that?")
 	}
@@ -75,7 +77,6 @@ func (s *Server) Stop() error {
 
 func (s *Server) start() error {
 	// internal start
-	// TODO(@krizzle): What happens when the routes are already added? look at gorilla docs/src
 	for _, m := range s.Modules {
 		for _, r := range m.GetRoutes() {
 			s.mux.HandleFunc(strings.Join(stringhelper.Map([]string{"/" + m.GetName(), r.Path}, strings.ToLower), ""), r.Func)
@@ -83,14 +84,17 @@ func (s *Server) start() error {
 		}
 	}
 
-	// TODO(@krizzle): To consider: Run the server on main-thread or in a goroutine?
-
-	s.mux.PathPrefix("/css/").Handler(http.StripPrefix("/css/", http.FileServer(http.Dir("./pub/css"))))
-	s.mux.PathPrefix("/js/").Handler(http.StripPrefix("/js/", http.FileServer(http.Dir("./pub/js"))))
-	s.mux.PathPrefix("/img/").Handler(http.StripPrefix("/img/", http.FileServer(http.Dir("./pub/img"))))
+	// TODO(@kk): refactor in a method
+	s.handleStatic([]string{"css", "js", "img"})
 
 	s.neg.UseHandler(s.mux)
 	return http.ListenAndServe(":"+s.Port, s.neg)
+}
+
+func (s *Server) handleStatic(paths []string) {
+	for _, v := range paths {
+		s.mux.PathPrefix(v).Handler(http.StripPrefix(v, http.FileServer(http.Dir(fmt.Sprintf("./pub/%s", v)))))
+	}
 }
 
 func (s *Server) stop() error {
