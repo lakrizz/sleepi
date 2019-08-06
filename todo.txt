@@ -19,3 +19,5 @@
 
 # TODO
 - put apikeys, redirect-urls, etc. into the _config.toml_ file
+- [YOUTUBE] get video duration and check with some other source
+	- https://stackoverflow.com/questions/15596753/how-do-i-get-video-durations-with-youtube-api-version-3

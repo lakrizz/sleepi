@@ -25,8 +25,9 @@ func main() {
 		panic(err)
 	}
 
-	for _, v := range list {
-		log.Println(v)
+	err = yt.Downloader.Download(list[0])
+	if err != nil {
+		panic(err)
 	}
 
 	panic("lol")

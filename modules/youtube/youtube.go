@@ -9,9 +9,11 @@ func CreateYouTubeWrapper() (*YouTube, error) {
 	yt := &YouTube{}
 	yt.Search = &searcher{initialized: false}
 	err := yt.Search.init()
+
 	if err != nil {
 		return nil, err
 	}
 
+	yt.Downloader = &downloader{}
 	return yt, nil
 }
