@@ -10,10 +10,12 @@ import (
 )
 
 var apikey string = "AIzaSyCb5A4o-1ncYKJ4DmADZJgvFMrYqs2i4jw"
+var maxresults int64 = 1
 
 type searcher struct {
 	service     *youtube.Service
 	initialized bool
+	messages    chan *models.Message
 }
 
 func (s *searcher) init() error {
@@ -38,8 +40,10 @@ func (s *searcher) SearchVideos(keyword string) ([]*models.Video, error) {
 		return nil, errors.New("should initialize the searcher first, right?")
 	}
 
-	call := s.service.Search.List("id,snippet").Q(keyword).MaxResults(50)
+	s.messages <- models.CreateMessage(keyword, models.MSG_SEARCH)
+	call := s.service.Search.List("id,snippet").Q(keyword).MaxResults(maxresults)
 	response, err := call.Do()
+	s.messages <- models.CreateMessage(keyword, models.MSG_SEARCH_DONE)
 
 	if err != nil {
 		return nil, err

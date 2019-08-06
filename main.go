@@ -10,6 +10,7 @@ import (
 	"./controllers/alarm"
 	"./controllers/playlist"
 	"./lib/http"
+	"./models"
 	"./modules/youtube"
 )
 
@@ -19,18 +20,24 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	go listen(yt.Messages)
 
-	list, err := yt.Search.SearchVideos("Bachelors Of Science - Song For Lovers")
-	if err != nil {
-		panic(err)
+	for _, song := range []string{"Bachelors Of Science - Song For Lovers", "Tomte - Korn und Sprite", "Kettcar - 48 Stunden", "American Football - Never Meant", "Pendulum - Tarantula"} {
+
+		go func(song string) {
+			log.Println("moin", song)
+			list, err := yt.Search.SearchVideos(song)
+			if err != nil {
+				panic(err)
+			}
+
+			go yt.Downloader.Download(list[0])
+		}(song)
 	}
 
-	err = yt.Downloader.Download(list[0])
-	if err != nil {
-		panic(err)
+	for {
+		// endless loop for reasons Oo
 	}
-
-	panic("lol")
 
 	// Initialize Server
 	s, err := http.NewServer("8080")
@@ -60,4 +67,32 @@ func main() {
 
 	// Start Server
 	log.Panic(s.Start())
+}
+
+func listen(msgs chan *models.Message) {
+	for {
+		select {
+		case v := <-msgs:
+			switch v.Status {
+			case models.MSG_SEARCH:
+				log.Printf("searching for: %s\n", v.Payload)
+				break
+			case models.MSG_SEARCH_DONE:
+				log.Printf("found results for: %s\n", v.Payload)
+				break
+			case models.MSG_DOWNLOAD_STARTING:
+				log.Printf("starting download for: %s\n", v.Payload)
+				break
+			case models.MSG_DOWNLOAD_FINISHED:
+				log.Printf("finished download for: %s\n", v.Payload)
+				break
+			case models.MSG_DOWNLOAD_ERROR:
+				log.Printf("error at download for: %s\n", v.Payload)
+				break
+			}
+
+		}
+
+	}
+
 }

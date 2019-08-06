@@ -13,6 +13,7 @@ import (
 var targetfolder string = "./downloads/"
 
 type downloader struct {
+	messages chan *models.Message
 }
 
 func (d *downloader) Download(video *models.Video) error {
@@ -38,7 +39,13 @@ func (d *downloader) getpath(video *models.Video) (string, error) {
 
 func (d *downloader) download(video *models.Video, file string) error {
 	// spawn the process, i fucking hate relying on third party programs, but at least they fucking work...
+	d.messages <- models.CreateMessage(video.Title, models.MSG_DOWNLOAD_STARTING)
 	cmd := exec.Command("youtube-dl", "-x", "-f", "140", "-o", file, video.GetUrl())
-	dat, err := cmd.CombinedOutput()
-	return err
+	_, err := cmd.CombinedOutput()
+	if err != nil {
+		d.messages <- models.CreateMessage(video.Title, models.MSG_DOWNLOAD_ERROR)
+		return err
+	}
+	d.messages <- models.CreateMessage(video.Title, models.MSG_DOWNLOAD_FINISHED)
+	return nil
 }
