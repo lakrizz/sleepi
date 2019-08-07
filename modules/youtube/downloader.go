@@ -49,3 +49,5 @@ func (d *downloader) download(video *models.Video, file string) error {
 	d.messages <- models.CreateMessage(video.Title, models.MSG_DOWNLOAD_FINISHED)
 	return nil
 }
+
+// TODO(@kk): maybe add different options here (like direct download via yt-id?)

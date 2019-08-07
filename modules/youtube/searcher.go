@@ -62,3 +62,4 @@ func (s *searcher) SearchVideos(keyword string) ([]*models.Video, error) {
 }
 
 // TODO(@kk): add playlists prolly?
+// TODO(@kk): add queuing?

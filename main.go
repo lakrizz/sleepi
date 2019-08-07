@@ -9,35 +9,36 @@ import (
 
 	"./controllers/alarm"
 	"./controllers/playlist"
+	"./controllers/youtube"
 	"./lib/http"
 	"./models"
-	"./modules/youtube"
 )
 
 func main() {
 
-	yt, err := youtube.CreateYouTubeWrapper()
-	if err != nil {
-		panic(err)
-	}
-	go listen(yt.Messages)
+	//yt, err := youtube.CreateYouTubeWrapper()
+	//if err != nil {
+	//panic(err)
+	//}
+	//go listen(yt.Messages)
 
-	for _, song := range []string{"Bachelors Of Science - Song For Lovers", "Tomte - Korn und Sprite", "Kettcar - 48 Stunden", "American Football - Never Meant", "Pendulum - Tarantula"} {
+	//todl := make([]*models.Video, 0)
 
-		go func(song string) {
-			log.Println("moin", song)
-			list, err := yt.Search.SearchVideos(song)
-			if err != nil {
-				panic(err)
-			}
+	//for _, song := range []string{"Bachelors Of Science - Song For Lovers", "Tomte - Korn und Sprite", "Kettcar - 48 Stunden", "American Football - Never Meant", "Pendulum - Tarantula"} {
+	//list, err := yt.Search.SearchVideos(song)
+	//if err != nil {
+	//panic(err)
+	//}
+	//todl = append(todl, list[0])
+	//}
 
-			go yt.Downloader.Download(list[0])
-		}(song)
-	}
+	//for _, k := range todl {
+	//go yt.Downloader.Download(k)
+	//}
 
-	for {
-		// endless loop for reasons Oo
-	}
+	//for {
+	//// endless loop for reasons Oo
+	//}
 
 	// Initialize Server
 	s, err := http.NewServer("8080")
@@ -64,6 +65,7 @@ func main() {
 	})
 	s.AddModule(alarm.AlarmModule(render))
 	s.AddModule(playlist.PlaylistModule(render))
+	s.AddModule(youtube.YouTubeModule(render))
 
 	// Start Server
 	log.Panic(s.Start())
