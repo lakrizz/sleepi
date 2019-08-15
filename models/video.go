@@ -3,8 +3,9 @@ package models
 import "fmt"
 
 type Video struct {
-	Id    string
-	Title string
+	Id           string
+	Title        string
+	ThumbnailUrl string
 }
 
 func (v *Video) GetUrl() string {

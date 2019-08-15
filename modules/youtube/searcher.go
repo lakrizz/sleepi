@@ -10,7 +10,7 @@ import (
 )
 
 var apikey string = "AIzaSyCb5A4o-1ncYKJ4DmADZJgvFMrYqs2i4jw"
-var maxresults int64 = 1
+var maxresults int64 = 25
 
 type searcher struct {
 	service     *youtube.Service
@@ -54,7 +54,7 @@ func (s *searcher) SearchVideos(keyword string) ([]*models.Video, error) {
 	for _, v := range response.Items {
 		switch v.Id.Kind {
 		case "youtube#video":
-			lst = append(lst, &models.Video{Id: v.Id.VideoId, Title: v.Snippet.Title})
+			lst = append(lst, &models.Video{Id: v.Id.VideoId, Title: v.Snippet.Title, ThumbnailUrl: v.Snippet.Thumbnails.Default.Url})
 		}
 	}
 

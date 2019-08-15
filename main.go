@@ -7,8 +7,8 @@ import (
 
 	"github.com/unrolled/render"
 
-	"./controllers/alarm"
-	"./controllers/playlist"
+	ytmodule "./modules/youtube"
+
 	"./controllers/youtube"
 	"./lib/http"
 	"./models"
@@ -16,10 +16,10 @@ import (
 
 func main() {
 
-	//yt, err := youtube.CreateYouTubeWrapper()
-	//if err != nil {
-	//panic(err)
-	//}
+	yt, err := ytmodule.CreateYouTubeWrapper()
+	if err != nil {
+		panic(err)
+	}
 	//go listen(yt.Messages)
 
 	//todl := make([]*models.Video, 0)
@@ -63,9 +63,7 @@ func main() {
 			},
 		},
 	})
-	s.AddModule(alarm.AlarmModule(render))
-	s.AddModule(playlist.PlaylistModule(render))
-	s.AddModule(youtube.YouTubeModule(render))
+	s.AddModule(youtube.YouTubeModule(render, yt))
 
 	// Start Server
 	log.Panic(s.Start())
