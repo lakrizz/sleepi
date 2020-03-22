@@ -1,0 +1,76 @@
+<p class="notification" style="background-color: #3498db;"><strong>Alarms</strong></p>
+
+<form method="post" action="/alarm/put" name="foo">
+	<div class="field">
+		<label class="label">Playlist</label>
+		<p class="control">
+		<span class="select">
+			<select name="playlist">
+	</div>
+
+	{{range .}}
+		<div>
+			<option>{{.playlist}}</option>
+		</div>
+	{{end}}
+			</select>
+		</span>
+		</p>
+		</div>
+
+		<div class="field">
+
+			<label class="label">Weekdays</label>
+			<p class="control">
+			<label class="checkbox">
+				<input type="checkbox" name="weekday" value="1">
+				Monday
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="weekday" value="2">
+				Tuesday
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="weekday" value="3">
+				Wednesday
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="weekday" value="4">
+				Thursday
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="weekday" value="5">
+				Friday
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="weekday" value="6">
+				Saturday
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="weekday" value="0">
+				Sunday
+			</label>
+			</p>
+		</div>
+
+		<div class="field">
+			<label class="label is-clearfix">Waketime</label>
+			<div class="control is-pulled-left">
+				<input class="input" type="text" placeholder="HH" name="time_hh" style="width: 48px;">
+			</div>
+			<span class="is-pulled-left" style="font-size: 18px; margin: 2px 4px;">:</span>
+			<div class="control is-pulled-left is-clearfix">
+				<input class="input is-clearfix" type="text" name="time_mm" placeholder="MM" style="width: 48px;">
+			</div>
+		</div>
+		<br />
+		<br />
+		<div class="field is-grouped">
+			<div class="control">
+				<button type="submit" class="button is-primary">Submit</button>
+			</div>
+			<div class="control">
+				<button class="button is-link">Cancel</button>
+			</div>
+		</div>
+</form>

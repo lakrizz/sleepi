@@ -1,0 +1,24 @@
+<p class="notification" style="background-color: #3498db;"><strong>Playlists</strong></p>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th># of Songs</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{ range . }}
+			<tr>
+				<td>
+					<a href="#">
+					{{ .Name }}
+					</a>
+				</td>
+				<td>
+					{{ .SongCount }}
+				</td>
+			</tr>
+		{{ end }}
+	</tbody>
+</table>

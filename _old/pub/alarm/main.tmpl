@@ -1,0 +1,66 @@
+<p class="notification" style="background-color: #3498db;"><strong>Alarms</strong></p>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Playlist</th>
+			<th>Day/s</th>
+			<th>Alarm Time</th>
+			<th>Next Alarm</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{ range . }}
+			<tr>
+				<td>
+					<span class="icon">
+						<a href="/alarm/changestatus/{{.ID.Hex}}">
+							{{ if .Active }}
+								<i class="fa fa-clock-o" style="color: #27ae60;"></i>
+							{{ else }}
+								<i class="fa fa-clock-o" style="color: #c0392b;"></i>
+							{{ end }}
+						</a>
+					</span>
+				</td>
+				<td><a href="#">{{.PlaylistName}}</a></td>
+				<td>
+					{{.WakeDays | join}}
+				</td>
+				<td>{{.WakeHour}}:{{.WakeMinute}}</td>
+				<td>
+					{{ if .Active }}
+						In {{.UntilReadable}}
+					{{ else }}
+						-	
+					{{ end }}
+				</td>
+				<td>
+					<a href="#">
+						<span class="icon" style="color: #1762a1;">
+							<i class="fa fa-edit"></i>
+						</span>
+					</a>
+						<a href="/alarm/delete/{{.ID.Hex}}">
+						<span class="icon" style="color: #e74c3c;">
+							<i class="fa fa-remove"></i>
+						</span>
+					</a>
+				</td>
+			</tr>
+		{{ end }}
+		<!-- Add New Alarm Button -->	
+		<tr>
+			<td colspan="7" style="text-align: right;">
+				<a class="button is-success" href="/alarm/add">
+					<span class="icon">
+						<i class="fa fa-plus"></i>
+					</span>
+					<span>Add New Alarm</span>
+				</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
