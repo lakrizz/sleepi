@@ -10,15 +10,21 @@ import (
 func main() {
 	// let's start anew, but this time let it grow gradually instead of chopping it all at once
 	// s := gin.Default()
-	a, err := alarm.LoadAlarms("alarms.json")
+	am, err := alarm.CreateAlarmManager("alarms.json")
 	if err != nil {
 		panic(err)
 	}
-	pp.Println(a)
 
-	nw, err := a[0].TimeTillNextWake()
-	pp.Println(nw.String())
+	v, err := am.GetNextAlarm()
+	if err != nil {
+		panic(err)
+	}
+	pp.Println(v)
 	return
+
+	// nw, err := am[0].TimeTillNextWake()
+	// pp.Println(nw.String())
+	// return
 
 	c, err := config.LoadConfig("config.json")
 	if err != nil {
