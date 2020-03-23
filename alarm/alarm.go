@@ -28,7 +28,7 @@ func (a *Alarm) NextWake() (time.Time, error) {
 
 func (a *Alarm) checkDate(add_days int) (time.Time, error) {
 	now := time.Now().AddDate(0, 0, add_days)
-	if (now.Hour() < a.WakeHour || (now.Hour() == a.WakeHour && now.Minute() <= a.WakeMinute) || add_days > 0) && a.ringsOnWeekday(now.Weekday()) {
+	if (now.Hour() < a.WakeHour || (now.Hour() == a.WakeHour && now.Minute() < a.WakeMinute) || add_days > 0) && a.ringsOnWeekday(now.Weekday()) {
 		return time.Date(now.Year(), now.Month(), now.Day(), a.WakeHour, a.WakeMinute, 0, 0, time.Local), nil
 	}
 

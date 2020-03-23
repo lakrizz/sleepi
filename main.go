@@ -20,6 +20,8 @@ func main() {
 		panic(err)
 	}
 	pp.Println(v)
+	for {
+	}
 	return
 
 	// nw, err := am[0].TimeTillNextWake()

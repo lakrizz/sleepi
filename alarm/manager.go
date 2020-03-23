@@ -5,12 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-
-	"github.com/k0kubun/pp"
 )
 
 type AlarmManager struct {
-	Alarms []*Alarm
+	Alarms  []*Alarm
+	watcher *alarmWatcher
 }
 
 func CreateAlarmManager(filename string) (*AlarmManager, error) {
@@ -20,7 +19,12 @@ func CreateAlarmManager(filename string) (*AlarmManager, error) {
 	}
 
 	am := &AlarmManager{Alarms: alarms}
-	pp.Println(am)
+	aw, err := createWatcher(am)
+	if err != nil {
+		return nil, err
+	}
+	am.watcher = aw
+	go am.watcher.run()
 	return am, nil
 }
 
@@ -68,11 +72,4 @@ func (a *AlarmManager) GetNextAlarm() (*Alarm, error) {
 	}
 
 	return a.Alarms[idx], nil
-
-}
-
-func (a *AlarmManager) Run() error {
-	for {
-		// need a endless loop because we need to watch all alarms
-	}
 }
