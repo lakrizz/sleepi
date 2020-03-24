@@ -1,6 +1,6 @@
 {
 	"volumes": {
-		"silence": -5,
+		"silence": 0,
 		"normal": 2
 	}
 }

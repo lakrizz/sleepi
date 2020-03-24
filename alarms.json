@@ -2,7 +2,7 @@
 		{
 			"Name": "Foobar",
 			"WakeHour": 0,
-			"WakeMinute": 55,
+			"WakeMinute": 7,
 			"Days": [0, 1, 2, 3, 4, 5, 6],
 			"Playlist": "pl.json",
 			"WakeupTime": "0m",

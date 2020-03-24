@@ -1,6 +1,7 @@
 package player
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
@@ -22,22 +23,31 @@ type Player struct {
 	max_volume     float64
 	silence_volume float64
 	playback_done  chan bool
+	IsPlaying      bool
 }
 
-func GetPlayer(silence, normal float64) (*Player, error) {
-	p := &Player{}
-	p.playing_index = 0
-	p.current_volume = -5
-	p.max_volume = normal
-	p.silence_volume = silence
-	p.playback_done = make(chan bool, 1)
+var player *Player
 
-	return p, nil
+func GetPlayer() (*Player, error) {
+	if player == nil {
+		return nil, errors.New("player is not initialized")
+	}
+	return player, nil
+}
+
+func InitPlayer(silence, normal float64) error {
+	if player == nil {
+		p := &Player{playing_index: 0, current_volume: normal, silence_volume: silence, max_volume: normal, IsPlaying: false}
+		p.playback_done = make(chan bool, 1)
+		player = p
+	}
+	return nil
 }
 
 func (p *Player) LoadPlaylist(plname string, shuffle bool) error {
 	playlist, err := LoadPlaylist(plname)
 	if err != nil {
+		log.Println("loading playlist? more like", err.Error())
 		return err
 	}
 	p.playlist = playlist
@@ -55,26 +65,39 @@ func (p *Player) LoadPlaylist(plname string, shuffle bool) error {
 }
 
 func (p *Player) Play() error {
+	if p.IsPlaying {
+		return errors.New("player is already playing")
+	}
+
 	currentfile := p.queue[p.playing_index]
 	done := make(chan bool) // this is the channel that gets filled whenever a song is done playing
+	log.Println("trying to load file:", currentfile)
 	f, err := p.loadfile(currentfile)
 	if err != nil { // most likely no more songs left, eh :D
 		return err
 	}
+	log.Println("1")
 	streamer, format, err := mp3.Decode(f)
 	if err != nil {
+		log.Println("uhm?")
+		log.Fatal(err)
 		return err
 	}
 
+	log.Println("2")
 	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
 	if err != nil {
 		return err
 	}
 	defer speaker.Close()
 
+	log.Println("3")
 	baseSamplerate := format.SampleRate
 
+	p.IsPlaying = true
 	go p.volumeChanger()
+
+	log.Println("4")
 
 	for ; len(p.queue) > p.playing_index; p.playing_index++ {
 		// now let's check if there's songs in the playlist
@@ -83,6 +106,7 @@ func (p *Player) Play() error {
 
 		f, err := p.loadfile(currentfile)
 		if err != nil { // this should not happen, unless the file does not exist anymore
+			p.IsPlaying = false
 			return err
 		}
 		streamer, format, err = mp3.Decode(f)
@@ -97,11 +121,13 @@ func (p *Player) Play() error {
 
 		err = streamer.Close()
 		if err != nil {
+			p.IsPlaying = false
 			panic(err)
 		}
 	}
 
 	p.playback_done <- true
+	p.IsPlaying = false
 	return nil
 }
 
