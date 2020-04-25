@@ -23,6 +23,7 @@ type Player struct {
 	max_volume     float64
 	silence_volume float64
 	playback_done  chan bool
+	stop_volume    chan bool
 	IsPlaying      bool
 }
 
@@ -37,8 +38,9 @@ func GetPlayer() (*Player, error) {
 
 func InitPlayer(silence, normal float64) error {
 	if player == nil {
-		p := &Player{playing_index: 0, current_volume: normal, silence_volume: silence, max_volume: normal, IsPlaying: false}
+		p := &Player{playing_index: 0, current_volume: silence, silence_volume: silence, max_volume: normal, IsPlaying: false}
 		p.playback_done = make(chan bool, 1)
+		p.stop_volume = make(chan bool, 1)
 		player = p
 	}
 	return nil
@@ -68,67 +70,77 @@ func (p *Player) Play() error {
 	if p.IsPlaying {
 		return errors.New("player is already playing")
 	}
+	var glob_err error
 
-	currentfile := p.queue[p.playing_index]
-	done := make(chan bool) // this is the channel that gets filled whenever a song is done playing
-	log.Println("trying to load file:", currentfile)
-	f, err := p.loadfile(currentfile)
-	if err != nil { // most likely no more songs left, eh :D
-		return err
-	}
-	log.Println("1")
-	streamer, format, err := mp3.Decode(f)
-	if err != nil {
-		log.Println("uhm?")
-		log.Fatal(err)
-		return err
-	}
-
-	log.Println("2")
-	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
-	if err != nil {
-		return err
-	}
-	defer speaker.Close()
-
-	log.Println("3")
-	baseSamplerate := format.SampleRate
-
-	p.IsPlaying = true
-	go p.volumeChanger()
-
-	log.Println("4")
-
-	for ; len(p.queue) > p.playing_index; p.playing_index++ {
-		// now let's check if there's songs in the playlist
+	go func() {
+		log.Println("playing_index is", p.playing_index)
 		currentfile := p.queue[p.playing_index]
-		log.Println(fmt.Sprintf("now playing: %s", currentfile))
-
+		done := make(chan bool) // this is the channel that gets filled whenever a song is done playing
+		log.Println("trying to load file:", currentfile)
 		f, err := p.loadfile(currentfile)
-		if err != nil { // this should not happen, unless the file does not exist anymore
-			p.IsPlaying = false
-			return err
+		if err != nil { // most likely no more songs left, eh :D
+			glob_err = err
+			log.Println(glob_err)
+			return
 		}
-		streamer, format, err = mp3.Decode(f)
-		p.volume = &effects.Volume{Streamer: streamer, Base: 2, Volume: p.current_volume} // streamer is actually a pipe, nifty
-
-		// callback being the last element signaling everything else that we're done here, sheeeeesh
-		speaker.Play(beep.Resample(4, baseSamplerate, format.SampleRate, beep.Seq(p.volume, beep.Callback(func() {
-			done <- true
-		}))))
-
-		<-done // block until the song is played
-
-		err = streamer.Close()
+		_, format, err := mp3.Decode(f)
 		if err != nil {
-			p.IsPlaying = false
+			glob_err = err
+			log.Println(glob_err)
+			return
+		}
+
+		baseSamplerate := format.SampleRate
+		err = speaker.Init(baseSamplerate, baseSamplerate.N(time.Second/20))
+		if err != nil {
 			panic(err)
 		}
-	}
 
-	p.playback_done <- true
+		p.IsPlaying = true
+		// go p.volumeChanger()
+
+		log.Println("4")
+
+		for ; len(p.queue) > p.playing_index; p.playing_index++ {
+			// now let's check if there's songs in the playlist
+			currentfile = p.queue[p.playing_index]
+			log.Println(fmt.Sprintf("now playing: %s", currentfile))
+
+			f, err = p.loadfile(currentfile)
+			if err != nil { // this should not happen, unless the file does not exist anymore
+				p.IsPlaying = false
+				log.Println(glob_err)
+				glob_err = err
+				return
+			}
+			streamer, _, err := mp3.Decode(f)
+			if err != nil {
+				panic(err)
+			}
+
+			p.volume = &effects.Volume{Streamer: streamer, Base: 2, Volume: p.current_volume} // streamer is actually a pipe, nifty
+
+			// callback being the last element signaling everything else that we're done here, sheeeeesh
+			speaker.Play(beep.Resample(2, baseSamplerate, format.SampleRate, beep.Seq(p.volume, beep.Callback(func() {
+				log.Println("i'm done")
+				done <- true
+			}))))
+
+			<-done // block until the song is played
+
+			err = streamer.Close()
+			if err != nil {
+				p.IsPlaying = false
+				panic(err)
+			}
+		}
+
+		p.playback_done <- true
+		p.stop_volume <- true
+	}()
+	<-p.playback_done
 	p.IsPlaying = false
-	return nil
+	return glob_err
 }
 
 func (p *Player) loadfile(filename string) (*os.File, error) {
@@ -147,16 +159,19 @@ func (p *Player) loadfile(filename string) (*os.File, error) {
 func (p *Player) volumeChanger() {
 	for {
 		select {
-		case <-p.playback_done:
+		case <-p.stop_volume:
+			log.Println("stopping volumechanger because playback is done")
 			return
 		default:
 			if p.volume != nil && p.current_volume < p.max_volume {
 				p.current_volume += 0.01
 				p.volume.Volume = p.current_volume
-				log.Println("new volume: ", p.current_volume)
+				// log.Println("new volume: ", p.current_volume)
 				time.Sleep(50 * time.Millisecond)
+			} else if p.current_volume == p.max_volume {
+				// we don't need to adjust the volume anymore, stop this goroutine
+				return
 			}
 		}
 	}
-	return
 }

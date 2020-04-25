@@ -28,53 +28,54 @@ func createWatcher(manager *AlarmManager) (*alarmWatcher, error) {
 		return nil, err
 	}
 	aw.player = player
-	aw.refresh()
-
-	return aw, nil
-}
-
-func (aw *alarmWatcher) refresh() {
 	target, err := aw.manager.GetNextAlarm()
 	if err != nil {
 		log.Fatal(err)
-	} else {
-		// this is also where we want to call the cronjob when to call the player ;)
-		// but consider that this is not only called when an alarm is hit!
-		// so we need to check that, and that's important!
-		aw.target = target
-		if aw.target_timer != nil {
-			aw.target_timer.Stop()
-		}
-		dur, err := aw.target.TimeTillNextWake()
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			aw.target_timer = time.NewTimer(dur)
-			aw.refreshChan <- true
-		}
 	}
+	aw.target = target
+	dur, err := aw.target.TimeTillNextWake()
+	if err != nil {
+		log.Fatal(err)
+	}
+	aw.target_timer = time.NewTimer(dur)
+
+	return aw, nil
 }
 
 func (aw *alarmWatcher) run() {
 	for {
 		select {
 		case <-aw.target_timer.C:
-			go aw.TriggerAlarm()
+			log.Println("triggering alarm")
+			go aw.triggerAlarm(aw.target.Playlist)
+
+			target, err := aw.manager.GetNextAlarm()
+			if err != nil {
+				log.Fatal(err)
+			}
+			aw.target = target
+			log.Println("next target is", target)
+			dur, err := aw.target.TimeTillNextWake()
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println("resetting timer")
+			aw.target_timer.Reset(dur)
 		default:
 			dur, err := aw.target.TimeTillNextWake()
 			if err != nil {
 				panic(err)
 			}
 			log.Println(fmt.Sprintf("next alarm in %s", dur.String()))
-			time.Sleep(50 * time.Millisecond)
+			time.Sleep(25 * time.Millisecond)
 		}
 	}
 }
 
-func (aw *alarmWatcher) TriggerAlarm() {
+func (aw *alarmWatcher) triggerAlarm(playlist string) {
 	log.Println("triggering alarm!")
 	if !aw.player.IsPlaying {
-		if err := aw.player.LoadPlaylist(aw.target.Playlist, true); err != nil {
+		if err := aw.player.LoadPlaylist(playlist, false); err != nil {
 			log.Fatal(err)
 		} else {
 			log.Println("loaded playlist, starting to play now")

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"time"
 )
 
 type AlarmManager struct {
@@ -39,9 +40,14 @@ func loadAlarms(filename string) ([]*Alarm, error) {
 	if err != nil {
 		return nil, err
 	}
+	alarms[0].WakeHour = time.Now().Hour()
+	alarms[0].WakeMinute = time.Now().Minute() + 1
 	return alarms, nil
 }
 
+func (a *AlarmManager) GetWatcher() *alarmWatcher {
+	return a.watcher
+}
 func (a *AlarmManager) AddAlarm(alarm *Alarm) error {
 	for _, v := range a.Alarms {
 		if v.Name == alarm.Name {

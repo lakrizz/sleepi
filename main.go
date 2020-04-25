@@ -24,6 +24,18 @@ func main() {
 		panic(err)
 	}
 
+	// p, err := player.GetPlayer()
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// done := make(chan bool, 1)
+	// go func() {
+	// 	am.GetWatcher().TriggerAlarm()
+	// 	done <- true
+	// }()
+
+	// <-done
 	for {
 	}
 }
