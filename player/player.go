@@ -2,8 +2,6 @@ package player
 
 import (
 	"errors"
-	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"time"
@@ -49,7 +47,6 @@ func InitPlayer(silence, normal float64) error {
 func (p *Player) LoadPlaylist(plname string, shuffle bool) error {
 	playlist, err := LoadPlaylist(plname)
 	if err != nil {
-		log.Println("loading playlist? more like", err.Error())
 		return err
 	}
 	p.playlist = playlist
@@ -73,43 +70,35 @@ func (p *Player) Play() error {
 	var glob_err error
 
 	go func() {
-		log.Println("playing_index is", p.playing_index)
 		currentfile := p.queue[p.playing_index]
 		done := make(chan bool) // this is the channel that gets filled whenever a song is done playing
-		log.Println("trying to load file:", currentfile)
 		f, err := p.loadfile(currentfile)
 		if err != nil { // most likely no more songs left, eh :D
 			glob_err = err
-			log.Println(glob_err)
 			return
 		}
 		_, format, err := mp3.Decode(f)
 		if err != nil {
 			glob_err = err
-			log.Println(glob_err)
 			return
 		}
 
 		baseSamplerate := format.SampleRate
-		err = speaker.Init(baseSamplerate, baseSamplerate.N(time.Second/20))
+		err = speaker.Init(baseSamplerate, baseSamplerate.N(time.Second/10))
 		if err != nil {
 			panic(err)
 		}
 
 		p.IsPlaying = true
-		// go p.volumeChanger()
-
-		log.Println("4")
+		go p.volumeChanger()
 
 		for ; len(p.queue) > p.playing_index; p.playing_index++ {
 			// now let's check if there's songs in the playlist
 			currentfile = p.queue[p.playing_index]
-			log.Println(fmt.Sprintf("now playing: %s", currentfile))
 
 			f, err = p.loadfile(currentfile)
 			if err != nil { // this should not happen, unless the file does not exist anymore
 				p.IsPlaying = false
-				log.Println(glob_err)
 				glob_err = err
 				return
 			}
@@ -122,7 +111,6 @@ func (p *Player) Play() error {
 
 			// callback being the last element signaling everything else that we're done here, sheeeeesh
 			speaker.Play(beep.Resample(2, baseSamplerate, format.SampleRate, beep.Seq(p.volume, beep.Callback(func() {
-				log.Println("i'm done")
 				done <- true
 			}))))
 
@@ -160,13 +148,11 @@ func (p *Player) volumeChanger() {
 	for {
 		select {
 		case <-p.stop_volume:
-			log.Println("stopping volumechanger because playback is done")
 			return
 		default:
 			if p.volume != nil && p.current_volume < p.max_volume {
 				p.current_volume += 0.01
 				p.volume.Volume = p.current_volume
-				// log.Println("new volume: ", p.current_volume)
 				time.Sleep(50 * time.Millisecond)
 			} else if p.current_volume == p.max_volume {
 				// we don't need to adjust the volume anymore, stop this goroutine

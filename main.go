@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"./alarm"
 	"./config"
 	"./player"
@@ -36,6 +38,6 @@ func main() {
 	// }()
 
 	// <-done
-	for {
-	}
+	panic(http.ListenAndServe(":8080", nil))
+
 }
