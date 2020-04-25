@@ -44,3 +44,6 @@ Sessionx.vim
 tags
 # Persistent undo
 [._]*.un~
+
+# fresh stuff
+./tmp/*

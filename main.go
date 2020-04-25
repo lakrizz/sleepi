@@ -1,11 +1,11 @@
 package main
 
 import (
-	"net/http"
+	"fmt"
 
-	"./alarm"
-	"./config"
-	"./player"
+	"github.com/lakrizz/sleepi/alarm"
+	"github.com/lakrizz/sleepi/config"
+	"github.com/lakrizz/sleepi/player"
 )
 
 func main() {
@@ -21,23 +21,14 @@ func main() {
 		panic(err)
 	}
 
-	_, err = alarm.CreateAlarmManager("alarms.json")
+	am, err := alarm.CreateAlarmManager("alarms.json")
 	if err != nil {
 		panic(err)
 	}
 
-	// p, err := player.GetPlayer()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	fmt.Println("all alarms:", am.Alarms)
 
-	// done := make(chan bool, 1)
-	// go func() {
-	// 	am.GetWatcher().TriggerAlarm()
-	// 	done <- true
-	// }()
-
-	// <-done
-	panic(http.ListenAndServe(":8080", nil))
-
+	// panic(http.ListenAndServe(":8080", nil))
+	for {
+	}
 }
