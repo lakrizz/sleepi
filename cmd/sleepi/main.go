@@ -6,6 +6,7 @@ import (
 	"github.com/lakrizz/sleepi/pkg/alarm"
 	"github.com/lakrizz/sleepi/pkg/config"
 	"github.com/lakrizz/sleepi/pkg/player"
+	"github.com/lakrizz/sleepi/web"
 )
 
 func main() {
@@ -28,7 +29,6 @@ func main() {
 
 	fmt.Println("all alarms:", am.Alarms)
 
-	// panic(http.ListenAndServe(":8080", nil))
-	for {
-	}
+	// this starts the loop, nothing more needed
+	web.Serve()
 }
