@@ -1,10 +1,8 @@
 package alarm
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 )
 
 type AlarmManager struct {
@@ -12,40 +10,24 @@ type AlarmManager struct {
 	watcher *alarmWatcher
 }
 
-func CreateAlarmManager(filename string) (*AlarmManager, error) {
-	alarms, err := loadAlarms(filename)
+func CreateAlarmManager() (*AlarmManager, error) {
+	alarms, err := loadAlarms()
 	if err != nil {
 		return nil, err
 	}
 
 	am := &AlarmManager{Alarms: alarms}
-	aw, err := createWatcher(am)
-	if err != nil {
-		return nil, err
+	if len(alarms) > 0 { // if there's no alarms, there's nothing to watch
+		aw, err := createWatcher(am)
+		if err != nil {
+			return nil, err
+		}
+		am.watcher = aw
+		go am.watcher.run()
 	}
-	am.watcher = aw
-	go am.watcher.run()
 	return am, nil
 }
 
-func loadAlarms(filename string) ([]*Alarm, error) {
-	alarms := make([]*Alarm, 0)
-	dat, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(dat, &alarms)
-	if err != nil {
-		return nil, err
-	}
-
-	return alarms, nil
-}
-
-func (a *AlarmManager) GetWatcher() *alarmWatcher {
-	return a.watcher
-}
 func (a *AlarmManager) AddAlarm(alarm *Alarm) error {
 	for _, v := range a.Alarms {
 		if v.Name == alarm.Name {
@@ -58,6 +40,10 @@ func (a *AlarmManager) AddAlarm(alarm *Alarm) error {
 
 func (a *AlarmManager) GetNextAlarm() (*Alarm, error) {
 	// baseline is the first alarm
+	if len(a.Alarms) == 0 {
+		return nil, errors.New("there are no alarms")
+	}
+
 	next, err := a.Alarms[0].TimeTillNextWake()
 	if err != nil {
 		return nil, err

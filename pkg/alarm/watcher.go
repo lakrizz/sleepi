@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"../player"
+	"github.com/lakrizz/sleepi/pkg/player"
 )
 
 // the watcher takes an alarm and subscribes the next occurance with the manager
@@ -30,12 +30,12 @@ func createWatcher(manager *AlarmManager) (*alarmWatcher, error) {
 	aw.player = player
 	target, err := aw.manager.GetNextAlarm()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	aw.target = target
 	dur, err := aw.target.TimeTillNextWake()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	aw.target_timer = time.NewTimer(dur)
 

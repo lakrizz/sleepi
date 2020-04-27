@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 
-	"github.com/lakrizz/sleepi/alarm"
-	"github.com/lakrizz/sleepi/config"
-	"github.com/lakrizz/sleepi/player"
+	"github.com/lakrizz/sleepi/pkg/alarm"
+	"github.com/lakrizz/sleepi/pkg/config"
+	"github.com/lakrizz/sleepi/pkg/player"
 )
 
 func main() {
 	// let's start anew, but this time let it grow gradually instead of chopping it all at once
 	// s := gin.Default()
-	c, err := config.LoadConfig("config.json")
+	c, err := config.LoadConfig()
 	if err != nil {
 		panic(err)
 	}
@@ -21,7 +21,7 @@ func main() {
 		panic(err)
 	}
 
-	am, err := alarm.CreateAlarmManager("alarms.json")
+	am, err := alarm.CreateAlarmManager()
 	if err != nil {
 		panic(err)
 	}
