@@ -9,6 +9,7 @@ import (
 
 type Alarm struct {
 	Name       string         `json:"Name"`
+	Id         uuid.UUID      `json:"Id"`
 	WakeHour   int            `json:"WakeHour"`
 	WakeMinute int            `json:"WakeMinute"`
 	Days       []time.Weekday `json:"Days"`

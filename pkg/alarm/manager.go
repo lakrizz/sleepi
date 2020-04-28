@@ -3,37 +3,23 @@ package alarm
 import (
 	"errors"
 	"fmt"
+
+	"github.com/google/uuid"
 )
-
-type AlarmManager struct {
-	Alarms  []*Alarm
-	watcher *alarmWatcher
-}
-
-func CreateAlarmManager() (*AlarmManager, error) {
-	alarms, err := loadAlarms()
-	if err != nil {
-		return nil, err
-	}
-
-	am := &AlarmManager{Alarms: alarms}
-	if len(alarms) > 0 { // if there's no alarms, there's nothing to watch
-		aw, err := createWatcher(am)
-		if err != nil {
-			return nil, err
-		}
-		am.watcher = aw
-		go am.watcher.run()
-	}
-	return am, nil
-}
 
 func (a *AlarmManager) AddAlarm(alarm *Alarm) error {
 	for _, v := range a.Alarms {
 		if v.Name == alarm.Name {
-			return errors.New(fmt.Sprintf("alarm with the name %s is already registered", alarm.Name))
+			return errors.New(fmt.Sprintf("alarm with the name %s already exists", alarm.Name))
 		}
 	}
+
+	id, err := uuid.NewRandom()
+	if err != nil {
+		return err
+	}
+
+	alarm.Id = id
 	a.Alarms = append(a.Alarms, alarm)
 	return nil
 }
@@ -48,6 +34,7 @@ func (a *AlarmManager) GetNextAlarm() (*Alarm, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	idx := 0
 	for i, v := range a.Alarms[0:] {
 		n, err := v.TimeTillNextWake()

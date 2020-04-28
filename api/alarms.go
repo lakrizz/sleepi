@@ -1,11 +1,22 @@
 package api
 
-func AddAlarm() {}
+import (
+	"errors"
 
-func GetAlarms() {}
+	"github.com/lakrizz/sleepi/pkg/alarm"
+)
 
-func EditAlarm() {}
+func (a *Api) AddAlarm() {}
 
-func RemoveAlarm() {}
+func (a *Api) GetAlarms() ([]*alarm.Alarm, error) {
+	if a.Alarms == nil {
+		return nil, errors.New("there's no alarm manager, we cannot do anything :(")
+	}
+	return a.Alarms.Alarms, nil
+}
 
-func GetAlarm() {} // by id
+func (a *Api) EditAlarm() {}
+
+func (a *Api) RemoveAlarm() {}
+
+func (a *Api) GetAlarm() {} // by id

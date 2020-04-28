@@ -8,13 +8,14 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	base_api "github.com/lakrizz/sleepi/api"
+	"github.com/lakrizz/sleepi/web/app"
 	"github.com/unrolled/render"
 )
 
 var ren *render.Render
 
-func Serve() {
-
+func Serve(api *base_api.Api) {
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
@@ -30,6 +31,9 @@ func Serve() {
 	m := mux.NewRouter()
 	m.HandleFunc("/", Index)
 	m.HandleFunc("", Index)
+
+	app.Init(m, ren, api)
+
 	m.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./web/static"))))
 
 	server := &http.Server{

@@ -2,45 +2,65 @@ package alarm
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"os"
+	"log"
 
 	"github.com/adrg/xdg"
 )
 
-func loadAlarms() ([]*Alarm, error) {
-	filename, err := xdg.ConfigFile("sleepi/config.json")
+type AlarmManager struct {
+	Alarms  []*Alarm      `json:"Alarms"`
+	watcher *alarmWatcher `json:"-"`
+}
+
+var filename string = "alarms.json"
+
+func LoadAlarmManager() (*AlarmManager, error) {
+	fname, err := xdg.ConfigFile(fmt.Sprintf("sleepi/%s", filename))
 	if err != nil {
 		return nil, err
 	}
 
-	alarms := make([]*Alarm, 0)
-	if _, err := os.Stat(filename); err == os.ErrExist {
-		dat, err := ioutil.ReadFile(filename)
-		if err != nil {
-			return nil, err
-		}
-
-		err = json.Unmarshal(dat, &alarms)
-		if err != nil {
-			return nil, err
-		}
+	dat, err := ioutil.ReadFile(fname)
+	if err != nil {
+		am := &AlarmManager{Alarms: []*Alarm{}}
+		am.SaveAlarms()
+		return am, nil
 	}
 
-	return alarms, nil
+	log.Println("data", string(dat))
+
+	var am *AlarmManager
+	err = json.Unmarshal(dat, &am)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(am.Alarms) > 0 { // if there's no alarms, there's nothing to watch
+		aw, err := createWatcher(am)
+		if err != nil {
+			return nil, err
+		}
+		am.watcher = aw
+		go am.watcher.run()
+	}
+
+	return am, nil
 }
 
-func saveAlarms(alarms []*Alarm) error {
-	filename, err := xdg.ConfigFile("sleepi/config.json")
+func (am *AlarmManager) SaveAlarms() error {
+	fname, err := xdg.ConfigFile(fmt.Sprintf("sleepi/%s", filename))
 	if err != nil {
 		return err
 	}
 
-	dat, err := json.Marshal(alarms)
+	dat, err := json.Marshal(am)
 
 	if err != nil {
 		return err
 	}
 
-	return ioutil.WriteFile(filename, dat, 0644)
+	return ioutil.WriteFile(fname, dat, 0755)
 }

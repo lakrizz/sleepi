@@ -1,7 +1,6 @@
 package alarm
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -64,12 +63,12 @@ func (aw *alarmWatcher) run() {
 			log.Println("resetting timer")
 			aw.target_timer.Reset(dur)
 		default:
-			dur, err := aw.target.TimeTillNextWake()
+			_, err := aw.target.TimeTillNextWake()
 			if err != nil {
 				panic(err)
 			}
-			log.Println(fmt.Sprintf("next alarm in %s", dur.String()))
-			time.Sleep(25 * time.Millisecond)
+			// log.Println(fmt.Sprintf("next alarm in %s", dur.String()))
+			time.Sleep(250 * time.Millisecond)
 		}
 	}
 }
