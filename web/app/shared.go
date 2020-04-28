@@ -18,4 +18,7 @@ func Init(router *mux.Router, renderer *render.Render, api_v *base_api.Api) {
 func addRoutes(m *mux.Router) {
 	m.HandleFunc("/alarms", AlarmsHome)
 	m.HandleFunc("/alarms/", AlarmsHome)
+
+	m.HandleFunc("/playlists", PlaylistsHome)
+	m.HandleFunc("/playlists/", PlaylistsHome)
 }

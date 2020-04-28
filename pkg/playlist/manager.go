@@ -11,13 +11,13 @@ import (
 )
 
 type PlaylistManager struct {
-	filename  string                  `json:"-"`
-	Playlists map[uuid.UUID]*playlist `json:"Playlists"`
+	filename  string      `json:"-"`
+	Playlists []*Playlist `json:"Playlists"`
 }
 
-func (pm *PlaylistManager) GetPlaylist(id uuid.UUID) (*playlist, error) {
-	for k, v := range pm.Playlists {
-		if id == k {
+func (pm *PlaylistManager) GetPlaylist(id uuid.UUID) (*Playlist, error) {
+	for _, v := range pm.Playlists {
+		if id == v.Id {
 			return v, nil
 		}
 	}
@@ -35,11 +35,11 @@ func (pm *PlaylistManager) CreatePlaylist(name string, files []string) error {
 	if err != nil {
 		return err
 	}
-	pm.Playlists[id] = &playlist{
+	pm.Playlists = append(pm.Playlists, &Playlist{
 		Name:  name,
 		Files: files,
 		Id:    id,
-	}
+	})
 
 	return pm.Save()
 }
@@ -53,7 +53,7 @@ func LoadConfig() (*PlaylistManager, error) {
 	dat, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return &PlaylistManager{
-			Playlists: map[uuid.UUID]*playlist{},
+			Playlists: []*Playlist{},
 			filename:  filename,
 		}, nil
 	}
