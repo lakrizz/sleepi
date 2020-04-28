@@ -3,6 +3,8 @@ package alarm
 import (
 	"errors"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Alarm struct {
@@ -10,7 +12,7 @@ type Alarm struct {
 	WakeHour   int            `json:"WakeHour"`
 	WakeMinute int            `json:"WakeMinute"`
 	Days       []time.Weekday `json:"Days"`
-	Playlist   string         `json:"Playlist"`
+	Playlist   uuid.UUID      `json:"Playlist"`
 	WakeupTime string         `json:"WakeupTime"`
 	Enabled    bool           `json:"Enabled"`
 }

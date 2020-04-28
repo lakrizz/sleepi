@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 
 	"github.com/adrg/xdg"
@@ -17,13 +18,14 @@ type volumes struct {
 	Normal  float64 `json:"normal"`
 }
 
-func createEmptyConfig() *Config {
+func createEmptyConfig(filename string) *Config {
 	// we assume the file does not exist
 	return &Config{
 		Volumes: &volumes{
 			Silence: -5.0,
 			Normal:  2.0,
 		},
+		filename: filename,
 	}
 }
 
@@ -35,7 +37,7 @@ func LoadConfig() (*Config, error) {
 
 	dat, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return createEmptyConfig(), nil
+		return createEmptyConfig(filename), nil
 	}
 
 	var c *Config
@@ -52,6 +54,7 @@ func (c *Config) Save() error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(c.filename, dat, 755)
+	fmt.Println(string(dat))
+	err = ioutil.WriteFile(c.filename, dat, 0755)
 	return err
 }

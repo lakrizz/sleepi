@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/lakrizz/sleepi/pkg/player"
+	"github.com/lakrizz/sleepi/pkg/playlist"
 )
 
 // the watcher takes an alarm and subscribes the next occurance with the manager
@@ -17,6 +18,7 @@ type alarmWatcher struct {
 	target       *Alarm
 	target_timer *time.Timer
 	player       *player.Player
+	playlists    *playlist.PlaylistManager
 	refreshChan  chan bool
 }
 
@@ -47,7 +49,7 @@ func (aw *alarmWatcher) run() {
 		select {
 		case <-aw.target_timer.C:
 			log.Println("triggering alarm")
-			go aw.triggerAlarm(aw.target.Playlist)
+			go aw.triggerAlarm()
 
 			target, err := aw.manager.GetNextAlarm()
 			if err != nil {
@@ -72,10 +74,14 @@ func (aw *alarmWatcher) run() {
 	}
 }
 
-func (aw *alarmWatcher) triggerAlarm(playlist string) {
+func (aw *alarmWatcher) triggerAlarm() {
 	log.Println("triggering alarm!")
 	if !aw.player.IsPlaying {
-		if err := aw.player.LoadPlaylist(playlist, false); err != nil {
+		pl, err := aw.playlists.GetPlaylist(aw.target.Playlist)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if err := aw.player.QueueSongs(pl.Files, false); err != nil {
 			log.Fatal(err)
 		} else {
 			log.Println("loaded playlist, starting to play now")
