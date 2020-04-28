@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 
 	"github.com/adrg/xdg"
 )
@@ -28,8 +27,6 @@ func LoadAlarmManager() (*AlarmManager, error) {
 		am.SaveAlarms()
 		return am, nil
 	}
-
-	log.Println("data", string(dat))
 
 	var am *AlarmManager
 	err = json.Unmarshal(dat, &am)
