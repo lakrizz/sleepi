@@ -1,0 +1,30 @@
+<h1 class="title">{{ .Name }}<h1>
+<form action="/playlists/{{.Id}}/deletesongs" method="post">
+<table class="table is-striped playlist-table">
+<thead>
+<th style="width: 80%;">Name</th>
+<th style="width: 5%;">Status</th>
+</thead>
+<tbody>
+{{ range .Files }}
+<tr>
+<td>
+<label class="checkbox">
+	<input type="checkbox" class="sleepi-list-cb" name="songs" value="{{.}}" />
+		{{ . }}
+	</label>
+</td>
+<td><i class="fas fa-question has-text-info"></i></td>
+</tr>
+{{ end }}
+</tbody>
+</table>
+<div class="field is-grouped">
+  <div class="control">
+    <button class="button is-danger">Remove selected</button>
+  </div>
+<div class="control">
+<a class="button is-info" href="#">Add New Songs</a>
+</div>
+</div>
+</form>

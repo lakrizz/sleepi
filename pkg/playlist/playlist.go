@@ -2,6 +2,7 @@ package playlist
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/google/uuid"
@@ -29,13 +30,27 @@ func (q *Playlist) Pop() (string, error) {
 	return "", errors.New("playlist is empty")
 }
 
-func (q *Playlist) RemoveAt(idx int) error {
-	if len(q.Files) < idx {
-		return errors.New("index out of range")
+func (q *Playlist) Remove(filename string) error {
+	for k, v := range q.Files {
+		if v == filename {
+			q.Files = append(q.Files[:k], q.Files[k+1:]...)
+			return nil
+		}
 	}
-	return nil
+
+	return errors.New(fmt.Sprintf("file %s not found", filename))
 }
 
 func (q *Playlist) Length() int {
 	return len(q.Files)
+}
+
+// an error is a missing file for example
+func (q *Playlist) HasErrors() bool {
+	for _, f := range q.Files {
+		if _, err := os.Stat(f); err == os.ErrNotExist {
+			return true
+		}
+	}
+	return false
 }
