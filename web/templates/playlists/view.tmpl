@@ -1,20 +1,23 @@
-<h1 class="title">{{ .Name }}<h1>
-<form action="/playlists/{{.Id}}/deletesongs" method="post">
+<a href="/playlists"><i class="fas fa-angle-left"></i> Back</a>
+<h1 class="title">{{ .Playlist.Name }}<h1>
+<form action="/playlists/{{.Playlist.Id}}/deletesongs" method="post">
 <table class="table is-striped playlist-table">
 <thead>
-<th style="width: 80%;">Name</th>
-<th style="width: 5%;">Status</th>
+<th>Name</th>
 </thead>
 <tbody>
-{{ range .Files }}
+{{ range .Songs }}
 <tr>
 <td>
 <label class="checkbox">
-	<input type="checkbox" class="sleepi-list-cb" name="songs" value="{{.}}" />
-		{{ . }}
+	<input type="checkbox" class="sleepi-list-cb" name="songs" value="{{.FullPath}}" />
+	{{ if .Status }}
+			<span><i>{{ .Path }}</i>/<b>{{ .Name }}</b></span>
+	{{ else }}
+			<span class="has-text-danger"><i>{{ .Path }}</i>/{{ .Name }} <i class="fas fa-exclamation-circle has-text-danger" ></i></span>
+	{{ end}}
 	</label>
 </td>
-<td><i class="fas fa-question has-text-info"></i></td>
 </tr>
 {{ end }}
 </tbody>

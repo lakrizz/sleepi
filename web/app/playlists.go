@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"path"
 
 	"github.com/gorilla/mux"
+	"github.com/lakrizz/sleepi/pkg/playlist"
 )
 
 func PlaylistsHome(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +30,33 @@ func PlaylistsView(w http.ResponseWriter, r *http.Request) {
 		// raise error
 		return
 	}
-	ren.HTML(w, http.StatusOK, "playlists/view", pl)
+
+	// some eyecandy
+	songs := struct {
+		Songs []struct {
+			Path     string
+			Name     string
+			FullPath string
+			Status   bool
+		}
+		Playlist *playlist.Playlist
+	}{}
+
+	for _, v := range pl.Files {
+		_, file_exist := os.Stat(v)
+		songs.Songs = append(songs.Songs, struct {
+			Path, Name, FullPath string
+			Status               bool
+		}{
+			Path:     path.Dir(v),
+			Name:     path.Base(v),
+			FullPath: v,
+			Status:   (file_exist == nil),
+		})
+	}
+	songs.Playlist = pl
+
+	ren.HTML(w, http.StatusOK, "playlists/view", songs)
 }
 
 func PlaylistDeleteSongs(w http.ResponseWriter, r *http.Request) {

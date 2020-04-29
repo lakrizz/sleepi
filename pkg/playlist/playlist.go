@@ -48,7 +48,7 @@ func (q *Playlist) Length() int {
 // an error is a missing file for example
 func (q *Playlist) HasErrors() bool {
 	for _, f := range q.Files {
-		if _, err := os.Stat(f); err == os.ErrNotExist {
+		if _, err := os.Stat(f); err != nil {
 			return true
 		}
 	}
