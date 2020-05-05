@@ -24,6 +24,15 @@ func (a *AlarmManager) AddAlarm(alarm *Alarm) error {
 	return nil
 }
 
+func (a *AlarmManager) GetAlarm(id uuid.UUID) (*Alarm, error) {
+	for _, v := range a.Alarms {
+		if v.Id == id {
+			return v, nil
+		}
+	}
+	return nil, errors.New(fmt.Sprintf("could not find alarm with id %s", id.String()))
+}
+
 func (a *AlarmManager) GetNextAlarm() (*Alarm, error) {
 	// baseline is the first alarm
 	if len(a.Alarms) == 0 {

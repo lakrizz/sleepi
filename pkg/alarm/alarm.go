@@ -8,14 +8,15 @@ import (
 )
 
 type Alarm struct {
-	Name       string         `json:"Name"`
-	Id         uuid.UUID      `json:"Id"`
-	WakeHour   int            `json:"WakeHour"`
-	WakeMinute int            `json:"WakeMinute"`
-	Days       []time.Weekday `json:"Days"`
-	Playlist   uuid.UUID      `json:"Playlist"`
-	WakeupTime string         `json:"WakeupTime"`
-	Enabled    bool           `json:"Enabled"`
+	Name            string         `json:"Name"`
+	Id              uuid.UUID      `json:"Id"`
+	WakeHour        int            `json:"WakeHour"`
+	WakeMinute      int            `json:"WakeMinute"`
+	Days            []time.Weekday `json:"Days"`
+	Playlist        uuid.UUID      `json:"Playlist"`
+	ShufflePlaylist bool           `json:"ShufflePlaylist"`
+	WakeupTime      string         `json:"WakeupTime"`
+	Enabled         bool           `json:"Enabled"`
 }
 
 func (a *Alarm) NextWake() (time.Time, error) {

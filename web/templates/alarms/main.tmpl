@@ -1,5 +1,52 @@
-hi na?
-
+<h1 class="title">All Alarms</h1>
+<div class="tile is-ancestor">
+<div class="tile is-10">
 {{ range . }}
-	<li>{{ .Name }}</li>
+<div class="tile is-parent">
+{{ if .Enabled }}
+	<article class="tile is-child notification is-success">
+		<p class="title"><i class="fas fa-bell"></i> {{ .Name }}</p>
+		<div class="content">
+			<p>
+				<li><i class="fas fa-stopwatch"></i> {{ .TimeTillNextWake }}</li>
+				<li><i class="fas fa-clock"></i> {{ .WakeHour }}:{{ .WakeMinute }}</li>
+				<li><i class="far fa-calendar"></i> 
+			{{ range .Days }}
+				{{ . }}
+			{{ end }}
+			</li>
+			</p>
+	<div class="is-pulled-right">
+	<a class="button" href="/alarms/{{ .Id }}"><i class="fas fa-edit"></i></a>
+	</div>
+		</div>
+</article>
+{{ else }}
+	<article class="tile is-child notification has-background-grey-light">
+		<p class="title"><i class="fas fa-bell"></i> {{ .Name }}</p>
+		<div class="content">
+			Scheduled for {{ .WakeHour }}:{{ .WakeMinute}} on
+			{{ range .Days }}
+				{{ . }}
+			{{ end }}
+			<p>
+				<b>This alarm is currently disabled.</b>
+			</p>
+		</div>
+	<div class="is-pulled-right">
+	<a class="button" href="/alarms/{{ .Id }}"><i class="fas fa-edit"></i></a>
+	</div>
+	</article>
 {{ end }}
+</div>
+{{ end }}
+
+<div class="tile is-parent">
+	<article class="tile is-child notification sleepi-center-all">
+		<h1 class="title">Need more?</h1>
+		<a href="/alarms/new" class="button is-success is-large">New Alarm</a>
+	</article>
+</div>
+
+</div>
+</div>
