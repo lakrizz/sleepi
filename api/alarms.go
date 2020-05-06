@@ -7,7 +7,19 @@ import (
 	"github.com/lakrizz/sleepi/pkg/alarm"
 )
 
-func (a *Api) AddAlarm() {}
+func (a *Api) AddAlarm(alarm *alarm.Alarm) (uuid.UUID, error) {
+	newId, err := uuid.NewRandom()
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	alarm.Id = newId
+	err = a.Alarms.AddAlarm(alarm)
+	if err != nil {
+		return uuid.Nil, err
+	}
+	return newId, nil
+}
 
 func (a *Api) GetAlarms() ([]*alarm.Alarm, error) {
 	if a.Alarms == nil {

@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/lakrizz/sleepi/pkg/alarm"
 	"github.com/lakrizz/sleepi/pkg/playlist"
+	"github.com/lakrizz/sleepi/web/app/utils"
 )
 
 func AlarmsHome(w http.ResponseWriter, r *http.Request) {
@@ -28,26 +29,28 @@ func AlarmsView(w http.ResponseWriter, r *http.Request) {
 	a, err := api.GetAlarm(vars["id"])
 	if err != nil {
 		// show error page
-	} else {
-		// get playlist for alarm
-		p, err := api.Playlists.GetPlaylist(a.Playlist)
-		if err != nil {
-			// show error page
-		}
-
-		all_playlists := api.Playlists.Playlists
-
-		ret := struct {
-			Alarm        *alarm.Alarm
-			Playlist     *playlist.Playlist
-			AllPlaylists []*playlist.Playlist
-		}{
-			a,
-			p,
-			all_playlists,
-		}
-		ren.HTML(w, http.StatusOK, "alarms/view", ret)
+		return
 	}
+	// get playlist for alarm
+	p, err := api.Playlists.GetPlaylist(a.Playlist)
+	if err != nil {
+		// show error page
+	}
+
+	all_playlists := api.Playlists.Playlists
+
+	ret := struct {
+		Alarm        *alarm.Alarm
+		Playlist     *playlist.Playlist
+		AllPlaylists []*playlist.Playlist
+		AlarmDays    []*utils.WakeDay
+	}{
+		a,
+		p,
+		all_playlists,
+		utils.CreateWakeDayMap(a),
+	}
+	ren.HTML(w, http.StatusOK, "alarms/view", ret)
 }
 
 func AlarmsDisable(w http.ResponseWriter, r *http.Request) {
@@ -136,4 +139,62 @@ func AlarmsEdit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, fmt.Sprintf("/alarms/%s", vars["id"]), http.StatusPermanentRedirect)
+}
+
+func AlarmsNew(w http.ResponseWriter, r *http.Request) {
+	all_playlists := api.Playlists.Playlists
+	ren.HTML(w, http.StatusOK, "alarms/new", all_playlists)
+}
+
+func AlarmsCreate(w http.ResponseWriter, r *http.Request) {
+	alarm := &alarm.Alarm{}
+
+	err := r.ParseForm()
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+
+	alarm_wakehour, err := strconv.Atoi(r.FormValue("alarm_wakehour"))
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+
+	alarm_wakeminute, err := strconv.Atoi(r.FormValue("alarm_wakeminute"))
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+
+	alarm_playlist, err := uuid.Parse(r.FormValue("alarm_playlist"))
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+
+	_, err = time.ParseDuration(r.FormValue("alarm_waketime"))
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+	alarm.Name = r.FormValue("alarm_name")
+	alarm.WakeHour = alarm_wakehour
+	alarm.WakeMinute = alarm_wakeminute
+	alarm.Playlist = alarm_playlist
+	alarm.ShufflePlaylist = r.FormValue("shuffle_playlist") == "on"
+	alarm.WakeupTime = r.FormValue("alarm_waketime")
+	id, err := api.AddAlarm(alarm)
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/alarms/%s", id), http.StatusPermanentRedirect)
 }

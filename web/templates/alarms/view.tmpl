@@ -1,5 +1,6 @@
 <h1 class="title">editing {{ .Alarm.Name }}</h1>
 <form method="post" action="/alarms/{{.Alarm.Id}}/edit">
+
 <div class="field">
   <label class="label">Name</label>
   <div class="control">
@@ -18,6 +19,24 @@
 		<input class="input" type="text" name="alarm_wakeminute" value="{{ .Alarm.WakeMinute }}">
 	</div>
 </div>
+
+<div class="field">
+  <label class="label">Days</label>
+<p>select the weekdays you want this alarm to ring, eh?</p>
+  <div class="control">
+{{ range .AlarmDays }}
+<label class="checkbox">
+{{ if .Enabled }}
+<input type="checkbox" name="alarm_wakedays" value="{{ .Id }}" checked />
+{{ else }}
+<input type="checkbox" name="alarm_wakedays" value="{{ .Id }}" />
+{{ end }}
+{{ .Readable }}
+</label>
+{{ end }}
+  </div>
+</div>
+
 
 <label class="label">Warmup Time</label>
 <p>This is the time you'll get to hopefully and slowly wake up when not in a REM phase. The alarm actually starts at wake time minus warmup time (e.g. wakeup time is 30 minutes, alarm time is 7:30am, then the alarm starts at 7:00am). The volume of the music is gradually raised and will reach its peak at the wake time (you can change the volume settings in the settings menu). </p>
