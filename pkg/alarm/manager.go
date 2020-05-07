@@ -14,12 +14,14 @@ func (a *AlarmManager) AddAlarm(alarm *Alarm) error {
 		}
 	}
 
-	id, err := uuid.NewRandom()
-	if err != nil {
-		return err
-	}
+	if alarm.Id == uuid.Nil {
+		id, err := uuid.NewRandom()
+		if err != nil {
+			return err
+		}
 
-	alarm.Id = id
+		alarm.Id = id
+	}
 	a.Alarms = append(a.Alarms, alarm)
 	return nil
 }

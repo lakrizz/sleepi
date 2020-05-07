@@ -19,6 +19,21 @@
 	</div>
 </div>
 
+
+<div class="field">
+  <label class="label">Days</label>
+<p>select the weekdays you want this alarm to ring, eh?</p>
+  <div class="control">
+{{ range .AlarmDays }}
+<label class="checkbox">
+<input type="checkbox" name="alarm_wakedays" value="{{ .Id }}" />
+{{ .Readable }}
+</label>
+{{ end }}
+  </div>
+</div>
+
+
 <label class="label">Warmup Time</label>
 <p>This is the time you'll get to hopefully and slowly wake up when not in a REM phase. The alarm actually starts at wake time minus warmup time (e.g. wakeup time is 30 minutes, alarm time is 7:30am, then the alarm starts at 7:00am). The volume of the music is gradually raised and will reach its peak at the wake time (you can change the volume settings in the settings menu). </p>
 <div class="field has-addons">
@@ -32,7 +47,7 @@
 <div class="field">
 <div class="select">
 <select name="alarm_playlist">
-{{ range . }}
+{{ range .Playlists }}
 <option value="{{.Id}}">{{.Name}}</option>
 {{ end }}
 </select>

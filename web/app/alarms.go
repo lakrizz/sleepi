@@ -124,13 +124,20 @@ func AlarmsEdit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(r.Form)
+	weekdays, err := utils.StringToWeekdaySlice(r.Form["alarm_wakedays"])
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+
 	alarm.Name = r.FormValue("alarm_name")
 	alarm.WakeHour = alarm_wakehour
 	alarm.WakeMinute = alarm_wakeminute
 	alarm.Playlist = alarm_playlist
 	alarm.ShufflePlaylist = r.FormValue("shuffle_playlist") == "on"
 	alarm.WakeupTime = r.FormValue("alarm_waketime")
+	alarm.Days = weekdays
 	err = api.Alarms.SaveAlarms()
 	if err != nil {
 		// error
@@ -143,7 +150,15 @@ func AlarmsEdit(w http.ResponseWriter, r *http.Request) {
 
 func AlarmsNew(w http.ResponseWriter, r *http.Request) {
 	all_playlists := api.Playlists.Playlists
-	ren.HTML(w, http.StatusOK, "alarms/new", all_playlists)
+	data := struct {
+		Playlists []*playlist.Playlist
+		AlarmDays []*utils.WakeDay
+	}{
+		all_playlists,
+		utils.CreateWakeDayMap(nil),
+	}
+
+	ren.HTML(w, http.StatusOK, "alarms/new", data)
 }
 
 func AlarmsCreate(w http.ResponseWriter, r *http.Request) {
@@ -183,13 +198,31 @@ func AlarmsCreate(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 		return
 	}
+
+	weekdays, err := utils.StringToWeekdaySlice(r.Form["alarm_wakedays"])
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+
+	// days of week, eh?
+
 	alarm.Name = r.FormValue("alarm_name")
 	alarm.WakeHour = alarm_wakehour
 	alarm.WakeMinute = alarm_wakeminute
 	alarm.Playlist = alarm_playlist
 	alarm.ShufflePlaylist = r.FormValue("shuffle_playlist") == "on"
 	alarm.WakeupTime = r.FormValue("alarm_waketime")
+	alarm.Days = weekdays
 	id, err := api.AddAlarm(alarm)
+	if err != nil {
+		// error
+		log.Println(err.Error())
+		return
+	}
+
+	err = api.Alarms.SaveAlarms()
 	if err != nil {
 		// error
 		log.Println(err.Error())
