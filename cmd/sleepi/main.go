@@ -1,9 +1,12 @@
 package main
 
 import (
+	"log"
+
 	"github.com/lakrizz/sleepi/api"
 	"github.com/lakrizz/sleepi/pkg/alarm"
 	"github.com/lakrizz/sleepi/pkg/config"
+	"github.com/lakrizz/sleepi/pkg/library"
 	"github.com/lakrizz/sleepi/pkg/player"
 	"github.com/lakrizz/sleepi/pkg/playlist"
 	"github.com/lakrizz/sleepi/web"
@@ -32,9 +35,16 @@ func main() {
 		panic(err)
 	}
 
+	library, err := library.LoadLibrary()
+	if err != nil {
+		log.Println("panic at loading library")
+		panic(err)
+	}
+
 	api := &api.Api{
 		Playlists: playlistmanager,
 		Alarms:    alarmmanager,
+		Library:   library,
 	}
 
 	// this starts the loop, nothing more needed

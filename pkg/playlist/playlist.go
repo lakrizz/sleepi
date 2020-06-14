@@ -3,54 +3,47 @@ package playlist
 import (
 	"errors"
 	"fmt"
-	"os"
 
 	"github.com/google/uuid"
 )
 
 type Playlist struct {
-	Id    uuid.UUID `json:"Id"`
-	Name  string    `json:"Name"` // kinda like the name of a playlist
-	Files []string  `json:"Files"`
+	Id    uuid.UUID   `json:"Id"`
+	Name  string      `json:"Name"` // kinda like the name of a playlist
+	Songs []uuid.UUID `json:"Songs"`
 }
 
-func (q *Playlist) AddSong(filename string) error {
-	_, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return errors.New(err.Error())
-	}
-	q.Files = append(q.Files, filename)
+func (q *Playlist) AddSong(song_id uuid.UUID) error {
+	q.Songs = append(q.Songs, song_id)
 	return nil
 }
 
-func (q *Playlist) Pop() (string, error) {
-	if len(q.Files) > 0 { // theres something in the list
-		return q.Files[0], nil
+func (q *Playlist) Pop() (uuid.UUID, error) {
+	if len(q.Songs) > 0 { // theres something in the list
+		return q.Songs[0], nil
 	}
-	return "", errors.New("playlist is empty")
+	return uuid.Nil, errors.New("playlist is empty")
 }
 
-func (q *Playlist) Remove(filename string) error {
-	for k, v := range q.Files {
-		if v == filename {
-			q.Files = append(q.Files[:k], q.Files[k+1:]...)
+func (q *Playlist) Remove(id uuid.UUID) error {
+	for k, v := range q.Songs {
+		if v == id {
+			q.Songs = append(q.Songs[:k], q.Songs[k+1:]...)
 			return nil
 		}
 	}
 
-	return errors.New(fmt.Sprintf("file %s not found", filename))
+	return errors.New(fmt.Sprintf("file %s not found", id))
 }
 
 func (q *Playlist) Length() int {
-	return len(q.Files)
+	return len(q.Songs)
 }
 
 // an error is a missing file for example
 func (q *Playlist) HasErrors() bool {
-	for _, f := range q.Files {
-		if _, err := os.Stat(f); err != nil {
-			return true
-		}
-	}
+	// for _, f := range q.Songs {
+	// #TODO(@krizzle): use the librarymanager to check if the file behind the id is existing
+	// }
 	return false
 }

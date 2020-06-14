@@ -29,6 +29,8 @@ func addRoutes(m *mux.Router) {
 
 	m.HandleFunc("/playlists", PlaylistsHome)
 	m.HandleFunc("/playlists/", PlaylistsHome)
+	m.HandleFunc("/playlists/new", PlaylistsNew)
+	m.HandleFunc("/playlists/create", PlaylistsNew)
 	m.HandleFunc("/playlists/{id}", PlaylistsView)
 	m.HandleFunc("/playlists/{id}/deletesongs", PlaylistDeleteSongs)
 }

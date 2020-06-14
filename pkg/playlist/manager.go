@@ -24,7 +24,7 @@ func (pm *PlaylistManager) GetPlaylist(id uuid.UUID) (*Playlist, error) {
 	return nil, errors.New(fmt.Sprintf("playlist with id %s not found", id.String()))
 }
 
-func (pm *PlaylistManager) CreatePlaylist(name string, files []string) error {
+func (pm *PlaylistManager) CreatePlaylist(name string, files []uuid.UUID) error {
 	for _, v := range pm.Playlists {
 		if v.Name == name {
 			return errors.New(fmt.Sprintf("a playlist with the name %s already exists", name))
@@ -37,7 +37,7 @@ func (pm *PlaylistManager) CreatePlaylist(name string, files []string) error {
 	}
 	pm.Playlists = append(pm.Playlists, &Playlist{
 		Name:  name,
-		Files: files,
+		Songs: files,
 		Id:    id,
 	})
 

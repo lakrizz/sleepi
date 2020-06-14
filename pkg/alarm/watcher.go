@@ -80,7 +80,7 @@ func (aw *alarmWatcher) triggerAlarm() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if err := aw.player.QueueSongs(pl.Files, false); err != nil {
+		if err := aw.player.QueueSongs(pl.Songs, false); err != nil {
 			log.Fatal(err)
 		} else {
 			log.Println("loaded playlist, starting to play now")

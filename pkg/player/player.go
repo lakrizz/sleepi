@@ -4,16 +4,19 @@ import (
 	"errors"
 	"math/rand"
 	"os"
+	"path"
 	"time"
 
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/effects"
 	"github.com/faiface/beep/mp3"
 	"github.com/faiface/beep/speaker"
+	"github.com/google/uuid"
+	"github.com/lakrizz/sleepi/pkg/library"
 )
 
 type Player struct {
-	playing_queue  []string
+	playing_queue  []uuid.UUID
 	playing_index  int
 	volume         *effects.Volume
 	current_volume float64
@@ -22,6 +25,7 @@ type Player struct {
 	playback_done  chan bool
 	stop_volume    chan bool
 	IsPlaying      bool
+	library        *library.Library
 }
 
 var player *Player
@@ -43,7 +47,7 @@ func InitPlayer(silence, normal float64) error {
 	return nil
 }
 
-func (p *Player) QueueSongs(songs []string, shuffle bool) error {
+func (p *Player) QueueSongs(songs []uuid.UUID, shuffle bool) error {
 	copy(p.playing_queue, songs)
 
 	if shuffle {
@@ -124,12 +128,9 @@ func (p *Player) Play() error {
 	return glob_err
 }
 
-func (p *Player) loadfile(filename string) (*os.File, error) {
-	if _, e := os.Stat(filename); os.ErrNotExist == e {
-		return nil, os.ErrNotExist
-	}
-
-	f, err := os.Open(filename)
+func (p *Player) loadfile(id uuid.UUID) (*os.File, error) {
+	file := p.library.GetFile(id)
+	f, err := os.Open(path.Join(file.Path, file.Filename))
 	if err != nil {
 		return nil, err
 	}

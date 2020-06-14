@@ -38,7 +38,11 @@ func (a *Api) DeleteSongsFromPlaylist(playlist_id string, song_ids []string) err
 	}
 
 	for _, v := range song_ids {
-		if err = playlist.Remove(v); err != nil {
+		id, err := uuid.Parse(v)
+		if err != nil {
+			return err
+		}
+		if err = playlist.Remove(id); err != nil {
 			return err
 		}
 	}

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"path"
 
 	"github.com/gorilla/mux"
@@ -19,6 +18,10 @@ func PlaylistsHome(w http.ResponseWriter, r *http.Request) {
 	} else {
 		ren.HTML(w, http.StatusOK, "playlists/main", playlists)
 	}
+}
+
+func PlaylistsNew(w http.ResponseWriter, r *http.Request) {
+	ren.HTML(w, http.StatusOK, "playlists/new", nil)
 }
 
 func PlaylistsView(w http.ResponseWriter, r *http.Request) {
@@ -42,16 +45,17 @@ func PlaylistsView(w http.ResponseWriter, r *http.Request) {
 		Playlist *playlist.Playlist
 	}{}
 
-	for _, v := range pl.Files {
-		_, file_exist := os.Stat(v)
+	for _, v := range pl.Songs {
+		s := api.Library.GetFile(v)
+
 		songs.Songs = append(songs.Songs, struct {
 			Path, Name, FullPath string
 			Status               bool
 		}{
-			Path:     path.Dir(v),
-			Name:     path.Base(v),
-			FullPath: v,
-			Status:   (file_exist == nil),
+			Path:     s.Path,
+			Name:     s.Filename,
+			FullPath: path.Join(s.Path, s.Filename),
+			Status:   s.Exists(),
 		})
 	}
 	songs.Playlist = pl

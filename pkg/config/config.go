@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"path"
 
 	"github.com/adrg/xdg"
 )
@@ -11,6 +12,7 @@ import (
 type Config struct {
 	filename string   `json:"-"`
 	Volumes  *volumes `json:"Volumes"`
+	Library  string   `json:"Library"`
 }
 
 type volumes struct {
@@ -26,6 +28,7 @@ func createEmptyConfig(filename string) *Config {
 			Normal:  2.0,
 		},
 		filename: filename,
+		Library:  path.Join(xdg.UserDirs.Documents, "sleepi"),
 	}
 }
 
@@ -37,7 +40,8 @@ func LoadConfig() (*Config, error) {
 
 	dat, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return createEmptyConfig(filename), nil
+		cfg := createEmptyConfig(filename)
+		return cfg, cfg.Save()
 	}
 
 	var c *Config
