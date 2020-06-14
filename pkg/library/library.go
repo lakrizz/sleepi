@@ -2,6 +2,7 @@ package library
 
 import (
 	"errors"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -16,6 +17,8 @@ type Library struct {
 	scanning bool                `json:"-"`
 }
 
+var extAllowlist []string = []string{"mp3"} // currently only mp3s are supported, eh?
+
 func (l *Library) Refresh() error {
 	if !l.scanning {
 		return l.walkdir(l.Root)
@@ -24,16 +27,15 @@ func (l *Library) Refresh() error {
 	return errors.New("library is already scanning")
 }
 
-var extAllowlist []string = []string{"mp3"} // currently only mp3s are supported, eh?
-
-func (l *Library) walkdir(dir string) error {
-	err := filepath.Walk(dir, func(walkpath string, info os.FileInfo, err error) error {
+func (l *Library) walkdir(basedir string) error {
+	err := filepath.Walk(basedir, func(walkpath string, info os.FileInfo, err error) error {
+		log.Println("walking", walkpath)
 		if err != nil {
 			return err
 		}
 
 		if info.IsDir() {
-			return l.walkdir(info.Name())
+			return l.walkdir(path.Join(walkpath, info.Name()))
 		}
 
 		if isAllowedExtension(path.Ext(info.Name()), extAllowlist) {
@@ -43,7 +45,8 @@ func (l *Library) walkdir(dir string) error {
 				if err != nil {
 					return err
 				}
-				l.Files[newid] = &File{newid, dir, info.Name()}
+				l.Files[newid] = &File{newid, basedir, info.Name()}
+				log.Println("addiung file", info.Name())
 			}
 		}
 		return nil

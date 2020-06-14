@@ -40,6 +40,11 @@ func main() {
 		log.Println("panic at loading library")
 		panic(err)
 	}
+	err = library.Refresh()
+	if err != nil {
+		log.Println("panic at refreshing library")
+		panic(err)
+	}
 
 	api := &api.Api{
 		Playlists: playlistmanager,
