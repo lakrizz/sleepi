@@ -1,5 +1,7 @@
 <h1 class="title">Library</h1>
 <h2>folder: {{ .Root }}</h2>
+<ul>
 {{ range .Files }}
-<div>{{ . }}</div>
+<li>{{ .Filename }}</li>
 {{ end }}
+</ul>
