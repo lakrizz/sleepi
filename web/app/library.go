@@ -12,6 +12,11 @@ func LibraryHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func LibraryDelete(w http.ResponseWriter, r *http.Request) {
+	// evade caching problems
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate") // HTTP 1.1.
+	w.Header().Set("Pragma", "no-cache")                                   // HTTP 1.0.
+	w.Header().Set("Expires", "0")                                         // Proxies
+
 	// delete the song here and redirect
 	// first find the song, then delete it from all playlists
 	vars := mux.Vars(r)
@@ -37,5 +42,5 @@ func LibraryDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "library/main", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/library", http.StatusPermanentRedirect)
 }

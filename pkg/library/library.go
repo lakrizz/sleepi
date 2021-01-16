@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/google/uuid"
+	"github.com/k0kubun/pp"
 )
 
 type Library struct {
@@ -18,7 +19,7 @@ type Library struct {
 	scanning bool                `json:"-"`
 }
 
-var extAllowlist []string = []string{".mp3"} // currently only mp3s are supported, eh?
+var extAllowlist []string = []string{".mp3", ".m4a"} // currently only mp3s are supported, eh?
 
 func (l *Library) Refresh() error {
 	if !l.scanning {
@@ -29,6 +30,7 @@ func (l *Library) Refresh() error {
 }
 
 func (l *Library) walkdir(basedir string) error {
+	pp.Println(l.Files)
 	err := filepath.Walk(basedir, func(walkpath string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -51,8 +53,6 @@ func (l *Library) walkdir(basedir string) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("hi?")
 
 	return l.Save()
 }
@@ -87,11 +87,20 @@ func (c *Library) GetFile(id uuid.UUID) *File {
 func (c *Library) RemoveFile(id uuid.UUID) error {
 	// we want to remove the physical file as well :D
 	f := c.GetFile(id)
-	err := os.Remove(f.FullPath())
+	err := os.Remove(f.Path)
 	if err != nil {
 		return err
 	}
 
 	delete(c.Files, id)
 	return nil
+}
+
+func (c *Library) CheckFiles() {
+	for _, v := range c.Files {
+		if !v.Exists() {
+			fmt.Println("deleting", v.Path)
+			delete(c.Files, v.Id)
+		}
+	}
 }

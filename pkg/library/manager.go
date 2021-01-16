@@ -2,6 +2,7 @@ package library
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"path"
 
@@ -34,6 +35,12 @@ func LoadLibrary() (*Library, error) {
 		return nil, err
 	}
 	c.filename = filename
+	c.CheckFiles()
+	if err != nil {
+		fmt.Println("ohai:", err.Error())
+		return nil, err
+	}
+
 	return c, nil
 }
 

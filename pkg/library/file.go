@@ -1,6 +1,7 @@
 package library
 
 import (
+	"fmt"
 	"os"
 	"path"
 
@@ -18,7 +19,10 @@ func (f *File) FullPath() string {
 }
 
 func (f *File) Exists() bool {
-
-	_, err := os.Stat(f.FullPath())
-	return err == os.ErrExist
+	_, err := os.Stat(f.Path)
+	if err != nil {
+		fmt.Println(err)
+		return !os.IsNotExist(err)
+	}
+	return true
 }
