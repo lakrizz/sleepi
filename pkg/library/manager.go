@@ -38,10 +38,6 @@ func LoadLibrary() (*Library, error) {
 }
 
 func (c *Library) Save() error {
-	err := c.Refresh()
-	if err != nil {
-		return err
-	}
 	dat, err := json.Marshal(c)
 	if err != nil {
 		return err

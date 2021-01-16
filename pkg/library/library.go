@@ -41,19 +41,25 @@ func (l *Library) walkdir(basedir string) error {
 				if err != nil {
 					return err
 				}
-				l.Files[newid] = &File{newid, basedir, info.Name()}
+				l.Files[newid] = &File{newid, walkpath, info.Name()}
 				log.Println("addiung file", info.Name())
 			}
 		}
 		return nil
 	})
-	fmt.Println(l.Files)
-	return err
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("hi?")
+
+	return l.Save()
 }
 
-func (l *Library) fileIndexed(dir string) bool {
+func (l *Library) fileIndexed(path string) bool {
 	for _, v := range l.Files {
-		if v.Path == dir {
+		if v.Filename == path {
 			return true
 		}
 	}
@@ -75,5 +81,17 @@ func (c *Library) GetFile(id uuid.UUID) *File {
 			return v
 		}
 	}
+	return nil
+}
+
+func (c *Library) RemoveFile(id uuid.UUID) error {
+	// we want to remove the physical file as well :D
+	f := c.GetFile(id)
+	err := os.Remove(f.FullPath())
+	if err != nil {
+		return err
+	}
+
+	delete(c.Files, id)
 	return nil
 }
