@@ -36,5 +36,8 @@ func addRoutes(m *mux.Router) {
 
 	m.HandleFunc("/library", LibraryHome)
 	m.HandleFunc("/library/", LibraryHome)
+	m.HandleFunc("/library/upload", LibraryUpload)
+	m.HandleFunc("/library/upload/", LibraryUpload)
+	m.HandleFunc("/library/add", LibraryAdd)
 	m.HandleFunc("/library/delete/{id}", LibraryDelete)
 }

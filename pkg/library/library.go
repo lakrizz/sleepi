@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 
 	"github.com/google/uuid"
-	"github.com/k0kubun/pp"
 )
 
 type Library struct {
@@ -19,7 +18,7 @@ type Library struct {
 	scanning bool                `json:"-"`
 }
 
-var extAllowlist []string = []string{".mp3", ".m4a"} // currently only mp3s are supported, eh?
+var extAllowlist []string = []string{".mp3", ".m4a", ".flac"} // currently only mp3s are supported, eh?
 
 func (l *Library) Refresh() error {
 	if !l.scanning {
@@ -30,7 +29,6 @@ func (l *Library) Refresh() error {
 }
 
 func (l *Library) walkdir(basedir string) error {
-	pp.Println(l.Files)
 	err := filepath.Walk(basedir, func(walkpath string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
