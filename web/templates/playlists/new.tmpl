@@ -1,13 +1,33 @@
 <h1 class="title">Create New Playlist</h1>
 
 <form method="post" action="/playlists/create">
+
 <div class="field">
   <label class="label">Name</label>
   <div class="control">
     <input class="input" name="playlist_name" type="text">
   </div>
 </div>
-<div>
-	<h2>here we will show the contents of the media library, yeah?</h2>
+
+<div class="box">
+	select the songs you want this playlist to have :D
 </div>
+
+<div class="content">
+	<div>
+		{{ range $k, $v := . }}
+			<label class="checkbox">
+				<input type="checkbox" name="songs" value="{{ $k }}">
+				{{ $v.Filename }}
+			</label>
+		{{ end }}
+	</div>
+</div>
+
+<div class="field is-grouped">
+  <div class="control">
+    <button class="button is-link">Submit</button>
+  </div>
+</div>
+
 </form>

@@ -10,11 +10,11 @@
 <tr>
 <td>
 <label class="checkbox">
-	<input type="checkbox" class="sleepi-list-cb" name="songs" value="{{.FullPath}}" />
+	<input type="checkbox" class="sleepi-list-cb" name="songs" value="{{ .Id }}" />
 	{{ if .Status }}
-			<span><i>{{ .Path }}</i>/<b>{{ .Name }}</b></span>
+			<span>{{ .Name }}</span>
 	{{ else }}
-			<span class="has-text-danger"><i>{{ .Path }}</i>/{{ .Name }} <i class="fas fa-exclamation-circle has-text-danger" ></i></span>
+			<span class="has-text-danger">{{ .Name }}<i class="fas fa-exclamation-circle has-text-danger" /></span>
 	{{ end}}
 	</label>
 </td>

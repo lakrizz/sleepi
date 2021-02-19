@@ -21,7 +21,6 @@ func addRoutes(m *mux.Router) {
 	m.HandleFunc("/alarms/new", AlarmsNew)
 	m.HandleFunc("/alarms/new/", AlarmsNew)
 	m.HandleFunc("/alarms/create", AlarmsCreate)
-	m.HandleFunc("/alarms/create/", AlarmsCreate)
 	m.HandleFunc("/alarms/{id}", AlarmsView)
 	m.HandleFunc("/alarms/{id}/disable", AlarmsDisable)
 	m.HandleFunc("/alarms/{id}/enable", AlarmsEnable)
@@ -30,7 +29,7 @@ func addRoutes(m *mux.Router) {
 	m.HandleFunc("/playlists", PlaylistsHome)
 	m.HandleFunc("/playlists/", PlaylistsHome)
 	m.HandleFunc("/playlists/new", PlaylistsNew)
-	m.HandleFunc("/playlists/create", PlaylistsNew)
+	m.HandleFunc("/playlists/create", PlaylistsCreate)
 	m.HandleFunc("/playlists/{id}", PlaylistsView)
 	m.HandleFunc("/playlists/{id}/deletesongs", PlaylistDeleteSongs)
 

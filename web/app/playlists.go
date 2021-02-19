@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"path"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	"github.com/k0kubun/pp"
 	"github.com/lakrizz/sleepi/pkg/playlist"
 )
 
@@ -21,7 +22,31 @@ func PlaylistsHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func PlaylistsNew(w http.ResponseWriter, r *http.Request) {
-	ren.HTML(w, http.StatusOK, "playlists/new", nil)
+	songs := api.Library.Files
+	ren.HTML(w, http.StatusOK, "playlists/new", songs)
+}
+
+func PlaylistsCreate(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+
+	plname := r.Form["playlist_name"][0]
+
+	ids := make([]uuid.UUID, 0)
+	for _, v := range r.Form["songs"] {
+		id, _ := uuid.Parse(v)
+		ids = append(ids, id)
+	}
+
+	err = api.Playlists.CreatePlaylist(plname, ids)
+	if err != nil {
+		pp.Println(err.Error())
+		return
+	}
+
+	http.Redirect(w, r, "/playlists", http.StatusPermanentRedirect)
 }
 
 func PlaylistsView(w http.ResponseWriter, r *http.Request) {
@@ -37,10 +62,9 @@ func PlaylistsView(w http.ResponseWriter, r *http.Request) {
 	// some eyecandy
 	songs := struct {
 		Songs []struct {
-			Path     string
-			Name     string
-			FullPath string
-			Status   bool
+			Name   string
+			Id     string
+			Status bool
 		}
 		Playlist *playlist.Playlist
 	}{}
@@ -49,13 +73,12 @@ func PlaylistsView(w http.ResponseWriter, r *http.Request) {
 		s := api.Library.GetFile(v)
 
 		songs.Songs = append(songs.Songs, struct {
-			Path, Name, FullPath string
-			Status               bool
+			Name, Id string
+			Status   bool
 		}{
-			Path:     s.Path,
-			Name:     s.Filename,
-			FullPath: path.Join(s.Path, s.Filename),
-			Status:   s.Exists(),
+			Name:   s.Filename,
+			Id:     s.Id.String(),
+			Status: s.Exists(),
 		})
 	}
 	songs.Playlist = pl
@@ -70,6 +93,7 @@ func PlaylistDeleteSongs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	vars := mux.Vars(r)
+	pp.Println(r.Form)
 	err = api.DeleteSongsFromPlaylist(vars["id"], r.Form["songs"])
 	if err != nil {
 		log.Println(err)
