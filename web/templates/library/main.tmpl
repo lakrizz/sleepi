@@ -1,9 +1,0 @@
-<h1 class="title">Library</h1>
-<h2>folder: {{ .Root }}</h2>
-{{ range .Files }}
-<div>
-	<span class="tag">
-		{{ .Filename }} <a class="delete" href="/library/delete/{{ .Id }}"></a>
-	</span>
-</div>
-{{ end }}

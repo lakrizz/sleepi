@@ -2,27 +2,31 @@ package library
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
-	"path"
 
 	"github.com/google/uuid"
 )
 
 type File struct {
-	Id       uuid.UUID `json:"id"`
-	Path     string    `json:"path"`
-	Filename string    `json:"filename"`
+	Location string
+	Id       uuid.UUID
 }
 
-func (f *File) FullPath() string {
-	return path.Join(f.Path, f.Filename)
-}
-
-func (f *File) Exists() bool {
-	_, err := os.Stat(f.Path)
-	if err != nil {
-		fmt.Println(err)
-		return !os.IsNotExist(err)
+func (f *File) existsPhysically() bool {
+	if _, err := os.Stat(f.Location); err != os.ErrNotExist {
+		return true
 	}
-	return true
+	return false
+}
+
+func (f *File) Read() ([]byte, error) {
+	if !f.existsPhysically() {
+		return nil, fmt.Errorf("%v has no valid physical location (was looking for %v)", f.Id, f.Location)
+	}
+	dat, err := ioutil.ReadFile(f.Location)
+	if err != nil {
+		return nil, err
+	}
+	return dat, nil
 }
