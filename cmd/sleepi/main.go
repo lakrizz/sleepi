@@ -1,10 +1,10 @@
 package main
 
 import (
-	"io/ioutil"
-
 	"github.com/k0kubun/pp"
+	"krizz.org/sleepi/pkg/audioplayer"
 	"krizz.org/sleepi/pkg/library"
+	"krizz.org/sleepi/pkg/playlist"
 )
 
 func main() {
@@ -14,16 +14,33 @@ func main() {
 	}
 	pp.Println(lib.Files)
 
-	test_file := "/Users/kristofkipp/Documents/bbank.mp3"
-	dat, err := ioutil.ReadFile(test_file)
+	// test_file := "/home/krizz/mp3/stickauto/001_Grooveshark/Ryan Hemsworth - Snow In Newark Ft. Dawn Golden.mp3"
+	// dat, err := ioutil.ReadFile(test_file)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// err = lib.AddFile(dat, filepath.Base(test_file))
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	pl, err := playlist.NewPlaylist("test")
 	if err != nil {
 		panic(err)
 	}
 
-	err = lib.AddFile(dat, "blood_bank.mp3")
+	for _, v := range lib.GetAllFiles() {
+		pl.Add(v)
+	}
+
+	rf, err := pl.GetRandomFile()
 	if err != nil {
 		panic(err)
 	}
 
-	pp.Println(lib.Files)
+	audioplayer.Audioplayer.Add(rf)
+	audioplayer.Audioplayer.Play()
+
+	select {}
 }

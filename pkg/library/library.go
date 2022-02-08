@@ -93,3 +93,11 @@ func (l *library) save() error {
 	err = ioutil.WriteFile(fn, dat, 0777)
 	return err
 }
+
+func (l *library) GetAllFiles() []*File {
+	r := make([]*File, 0)
+	for _, v := range l.Files {
+		r = append(r, v)
+	}
+	return r
+}

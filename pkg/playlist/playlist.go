@@ -2,10 +2,11 @@ package playlist
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
 	"time"
 
-	"github.com/gofrs/uuid"
+	"github.com/google/uuid"
 	"krizz.org/sleepi/pkg/library"
 )
 
@@ -25,7 +26,7 @@ func NewPlaylist(name string) (*Playlist, error) {
 
 func (p *Playlist) contains(id uuid.UUID) bool {
 	for _, v := range p.Files {
-		if v == id {
+		if v.Id == id {
 			return true
 		}
 	}
@@ -42,12 +43,12 @@ func (p *Playlist) Add(file *library.File) error {
 		return errors.New("this file is already part of this playlist")
 	}
 
-	p.Files = append(p.files, file)
+	p.Files = append(p.Files, file)
 	return nil
 }
 
 func (p *Playlist) Remove(id uuid.UUID) error {
-	if id == uuid.NullUUID {
+	if id == uuid.Nil {
 		return errors.New("id is nil, i don't want to remove this")
 	}
 
@@ -55,15 +56,13 @@ func (p *Playlist) Remove(id uuid.UUID) error {
 		return errors.New("this id is not part of this playlist, i can't remove it")
 	}
 
-	id := -1
 	for i, v := range p.Files {
 		if v.Id == id {
-			id = i
+			p.Files = append(p.Files[:i], p.Files[i+1:]...) // removes item at position i
 			break
 		}
 	}
 
-	p.Files = append(p.Files[:id], p.Files[id+1:]...) // removes item at position i
 	return nil
 }
 
@@ -73,11 +72,11 @@ func (p *Playlist) GetFileByIndex(index int) (*library.File, error) {
 	}
 
 	if index >= len(p.Files) {
-		return nil, errors.New("index out of bounds", index)
+		return nil, fmt.Errorf("index out of bounds: %v", index)
 	}
 
 	if p.Files[index] == nil {
-		return nil, errors.New("index was found but is still nil / somethings terribly fucked here", index)
+		return nil, fmt.Errorf("index was found but is still nil / somethings terribly fucked here: %v", index)
 	}
 
 	return p.Files[index], nil
