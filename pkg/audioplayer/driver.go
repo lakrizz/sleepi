@@ -1,39 +1,39 @@
 package audioplayer
 
 import (
-	"bytes"
-	"io"
+	"fmt"
 	"log"
-	"time"
 
-	"github.com/faiface/beep/mp3"
-	"github.com/faiface/beep/speaker"
+	"github.com/fhs/gompd/v2/mpd"
 	"krizz.org/sleepi/pkg/library"
 )
 
-type driver struct{}
+type driver struct {
+	client *mpd.Client
+}
 
 func (d *driver) init() {
+	c, err := mpd.Dial("tcp", "127.0.0.1:6600")
+	if err != nil {
+		log.Println(err)
+	}
+	d.client = c
 }
 
 func (d *driver) load(file *library.File) error {
-
-	data, err := file.Read()
+	err := d.client.Clear()
 	if err != nil {
 		return err
 	}
+	return d.client.Add(fmt.Sprintf("file://%v", file.Location))
+}
 
-	streamer, format, err := mp3.Decode(io.NopCloser(bytes.NewReader(data)))
-	if err != nil {
-		return err
-	}
+func (d *driver) play() error {
+	err := d.client.Play(0)
+	return err
+}
 
-	defer streamer.Close()
-	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
-	log.Println(streamer, format)
-
-	speaker.Play(streamer)
-	select {}
-
-	return nil
+func (d *driver) stop() error {
+	err := d.client.Stop()
+	return err
 }

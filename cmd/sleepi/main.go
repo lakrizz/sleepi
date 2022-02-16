@@ -1,29 +1,39 @@
 package main
 
 import (
-	"github.com/k0kubun/pp"
+	"log"
+	"time"
+
 	"krizz.org/sleepi/pkg/audioplayer"
 	"krizz.org/sleepi/pkg/library"
 	"krizz.org/sleepi/pkg/playlist"
+	"krizz.org/sleepi/web"
 )
 
 func main() {
+
+	web.Serve()
+
 	lib, err := library.GetLibrary()
 	if err != nil {
 		panic(err)
 	}
-	pp.Println(lib.Files)
 
-	// test_file := "/home/krizz/mp3/stickauto/001_Grooveshark/Ryan Hemsworth - Snow In Newark Ft. Dawn Golden.mp3"
-	// dat, err := ioutil.ReadFile(test_file)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// 	test_files := []string{
+	// 		"/home/krizz/mp3/stickauto/12 - Herbst 14/sleeping at last - households-4SjHY54BwUc.mp3",
+	// 		"/home/krizz/mp3/stickauto/12 - Herbst 14/Hazelton - Justin Vernon-mU6OQRzsQ5A.mp3",
+	// 	}
+	// 	for _, f := range test_files {
+	// 		dat, err := ioutil.ReadFile(f)
+	// 		if err != nil {
+	// 			panic(err)
+	// 		}
 
-	// err = lib.AddFile(dat, filepath.Base(test_file))
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// 		err = lib.AddFile(dat, filepath.Base(f))
+	// 		if err != nil {
+	// 			panic(err)
+	// 		}
+	// 	}
 
 	pl, err := playlist.NewPlaylist("test")
 	if err != nil {
@@ -34,13 +44,19 @@ func main() {
 		pl.Add(v)
 	}
 
-	rf, err := pl.GetRandomFile()
+	audioplayer.Audioplayer.AddRange(lib.GetAllFiles())
+
+	err = audioplayer.Audioplayer.Play()
 	if err != nil {
-		panic(err)
+		log.Println(err)
+	}
+	time.Sleep(2 * time.Second)
+	log.Println("stopping now")
+	err = audioplayer.Audioplayer.Next()
+	if err != nil {
+		log.Println(err)
 	}
 
-	audioplayer.Audioplayer.Add(rf)
-	audioplayer.Audioplayer.Play()
-
-	select {}
+	for {
+	}
 }
