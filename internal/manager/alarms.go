@@ -12,7 +12,7 @@ type AlarmManager struct {
 
 func GetAlarmManager(alarms []*alarm.Alarm) (*AlarmManager, error) {
 	am := &AlarmManager{Alarms: alarms}
-	am.listen()
+	go am.listen()
 	return am, nil
 }
 
