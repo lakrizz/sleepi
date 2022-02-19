@@ -1,7 +1,6 @@
 package alarm
 
 import (
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -27,11 +26,12 @@ func (a *Alarm) DurationUntilNextAlarm() time.Duration {
 	checkdate := time.Date(now.Year(), now.Month(), now.Day(), a.WakeHour, a.WakeMinute, 0, 0, now.Location())
 
 	// special case when the alarm is still going off on this particular day
-	if (a.WakeHour*60 + a.WakeMinute) < (now.Hour()*60 + now.Minute()) {
+	if (a.WakeHour*60 + a.WakeMinute) > (now.Hour()*60 + now.Minute()) {
 		return checkdate.Sub(now)
 	}
 
-	// otherwise add days until we look at an active weekday
+	// otherwise add days until we look at an active weekday, nifty me :D
+	checkdate = checkdate.Add(24 * time.Hour)
 	for !a.isActiveDay(checkdate.Weekday()) {
 		checkdate = checkdate.Add(24 * time.Hour)
 	}
@@ -42,7 +42,6 @@ func (a *Alarm) DurationUntilNextAlarm() time.Duration {
 func (a *Alarm) isActiveDay(day time.Weekday) bool {
 	for _, v := range a.ActiveDays {
 		if v == day {
-			log.Println(v, day)
 			return true
 		}
 	}
