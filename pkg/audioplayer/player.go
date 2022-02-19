@@ -11,38 +11,20 @@ import (
 
 type audioplayer struct {
 	driver *driver
-	queue  []*library.File
 }
 
 var Audioplayer *audioplayer
 
 func init() {
-	Audioplayer = &audioplayer{queue: make([]*library.File, 0), driver: &driver{}}
-	Audioplayer.driver.init()
+	Audioplayer = &audioplayer{driver: &driver{}}
+	Audioplayer.driver.init(true)
 }
 
-func (a *audioplayer) Play(random bool) error {
-	if len(a.queue) < 1 {
-		return errors.New("queue is empty, can't play")
-	}
-
-	// TODO: driver needs to be called here with a.Queue[0] if len(queue)>0
-	// dequeue item
-	dq_idx := 0
-	if random {
-		rand.Seed(time.Now().UnixMicro())
-		dq_idx = rand.Intn(len(a.queue))
-	}
-
-	item := a.queue[dq_idx]
-	a.queue = append(a.queue[:dq_idx], a.queue[dq_idx+1:]...)
-	err := a.driver.load(item)
-	if err != nil {
-		return err
-	}
+func (a *audioplayer) Play() error {
 	a.driver.play()
 
-	log.Println("playing", item.Location)
+	cur, _ := a.driver.client.CurrentSong()
+	log.Println("playing", cur)
 	return nil
 }
 
@@ -55,14 +37,17 @@ func (a *audioplayer) Stop() error {
 func (a *audioplayer) Add(file *library.File) error {
 	// TODO: consider skipping on duplicates or let them flow?
 	log.Println("new song:", file.Location)
-	a.queue = append(a.queue, file)
-
-	return nil
+	return a.driver.add(file)
 }
 
-func (a *audioplayer) AddRange(files []*library.File) error {
+func (a *audioplayer) AddRange(files []*library.File, shuffle bool) error {
 	if len(files) == 0 {
 		return errors.New("why bother adding an empty list of files?")
+	}
+
+	if shuffle {
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(files), func(i, j int) { files[i], files[j] = files[j], files[i] })
 	}
 
 	for _, v := range files {
@@ -75,14 +60,10 @@ func (a *audioplayer) AddRange(files []*library.File) error {
 	return nil
 }
 
-func (a *audioplayer) GetQueue() []*library.File {
-	return a.queue
+func (a *audioplayer) Next() error {
+	return a.driver.client.Next()
 }
 
-func (a *audioplayer) Next(random bool) error {
-	if len(a.queue) < 1 {
-		return errors.New("no next song")
-	}
-	a.Stop()
-	return a.Play(random)
+func (a *audioplayer) Clear() error {
+	return a.driver.client.Clear()
 }

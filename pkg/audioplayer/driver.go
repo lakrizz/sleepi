@@ -12,19 +12,19 @@ type driver struct {
 	client *mpd.Client
 }
 
-func (d *driver) init() {
+func (d *driver) init(random bool) {
 	c, err := mpd.Dial("tcp", "127.0.0.1:6600")
 	if err != nil {
 		log.Println(err)
 	}
+	c.Random(random)
+	c.Single(false)
+	c.Repeat(false)
+	c.Clear()
 	d.client = c
 }
 
-func (d *driver) load(file *library.File) error {
-	err := d.client.Clear()
-	if err != nil {
-		return err
-	}
+func (d *driver) add(file *library.File) error {
 	return d.client.Add(fmt.Sprintf("file://%v", file.Location))
 }
 
