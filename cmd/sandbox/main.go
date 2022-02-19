@@ -6,18 +6,27 @@ import (
 
 	"krizz.org/sleepi/internal/manager"
 	"krizz.org/sleepi/pkg/alarm"
+	"krizz.org/sleepi/pkg/library"
+	"krizz.org/sleepi/pkg/playlist"
 )
 
 func main() {
-	al, _ := alarm.CreateAlarm(echo, []time.Weekday{time.Sunday}, 13, 30)
-	al2, _ := alarm.CreateAlarm(echo, []time.Weekday{time.Saturday}, 21, 30)
+
+	pl, _ := playlist.NewPlaylist("wow")
+	lib, _ := library.GetLibrary()
+	for _, v := range lib.GetAllFiles() {
+		pl.Add(v)
+	}
+
+	al, _ := alarm.CreateAlarm(func() { alarm.StartMPDPlaylist(pl, true) }, []time.Weekday{time.Sunday}, 0, 15)
+	al2, _ := alarm.CreateAlarm(echo, []time.Weekday{time.Saturday}, 22, 56)
 	al3, _ := alarm.CreateAlarm(echo, []time.Weekday{time.Sunday}, 8, 30)
 	am, _ := manager.GetAlarmManager([]*alarm.Alarm{al, al2})
 
 	time.Sleep(2 * time.Second)
 	am.AddAlarm(al3)
-	time.Sleep(2 * time.Second)
-
+	for {
+	}
 }
 
 func echo() {

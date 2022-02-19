@@ -15,6 +15,7 @@ import (
 // thus the playlist is NOT managed from within and is not aware of itself
 
 type Playlist struct {
+	Id    uuid.UUID
 	Name  string
 	Files []*library.File
 }

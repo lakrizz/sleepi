@@ -43,10 +43,16 @@ func (am *AlarmManager) GetClosestAlarm() (*alarm.Alarm, error) {
 
 func (am *AlarmManager) listen() {
 	for {
-		<-am.alarm_timer.C
-		go am.next.AlarmFunction()
-		closest, _ := am.GetClosestAlarm()
-		am.setNext(closest)
+		select {
+		case <-am.alarm_timer.C:
+			go am.next.AlarmFunction()
+			closest, _ := am.GetClosestAlarm()
+			am.setNext(closest)
+		default:
+			// log.Println(am.next.DurationUntilNextAlarm().String())
+			// time.Sleep(150 * time.Millisecond)
+			continue
+		}
 	}
 }
 

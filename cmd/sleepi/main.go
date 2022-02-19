@@ -46,13 +46,13 @@ func main() {
 
 	audioplayer.Audioplayer.AddRange(lib.GetAllFiles())
 
-	err = audioplayer.Audioplayer.Play()
+	err = audioplayer.Audioplayer.Play(true)
 	if err != nil {
 		log.Println(err)
 	}
 	time.Sleep(2 * time.Second)
 	log.Println("stopping now")
-	err = audioplayer.Audioplayer.Next()
+	err = audioplayer.Audioplayer.Next(true)
 	if err != nil {
 		log.Println(err)
 	}

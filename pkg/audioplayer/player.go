@@ -3,6 +3,8 @@ package audioplayer
 import (
 	"errors"
 	"log"
+	"math/rand"
+	"time"
 
 	"krizz.org/sleepi/pkg/library"
 )
@@ -19,15 +21,21 @@ func init() {
 	Audioplayer.driver.init()
 }
 
-func (a *audioplayer) Play() error {
+func (a *audioplayer) Play(random bool) error {
 	if len(a.queue) < 1 {
 		return errors.New("queue is empty, can't play")
 	}
 
 	// TODO: driver needs to be called here with a.Queue[0] if len(queue)>0
 	// dequeue item
-	item := a.queue[0]
-	a.queue = a.queue[1:]
+	dq_idx := 0
+	if random {
+		rand.Seed(time.Now().UnixMicro())
+		dq_idx = rand.Intn(len(a.queue))
+	}
+
+	item := a.queue[dq_idx]
+	a.queue = append(a.queue[:dq_idx], a.queue[dq_idx+1:]...)
 	err := a.driver.load(item)
 	if err != nil {
 		return err
@@ -71,10 +79,10 @@ func (a *audioplayer) GetQueue() []*library.File {
 	return a.queue
 }
 
-func (a *audioplayer) Next() error {
+func (a *audioplayer) Next(random bool) error {
 	if len(a.queue) < 1 {
 		return errors.New("no next song")
 	}
 	a.Stop()
-	return a.Play()
+	return a.Play(random)
 }
