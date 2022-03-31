@@ -19,7 +19,7 @@ func main() {
 		pl.Add(v)
 	}
 
-	alarm.StartMPDPlaylist(pl, true)
+	alarm.StartMPDPlaylist(pl, false)
 	now := time.Now()
 	al, _ := alarm.CreateAlarm(func() { alarm.StartMPDPlaylist(pl, true) }, []time.Weekday{time.Sunday}, 0, 15)
 	al2, _ := alarm.CreateAlarm(echo, []time.Weekday{time.Saturday}, 22, 56)

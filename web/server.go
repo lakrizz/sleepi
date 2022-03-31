@@ -16,7 +16,7 @@ import (
 
 var ren *render.Render
 
-func Serve() {
+func Serve() error {
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
@@ -46,5 +46,5 @@ func Serve() {
 	}
 
 	log.Printf("[frontend] listening on %v:%v", conf.HTTP_HOST, conf.HTTP_PORT)
-	panic(server.ListenAndServe())
+	return server.ListenAndServe()
 }
