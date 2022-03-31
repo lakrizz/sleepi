@@ -20,12 +20,12 @@ func (d *driver) init(random bool) {
 	c.Random(random)
 	c.Single(false)
 	c.Repeat(false)
-	c.Clear()
+	// c.Clear()
 	d.client = c
 }
 
 func (d *driver) add(file *library.File) error {
-	return d.client.Add(fmt.Sprintf("file://%v", file.Location))
+	return d.client.Add(fmt.Sprintf("file://%v", file.Path))
 }
 
 func (d *driver) play() error {

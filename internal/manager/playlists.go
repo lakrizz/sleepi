@@ -18,7 +18,7 @@ type PlaylistManager struct {
 
 var playlists_file_name string = "playlists.json"
 
-func GetPlaylistManager() (*PlaylistManager, error) {
+func getPlaylistManager() (*PlaylistManager, error) {
 	folder := path.Join(xdg.UserDirs.Documents, "sleepi")
 	if _, err := os.Stat(folder); os.IsNotExist(err) {
 		err := os.Mkdir(folder, 0777)

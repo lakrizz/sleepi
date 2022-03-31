@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 
+	"krizz.org/sleepi/internal/manager"
 	"krizz.org/sleepi/web"
+	"krizz.org/sleepi/web/app"
 )
 
 func main() {
@@ -13,5 +15,13 @@ func main() {
 }
 
 func run() error {
-	return web.Serve()
+	managers, err := manager.GetManagers()
+	if err != nil {
+		return err
+	}
+	app, err := app.InitApp(managers)
+	if err != nil {
+		return err
+	}
+	return web.Serve(app)
 }

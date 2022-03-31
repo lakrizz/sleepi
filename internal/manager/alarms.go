@@ -18,7 +18,7 @@ const (
 	alarmManagerFileName = "alarms.json"
 )
 
-func GetAlarmManager() (*AlarmManager, error) {
+func getAlarmManager() (*AlarmManager, error) {
 	am := &AlarmManager{}
 	closest, err := am.GetClosestAlarm()
 	if err == nil {

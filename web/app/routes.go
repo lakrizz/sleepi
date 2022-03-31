@@ -1,26 +1,25 @@
 package app
 
 import (
-	"net/http"
+	"fmt"
 
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 )
 
-var ren *render.Render
-var m *mux.Router
-
-func InitRoutes(router *mux.Router, renderer *render.Render) {
-	ren = renderer
-	m = router
-	addRoutes()
-	addAlarmRoutes()
+type Routes struct {
+	api *App
+	m   *mux.Router
+	ren *render.Render
 }
 
-func addRoutes() {
-	m.HandleFunc("/", IndexHandler)
-}
-
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	ren.HTML(w, http.StatusOK, "main/main", nil)
+func (r *Routes) Debug() error {
+	return r.m.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+		t, err := route.GetPathTemplate()
+		if err != nil {
+			return err
+		}
+		fmt.Println(t)
+		return nil
+	})
 }

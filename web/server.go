@@ -16,7 +16,7 @@ import (
 
 var ren *render.Render
 
-func Serve() error {
+func Serve(app *app.App) error {
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
@@ -30,7 +30,6 @@ func Serve() error {
 
 	m := mux.NewRouter()
 	app.InitRoutes(m, ren)
-
 	m.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./web/static"))))
 
 	conf, err := config.GetConfig()

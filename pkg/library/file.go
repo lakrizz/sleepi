@@ -9,12 +9,12 @@ import (
 )
 
 type File struct {
-	Location string
-	Id       uuid.UUID
+	Path string
+	Id   uuid.UUID
 }
 
 func (f *File) existsPhysically() bool {
-	if _, err := os.Stat(f.Location); err != os.ErrNotExist {
+	if _, err := os.Stat(f.Path); err != os.ErrNotExist {
 		return true
 	}
 	return false
@@ -22,9 +22,9 @@ func (f *File) existsPhysically() bool {
 
 func (f *File) Read() ([]byte, error) {
 	if !f.existsPhysically() {
-		return nil, fmt.Errorf("%v has no valid physical location (was looking for %v)", f.Id, f.Location)
+		return nil, fmt.Errorf("%v has no valid physical location (was looking for %v)", f.Id, f.Path)
 	}
-	dat, err := ioutil.ReadFile(f.Location)
+	dat, err := ioutil.ReadFile(f.Path)
 	if err != nil {
 		return nil, err
 	}

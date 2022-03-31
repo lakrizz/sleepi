@@ -36,7 +36,7 @@ func (a *audioplayer) Stop() error {
 
 func (a *audioplayer) Add(file *library.File) error {
 	// TODO: consider skipping on duplicates or let them flow?
-	log.Println("new song:", file.Location)
+	log.Println("new song:", file.Path)
 	return a.driver.add(file)
 }
 

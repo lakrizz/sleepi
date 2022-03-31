@@ -6,16 +6,18 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/adrg/xdg"
 	"github.com/google/uuid"
+	"github.com/k0kubun/pp"
 	"krizz.org/sleepi/pkg/helper"
 )
 
 type Library struct {
-	media_folder string
-	Files        map[uuid.UUID]*File
+	MediaFolder string
+	Files       map[uuid.UUID]*File
 }
 
 var config_name string = "library.json"
@@ -36,22 +38,29 @@ func GetLibrary() (*Library, error) {
 	}
 
 	if len(dat) == 0 { // file is new or empty
-		media_folder := xdg.UserDirs.Documents
+		log.Println("new library file")
+		media_folder := xdg.UserDirs.Music
 		mm := make(map[uuid.UUID]*File)
 		if m, err := walkFolder(media_folder); err == nil {
 			mm = m
 		} else {
 			log.Println(err)
 		}
-		return &Library{media_folder: media_folder, Files: mm}, nil
+		return &Library{MediaFolder: media_folder, Files: mm}, nil
 	}
 
+	log.Println("existing library file")
 	var lib *Library
 	err = json.Unmarshal(dat, &lib)
 	if err != nil {
 		return nil, err
 	}
 
+	if lib.Files == nil {
+		lib.Files = make(map[uuid.UUID]*File)
+	}
+
+	pp.Println(lib)
 	return lib, nil
 }
 
@@ -83,16 +92,19 @@ func walkFolder(folder string) (map[uuid.UUID]*File, error) {
 }
 
 func (l *Library) AddFile(data []byte, name string) error {
-
-	err := ioutil.WriteFile(l.media_folder, data, 0777)
+	target := path.Join(l.MediaFolder, name)
+	err := ioutil.WriteFile(target, data, 0777)
 	if err != nil {
 		return err
 	}
 
 	id := uuid.New()
-	f := &File{Location: l.media_folder, Id: id}
+	f := &File{Path: target, Id: id}
 	l.Files[f.Id] = f
-	l.save()
+	err = l.save()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -107,6 +119,9 @@ func (l *Library) save() error {
 		return err
 	}
 	err = ioutil.WriteFile(fn, dat, 0777)
+	if err == nil {
+		log.Println("wrote library file:", fn)
+	}
 	return err
 }
 
