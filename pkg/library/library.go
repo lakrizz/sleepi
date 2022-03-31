@@ -6,16 +6,16 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 
 	"github.com/adrg/xdg"
 	"github.com/google/uuid"
+	"krizz.org/sleepi/pkg/helper"
 )
 
-type library struct {
-	base_folder string
-	Files       map[uuid.UUID]*File
+type Library struct {
+	media_folder string
+	Files        map[uuid.UUID]*File
 }
 
 var config_name string = "library.json"
@@ -24,26 +24,38 @@ var config_name string = "library.json"
 // stored in a collection, more like a fs, it's an abstraction layer
 // for any file consumer to access files without having the need
 // to know about the location
-func GetLibrary() (*library, error) {
-	folder := path.Join(xdg.UserDirs.Documents, "sleepi")
-	if _, err := os.Stat(folder); os.IsNotExist(err) {
-		err := os.Mkdir(folder, 0777)
-		if err != nil {
-			return nil, err
-		}
+func GetLibrary() (*Library, error) {
+	file, err := helper.GetFullConfigPath(config_name)
+	if err != nil {
+		return nil, err
 	}
 
-	// check if there is a file list inside this folder
-	mm := make(map[uuid.UUID]*File)
-	if m, err := searchConfig(folder); err == nil {
-		mm = m
-	} else {
-		log.Println(err)
+	dat, err := ioutil.ReadFile(file)
+	if err != nil {
+		return nil, err
 	}
-	return &library{base_folder: folder, Files: mm}, nil
+
+	if len(dat) == 0 { // file is new or empty
+		media_folder := xdg.UserDirs.Documents
+		mm := make(map[uuid.UUID]*File)
+		if m, err := walkFolder(media_folder); err == nil {
+			mm = m
+		} else {
+			log.Println(err)
+		}
+		return &Library{media_folder: media_folder, Files: mm}, nil
+	}
+
+	var lib *Library
+	err = json.Unmarshal(dat, &lib)
+	if err != nil {
+		return nil, err
+	}
+
+	return lib, nil
 }
 
-func searchConfig(folder string) (map[uuid.UUID]*File, error) {
+func walkFolder(folder string) (map[uuid.UUID]*File, error) {
 	if _, err := os.Stat(folder); os.IsNotExist(err) {
 		return nil, err
 	}
@@ -70,22 +82,26 @@ func searchConfig(folder string) (map[uuid.UUID]*File, error) {
 	return nil, errors.New("no config found")
 }
 
-func (l *library) AddFile(data []byte, name string) error {
-	loc := filepath.Join(l.base_folder, name)
-	err := ioutil.WriteFile(loc, data, 0777)
+func (l *Library) AddFile(data []byte, name string) error {
+
+	err := ioutil.WriteFile(l.media_folder, data, 0777)
 	if err != nil {
 		return err
 	}
 
 	id := uuid.New()
-	f := &File{Location: loc, Id: id}
+	f := &File{Location: l.media_folder, Id: id}
 	l.Files[f.Id] = f
 	l.save()
 	return nil
 }
 
-func (l *library) save() error {
-	fn := filepath.Join(l.base_folder, config_name)
+func (l *Library) save() error {
+	fn, err := helper.GetFullConfigPath(config_name)
+	if err != nil {
+		return err
+	}
+
 	dat, err := json.Marshal(l.Files)
 	if err != nil {
 		return err
@@ -94,7 +110,7 @@ func (l *library) save() error {
 	return err
 }
 
-func (l *library) GetAllFiles() []*File {
+func (l *Library) GetAllFiles() []*File {
 	r := make([]*File, 0)
 	for _, v := range l.Files {
 		r = append(r, v)

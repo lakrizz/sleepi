@@ -1,45 +1,55 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>HTML5 Starter Template</title>
-		<link rel="stylesheet" href="/static/css/bulma.min.css">
-		<!--[if lt IE 9]>
+
+<head>
+	<meta charset="utf-8">
+	<title>HTML5 Starter Template</title>
+	<link rel="stylesheet" href="/static/css/bulma.min.css">
+	<!--[if lt IE 9]>
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-	</head>
-	<body>
+</head>
 
-<nav class="navbar is-info" role="navigation">
-  <div class="navbar-brand">
-		<h1 class="title">Title</h1>
-  </div>
-  <div class="navbar-menu">
-    <!-- navbar start, navbar end -->
-  </div>
-</nav>
+<body>
 
-<div class="columns">
-  <div class="column is-2">
-	
-	<aside class="menu">
-  <p class="menu-label">
-    General
-  </p>
-  <ul class="menu-list">
-    <li><a>Dashboard</a></li>
-    <li><a>Customers</a></li>
-  </ul>
-</aside>
+	<nav class="navbar" role="navigation">
+		<div class="navbar-brand">
+			<img src="http://sleepi.krizzblog.de/logo_128.png" />
+		</div>
+		<div class="navbar-menu">
+			<!-- navbar start, navbar end -->
+		</div>
+	</nav>
 
+	<div class="columns">
+		<div class="column is-2">
+			<aside class="menu">
+				<p class="menu-label">
+					General
+				</p>
+				<ul class="menu-list">
+					<li><a href="#">Alarms</a></li>
+					<li><a href="#">Library</a></li>
+					<li><a href="#">Playlists</a></li>
+				</ul>
+
+				<p class="menu-label">
+					Downloaders
+				</p>
+				<ul class="menu-list">
+					<li><a href="#">YouTube</a></li>
+				</ul>
+			</aside>
+
+		</div>
+		<div class="column is-10">
+			{{ yield }}
+		</div>
 	</div>
-  <div class="column is-10">
-		{{ yield }}
-	</div>
-</div>
 
 
 
-		<script src="js/scripts.js"></script>
-	</body>
+	<script src="js/scripts.js"></script>
+</body>
+
 </html>

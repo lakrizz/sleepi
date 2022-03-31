@@ -24,7 +24,10 @@ func main() {
 	al, _ := alarm.CreateAlarm(func() { alarm.StartMPDPlaylist(pl, true) }, []time.Weekday{time.Sunday}, 0, 15)
 	al2, _ := alarm.CreateAlarm(echo, []time.Weekday{time.Saturday}, 22, 56)
 	al3, _ := alarm.CreateAlarm(func() { alarm.StartMPDPlaylist(pl, true) }, []time.Weekday{time.Sunday}, now.Hour(), now.Minute()+1)
-	am, _ := manager.GetAlarmManager([]*alarm.Alarm{al, al2})
+	am, _ := manager.GetAlarmManager()
+	am.AddAlarm(al)
+	am.AddAlarm(al2)
+	am.AddAlarm(al3)
 
 	time.Sleep(2 * time.Second)
 	am.AddAlarm(al3)

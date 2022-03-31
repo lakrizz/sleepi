@@ -8,13 +8,16 @@ import (
 )
 
 var ren *render.Render
+var m *mux.Router
 
 func InitRoutes(router *mux.Router, renderer *render.Render) {
 	ren = renderer
-	addRoutes(router)
+	m = router
+	addRoutes()
+	addAlarmRoutes()
 }
 
-func addRoutes(m *mux.Router) {
+func addRoutes() {
 	m.HandleFunc("/", IndexHandler)
 }
 

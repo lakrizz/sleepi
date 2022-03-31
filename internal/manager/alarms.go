@@ -14,11 +14,17 @@ type AlarmManager struct {
 	alarm_timer *time.Timer
 }
 
-func GetAlarmManager(alarms []*alarm.Alarm) (*AlarmManager, error) {
-	am := &AlarmManager{Alarms: alarms}
-	closest, _ := am.GetClosestAlarm()
-	am.setNext(closest)
-	go am.listen()
+const (
+	alarmManagerFileName = "alarms.json"
+)
+
+func GetAlarmManager() (*AlarmManager, error) {
+	am := &AlarmManager{}
+	closest, err := am.GetClosestAlarm()
+	if err == nil {
+		am.setNext(closest)
+		go am.listen()
+	}
 	return am, nil
 }
 
@@ -77,6 +83,9 @@ func (am *AlarmManager) isInAlarmList(alarm *alarm.Alarm) bool {
 }
 
 func (am *AlarmManager) setNext(alarm *alarm.Alarm) {
+	if len(am.Alarms) == 0 {
+		return
+	}
 	am.next, _ = am.GetClosestAlarm()
 	am.alarm_timer = time.NewTimer(am.next.DurationUntilNextAlarm())
 	fmt.Println("new next:", am.next.WakeHour, am.next.WakeMinute)
