@@ -40,6 +40,14 @@ func GetLibrary() (*Library, error) {
 	if len(dat) == 0 { // file is new or empty
 		log.Println("new library file")
 		media_folder := xdg.UserDirs.Music
+		// create folder if does not exist
+		if fi, err := os.Stat(media_folder); os.IsNotExist(err) || !fi.IsDir() {
+			err = os.MkdirAll(media_folder, 0777)
+			if err != nil {
+				return nil, err
+			}
+		}
+
 		mm := make(map[uuid.UUID]*File)
 		if m, err := walkFolder(media_folder); err == nil {
 			mm = m
@@ -97,15 +105,12 @@ func (l *Library) AddFile(data []byte, name string) error {
 	if err != nil {
 		return err
 	}
+	log.Println("wrote file", target)
 
 	id := uuid.New()
 	f := &File{Path: target, Id: id}
 	l.Files[f.Id] = f
-	err = l.save()
-	if err != nil {
-		return err
-	}
-	return nil
+	return l.save()
 }
 
 func (l *Library) save() error {
@@ -114,7 +119,7 @@ func (l *Library) save() error {
 		return err
 	}
 
-	dat, err := json.Marshal(l.Files)
+	dat, err := json.Marshal(l)
 	if err != nil {
 		return err
 	}
