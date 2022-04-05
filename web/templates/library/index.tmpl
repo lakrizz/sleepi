@@ -1,1 +1,10 @@
-{{ .Path }}
+<ul>
+{{ range .files }}
+	<li>
+		<div>
+			{{ . }} 
+			<a class="button" href="/player/play/{{.Id}}">Play</a>
+		</div>
+	</li>
+{{ end }}
+</ul>

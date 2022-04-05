@@ -29,18 +29,20 @@ func InitApp(man *manager.Managers) (*App, error) {
 
 func (a *App) InitRoutes(mux *mux.Router, ren *render.Render) error {
 	r := &Routes{a, mux, ren}
-
-	err := r.addAlarmRoutes()
-	if err != nil {
-		return err
+	routes := []func() error{
+		r.addAlarmRoutes,
+		r.addLibraryRoutes,
+		r.addPlayerRoutes,
 	}
 
-	err = r.addLibraryRoutes()
-	if err != nil {
-		return err
+	for _, r := range routes {
+		err := r()
+		if err != nil {
+			return err
+		}
 	}
 
-	if err = r.Debug(); err != nil {
+	if err := r.Debug(); err != nil {
 		return err
 	}
 	return nil

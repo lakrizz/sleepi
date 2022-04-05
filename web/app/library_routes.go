@@ -31,8 +31,8 @@ func (r *Routes) addLibraryRoutes() error {
 func (routes *Routes) LibraryIndex(w http.ResponseWriter, r *http.Request) {
 	vars := make(map[string]interface{})
 	vars["files"] = routes.api.library.Files
-	pp.Println(vars)
-	routes.ren.HTML(w, http.StatusOK, "library/index", vars)
+	// pp.Println(vars)
+	routes.ren.HTML(routes.withoutFrontendCache(w), http.StatusOK, "library/index", vars)
 }
 
 func (routes *Routes) LibraryAdd(w http.ResponseWriter, r *http.Request) {
