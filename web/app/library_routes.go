@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/k0kubun/pp"
 	"krizz.org/sleepi/pkg/services"
 )
 
@@ -18,7 +17,6 @@ func (r *Routes) addLibraryRoutes() error {
 	prefix := "/library"
 	routes := map[string]func(http.ResponseWriter, *http.Request){
 		"/":       r.LibraryIndex,
-		"/add":    r.LibraryAdd,
 		"/upload": r.LibraryUpload,
 	}
 	for url, fn := range routes {
@@ -29,14 +27,12 @@ func (r *Routes) addLibraryRoutes() error {
 }
 
 func (routes *Routes) LibraryIndex(w http.ResponseWriter, r *http.Request) {
+	log.Println("1")
 	vars := make(map[string]interface{})
 	vars["files"] = routes.api.library.Files
 	// pp.Println(vars)
+	log.Println("2")
 	routes.ren.HTML(routes.withoutFrontendCache(w), http.StatusOK, "library/index", vars)
-}
-
-func (routes *Routes) LibraryAdd(w http.ResponseWriter, r *http.Request) {
-	routes.ren.HTML(w, http.StatusOK, "library/add", nil)
 }
 
 func (routes *Routes) LibraryUpload(w http.ResponseWriter, r *http.Request) {
@@ -52,29 +48,29 @@ func (routes *Routes) LibraryUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, file := range files {
-		log.Println(file.Filename)
 		fp, err := file.Open()
 		if err != nil {
+			log.Println(err.Error())
 			routes.ren.Text(w, 404, err.Error())
 			return
 		}
 
 		dat, err := ioutil.ReadAll(fp)
 		if err != nil {
+			log.Println(err.Error())
 			routes.ren.Text(w, 404, err.Error())
 			return
 		}
-		pp.Println(dat)
 
 		err = routes.api.library.AddFile(dat, file.Filename)
 		if err != nil {
+			log.Println(err.Error())
 			routes.ren.Text(w, 404, err.Error())
 			return
 		}
 	}
 
-	pp.Println(routes.api.library.Files)
-
 	// this is where we want to parse the files :D
-	routes.ren.HTML(w, 200, "library/upload", nil)
+	log.Println("redirecting")
+	http.Redirect(routes.withoutFrontendCache(w), r, "/library", http.StatusPermanentRedirect)
 }

@@ -29,6 +29,7 @@ func Serve(app *app.App) error {
 	})
 
 	m := mux.NewRouter()
+	m.StrictSlash(true)
 	app.InitRoutes(m, ren)
 	m.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./web/static"))))
 
