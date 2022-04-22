@@ -1,4 +1,4 @@
-<div>
+<div style="margin: 8px;" >
 	<form enctype="multipart/form-data" method="POST" action="/library/upload">
 		<div id="file-js-example" class="file has-name">
 			<label class="file-label">
@@ -21,17 +21,13 @@
 		</div>
 	</form>
 </div>
+<hr />
 
-<ul>
-	{{ range .files }}
-	<li>
-		<div>
-			{{ . }}
-			<a class="button" href="/player/play/{{.Id}}">Play</a>
-		</div>
-	</li>
-	{{ end }}
-</ul>
+<div style="margin: 8px;">
+{{ range .files }}
+	{{ template "song_partial" . }}
+{{ end }}
+<div>
 
 <script>
 	const fileInput = document.querySelector('#file-js-example input[type=file]');

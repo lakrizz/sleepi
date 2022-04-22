@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"github.com/google/uuid"
 )
@@ -29,4 +30,8 @@ func (f *File) Read() ([]byte, error) {
 		return nil, err
 	}
 	return dat, nil
+}
+
+func (f *File) Name() string {
+	return filepath.Base(f.Path)
 }

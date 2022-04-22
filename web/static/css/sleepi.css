@@ -1,0 +1,15 @@
+.audiofile-box {
+    float: left;
+    margin-right: 8px;
+    text-align: center;
+}
+
+.audiofile-title {
+    font-weight: 600;
+}
+
+.audiofile-icon {
+    width: 48px;
+    height: auto;
+    margin: 16px auto;
+}
