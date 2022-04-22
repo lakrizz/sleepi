@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 	"krizz.org/sleepi/internal/manager"
+	"krizz.org/sleepi/pkg/audioplayer"
 	"krizz.org/sleepi/pkg/library"
 )
 
@@ -13,6 +14,7 @@ type App struct {
 	alarms    *manager.AlarmManager
 	playlists *manager.PlaylistManager
 	library   *library.Library
+	player    *audioplayer.Audioplayer
 }
 
 func InitApp(man *manager.Managers) (*App, error) {
@@ -24,13 +26,14 @@ func InitApp(man *manager.Managers) (*App, error) {
 	app.alarms = man.Alarms
 	app.playlists = man.Playlists
 	app.library = man.Library
+	app.player = man.AudioPlayer
 	return app, nil
 }
 
 func (a *App) InitRoutes(mux *mux.Router, ren *render.Render) error {
 	r := &Routes{a, mux, ren}
 	routes := []func() error{
-		r.addAlarmRoutes,
+		// r.addAlarmRoutes,
 		r.addLibraryRoutes,
 		r.addPlayerRoutes,
 	}

@@ -22,6 +22,7 @@ func (r *Routes) addLibraryRoutes() error {
 	for url, fn := range routes {
 		u := fmt.Sprintf("%v%v", prefix, url)
 		r.m.HandleFunc(u, fn)
+		log.Println(u)
 	}
 	return nil
 }

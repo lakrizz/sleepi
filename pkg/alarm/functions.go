@@ -7,11 +7,11 @@ import (
 	"krizz.org/sleepi/pkg/playlist"
 )
 
-func StartMPDPlaylist(playlist *playlist.Playlist, random bool) {
-	audioplayer.Audioplayer.Clear()
-	err := audioplayer.Audioplayer.AddRange(playlist.Files, random)
+func StartMPDPlaylist(player *audioplayer.Audioplayer, playlist *playlist.Playlist, random bool) {
+	player.Clear()
+	err := player.AddRange(playlist.Files, random)
 	if err != nil {
 		log.Println(err)
 	}
-	audioplayer.Audioplayer.Play()
+	player.Play()
 }

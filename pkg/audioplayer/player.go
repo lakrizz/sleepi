@@ -9,18 +9,20 @@ import (
 	"krizz.org/sleepi/pkg/library"
 )
 
-type audioplayer struct {
+type Audioplayer struct {
 	driver *driver
 }
 
-var Audioplayer *audioplayer
-
-func init() {
-	Audioplayer = &audioplayer{driver: &driver{}}
-	Audioplayer.driver.init(true)
+func GetAudioplayer() (*Audioplayer, error) {
+	audioplayer := &Audioplayer{driver: &driver{}}
+	err := audioplayer.driver.init(true)
+	if err != nil {
+		return nil, err
+	}
+	return audioplayer, nil
 }
 
-func (a *audioplayer) Play() error {
+func (a *Audioplayer) Play() error {
 	a.driver.play()
 
 	cur, _ := a.driver.client.CurrentSong()
@@ -28,19 +30,19 @@ func (a *audioplayer) Play() error {
 	return nil
 }
 
-func (a *audioplayer) Stop() error {
+func (a *Audioplayer) Stop() error {
 	a.driver.stop()
 
 	return nil
 }
 
-func (a *audioplayer) Add(file *library.File) error {
+func (a *Audioplayer) Add(file *library.File) error {
 	// TODO: consider skipping on duplicates or let them flow?
 	log.Println("new song:", file.Path)
 	return a.driver.add(file)
 }
 
-func (a *audioplayer) AddRange(files []*library.File, shuffle bool) error {
+func (a *Audioplayer) AddRange(files []*library.File, shuffle bool) error {
 	if len(files) == 0 {
 		return errors.New("why bother adding an empty list of files?")
 	}
@@ -60,10 +62,10 @@ func (a *audioplayer) AddRange(files []*library.File, shuffle bool) error {
 	return nil
 }
 
-func (a *audioplayer) Next() error {
+func (a *Audioplayer) Next() error {
 	return a.driver.client.Next()
 }
 
-func (a *audioplayer) Clear() error {
+func (a *Audioplayer) Clear() error {
 	return a.driver.client.Clear()
 }

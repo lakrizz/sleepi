@@ -12,20 +12,26 @@ type driver struct {
 	client *mpd.Client
 }
 
-func (d *driver) init(random bool) {
+func (d *driver) init(random bool) error {
 	c, err := mpd.Dial("tcp", "127.0.0.1:6600")
 	if err != nil {
-		log.Println(err)
+		return err
 	}
 	c.Random(random)
 	c.Single(false)
 	c.Repeat(false)
 	// c.Clear()
 	d.client = c
+	if err := c.Ping(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *driver) add(file *library.File) error {
-	return d.client.Add(fmt.Sprintf("file://%v", file.Path))
+	mpd_filename := fmt.Sprintf("file://%v", file.Path)
+	log.Println("mpd filename:", mpd_filename)
+	return d.client.Add(mpd_filename)
 }
 
 func (d *driver) play() error {

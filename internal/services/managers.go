@@ -1,15 +1,11 @@
 package manager
 
-import (
-	"krizz.org/sleepi/pkg/audioplayer"
-	"krizz.org/sleepi/pkg/library"
-)
+import "krizz.org/sleepi/pkg/library"
 
 type Managers struct {
-	Alarms      *AlarmManager
-	Playlists   *PlaylistManager
-	Library     *library.Library
-	AudioPlayer *audioplayer.Audioplayer
+	Alarms    *AlarmManager
+	Playlists *PlaylistManager
+	Library   *library.Library
 }
 
 func GetManagers() (*Managers, error) {
@@ -31,13 +27,6 @@ func GetManagers() (*Managers, error) {
 		return nil, err
 	}
 	managers.Library = lib
-
-	audioplayer, err := audioplayer.GetAudioplayer()
-	if err != nil {
-		return nil, err
-	}
-
-	managers.AudioPlayer = audioplayer
 
 	return managers, nil
 }
