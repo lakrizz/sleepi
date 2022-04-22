@@ -28,11 +28,8 @@ func (r *Routes) addLibraryRoutes() error {
 }
 
 func (routes *Routes) LibraryIndex(w http.ResponseWriter, r *http.Request) {
-	log.Println("1")
 	vars := make(map[string]interface{})
 	vars["files"] = routes.api.library.Files
-	// pp.Println(vars)
-	log.Println("2")
 	routes.ren.HTML(routes.withoutFrontendCache(w), http.StatusOK, "library/index", vars)
 }
 

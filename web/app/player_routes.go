@@ -35,6 +35,7 @@ func (routes *Routes) PlayerPlay(w http.ResponseWriter, r *http.Request) {
 	}
 
 	file := routes.api.library.Files[uu_id]
+	routes.api.player.Clear()
 	err = routes.api.player.Add(file)
 	if err != nil {
 		log.Println(err)

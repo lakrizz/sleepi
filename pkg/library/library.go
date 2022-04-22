@@ -11,6 +11,7 @@ import (
 
 	"github.com/adrg/xdg"
 	"github.com/google/uuid"
+	"github.com/k0kubun/pp"
 	"krizz.org/sleepi/pkg/helper"
 )
 
@@ -67,6 +68,7 @@ func GetLibrary() (*Library, error) {
 		lib.Files = make(map[uuid.UUID]*File)
 	}
 
+	pp.Println(lib.Files)
 	return lib, nil
 }
 
