@@ -28,18 +28,33 @@ func (d *driver) init(random bool) error {
 	return nil
 }
 
+func (d *driver) check_connection() {
+	if d.client.Ping() != nil {
+		c, _ := mpd.Dial("tcp", "127.0.0.1:6600")
+		d.client = c
+	}
+}
+
 func (d *driver) add(file *library.File) error {
+	d.check_connection()
 	mpd_filename := fmt.Sprintf("file://%v", file.Path)
 	log.Println("mpd filename:", mpd_filename)
 	return d.client.Add(mpd_filename)
 }
 
 func (d *driver) play() error {
+	d.check_connection()
 	err := d.client.Play(0)
 	return err
 }
 
 func (d *driver) stop() error {
+	d.check_connection()
 	err := d.client.Stop()
 	return err
+}
+
+func (d *driver) setvolume(i int) error {
+	d.check_connection()
+	return d.client.SetVolume(i)
 }

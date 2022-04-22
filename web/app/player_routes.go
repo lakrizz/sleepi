@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -43,5 +44,12 @@ func (routes *Routes) PlayerPlay(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	routes.api.player.Play()
+	d, err := time.ParseDuration("10s")
+	if err != nil {
+		log.Println(err)
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+	routes.api.player.AddVolumeGradient(0, 100, d)
 	http.Redirect(routes.withoutFrontendCache(w), r, r.Referer(), http.StatusPermanentRedirect)
 }

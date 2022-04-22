@@ -69,3 +69,15 @@ func (a *Audioplayer) Next() error {
 func (a *Audioplayer) Clear() error {
 	return a.driver.client.Clear()
 }
+
+func (a *Audioplayer) SetVolume(volume int) error {
+	if volume < 0 {
+		return errors.New("volume should not be below 0")
+	}
+
+	if volume > 100 {
+		return errors.New("volume should not be above 100")
+	}
+
+	return a.driver.setvolume(volume)
+}
