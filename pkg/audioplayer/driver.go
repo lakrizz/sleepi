@@ -58,3 +58,8 @@ func (d *driver) setvolume(i int) error {
 	d.check_connection()
 	return d.client.SetVolume(i)
 }
+
+func (d *driver) update() error {
+	_, err := d.client.Update("")
+	return err
+}

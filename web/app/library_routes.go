@@ -6,7 +6,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"path/filepath"
+	"strings"
 
+	"github.com/gosimple/slug"
 	"krizz.org/sleepi/pkg/services"
 )
 
@@ -59,8 +62,8 @@ func (routes *Routes) LibraryUpload(w http.ResponseWriter, r *http.Request) {
 			routes.ren.Text(w, 404, err.Error())
 			return
 		}
-
-		err = routes.api.library.AddFile(dat, file.Filename)
+		new_fname_wo_extension := slug.Make(strings.TrimSuffix(filepath.Base(file.Filename), filepath.Ext(file.Filename)))
+		err = routes.api.library.AddFile(dat, fmt.Sprintf("%v%v", new_fname_wo_extension, filepath.Ext(file.Filename)))
 		if err != nil {
 			log.Println(err.Error())
 			routes.ren.Text(w, 404, err.Error())
@@ -69,6 +72,5 @@ func (routes *Routes) LibraryUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// this is where we want to parse the files :D
-	log.Println("redirecting")
-	http.Redirect(routes.withoutFrontendCache(w), r, "/library", http.StatusPermanentRedirect)
+	routes.ren.HTML(routes.withoutFrontendCache(w), http.StatusPermanentRedirect, "util/redirect", "/library/")
 }

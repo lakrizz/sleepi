@@ -36,6 +36,7 @@ func (a *App) InitRoutes(mux *mux.Router, ren *render.Render) error {
 		// r.addAlarmRoutes,
 		r.addLibraryRoutes,
 		r.addPlayerRoutes,
+		r.addPlaylistRoutes,
 	}
 
 	for _, r := range routes {

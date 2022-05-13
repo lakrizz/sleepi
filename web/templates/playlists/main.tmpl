@@ -1,0 +1,13 @@
+{{ if .Playlists }}
+{{ range .Playlists }}
+<div>{{.}}</div>    
+{{ end }}
+{{ else }}
+<div>no playlists</div>
+{{ end }}
+
+<hr />
+
+<div style="margin: 8px;" >
+	<a href="/playlists/new" class="button is-large is-primary">New Playlist</a>
+</div>

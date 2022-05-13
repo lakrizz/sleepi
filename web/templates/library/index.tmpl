@@ -23,11 +23,11 @@
 </div>
 <hr />
 
-<div style="margin: 8px;">
+<table class="table is-fullwidth">
 {{ range .files }}
 	{{ template "song_partial" . }}
 {{ end }}
-<div>
+</table>
 
 <script>
 	const fileInput = document.querySelector('#file-js-example input[type=file]');

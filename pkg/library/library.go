@@ -57,7 +57,7 @@ func GetLibrary() (*Library, error) {
 		return &Library{MediaFolder: media_folder, Files: mm}, nil
 	}
 
-	log.Println("existing library file")
+	log.Println("existing library file:", file)
 	var lib *Library
 	err = json.Unmarshal(dat, &lib)
 	if err != nil {

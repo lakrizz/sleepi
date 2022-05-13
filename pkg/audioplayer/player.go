@@ -10,15 +10,20 @@ import (
 )
 
 type Audioplayer struct {
-	driver *driver
+	driver                  *driver
+	chan_volume_stop        chan struct{}
+	volume_gradient_running bool
+	player_random           bool
 }
 
 func GetAudioplayer() (*Audioplayer, error) {
 	audioplayer := &Audioplayer{driver: &driver{}}
-	err := audioplayer.driver.init(true)
+	audioplayer.player_random = true
+	err := audioplayer.driver.init(audioplayer.player_random)
 	if err != nil {
 		return nil, err
 	}
+	audioplayer.chan_volume_stop = make(chan struct{})
 	return audioplayer, nil
 }
 
@@ -67,7 +72,12 @@ func (a *Audioplayer) Next() error {
 }
 
 func (a *Audioplayer) Clear() error {
-	return a.driver.client.Clear()
+	if err := a.driver.client.Clear(); err != nil {
+		// try reconnecting once
+		a.driver.init(a.player_random)
+		return a.driver.client.Clear()
+	}
+	return nil
 }
 
 func (a *Audioplayer) SetVolume(volume int) error {
