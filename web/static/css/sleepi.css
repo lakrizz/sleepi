@@ -30,3 +30,33 @@
     float: right;
     background-color: aqua;
 }
+
+.builder-song {
+    padding: 8px 4px;
+    line-height: 32px;
+}
+
+.builder-song:hover {
+    background-color: #cccccc37;
+    cursor: pointer;
+}
+
+.playlist-remove {
+    display: none;
+}
+
+.playlist-remove img {
+    width: 24px;
+    margin-bottom: -6px;
+    float: right;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }

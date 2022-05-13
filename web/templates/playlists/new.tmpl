@@ -1,3 +1,28 @@
-<div>
-this is going to be a big one :D
-</div>
+<form action="/playlists/create" method="POST">
+    <div class="columns">
+        <div class="column">
+            <h1 class="title is-1">New Playlist</h1>
+            <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                    <input class="input is-medium" type="text" name="playlist-title" placeholder="Playlist Name">
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <h1 class="title is-2">Songs</h1>
+        </div>
+    </div>
+
+    {{ template "playlist_builder" .}}
+
+    <div class="columns">
+        <div class="column">
+            <input type="submit" class="button is-medium is-primary" value="Create" />
+        </div>
+    </div>
+</form>

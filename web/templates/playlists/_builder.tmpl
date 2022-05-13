@@ -1,0 +1,25 @@
+{{ define "playlist_builder" }}
+<script src="/static/js/builder.js"></script>
+
+<div class="columns" style="margin: 16px;">
+    <div class="column" id="library-songs">
+        <h3 class="subtitle is-3">Library</h3>
+        <hr />
+
+        {{ range .Songs }}
+        <div class="builder-song in-library noselect" id="{{.Id}}">{{ .Name }}<span class="playlist-remove"><img
+                    src="/static/img/remove.png"></span></div>
+        {{ end }}
+
+    </div>
+    <div class="column">
+        <h3 class="subtitle is-3">Playlist</h3>
+        <hr />
+        <ul id="playlist-songs">
+        </ul>
+    </div>
+</div>
+<div id="playlist-order" style="display: none;">
+
+</div>
+{{ end }}
