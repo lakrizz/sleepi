@@ -21,7 +21,8 @@ type Playlist struct {
 }
 
 func NewPlaylist(name string) (*Playlist, error) {
-	p := &Playlist{Name: name, Files: make([]*library.File, 0)}
+	id := uuid.New()
+	p := &Playlist{Name: name, Files: make([]*library.File, 0), Id: id}
 	return p, nil
 }
 
@@ -91,4 +92,8 @@ func (p *Playlist) GetRandomFile() (*library.File, error) {
 	rand.Seed(time.Now().UnixMicro())
 	i := rand.Intn(len(p.Files))
 	return p.Files[i], nil
+}
+
+func (p *Playlist) Valid() bool {
+	return len(p.Files) > 0 && p.Name != ""
 }

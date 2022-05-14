@@ -1,0 +1,27 @@
+{{ define "playlists" }}
+<div class="columns">
+    <div class="column">
+
+        {{ range .}}
+        <article class="message">
+            <div class="message-header">
+                <p>{{ .Name }}</p>
+            </div>
+            <div class="message-body">
+                <div>
+                    <ul>
+                        {{ range (TopFiles .Files 5) }}
+                        <li>{{ .Name }}</li>
+                        {{ end }}
+                    </ul>
+                </div>
+                <div>
+                    <img src="/static/img/edit.png" style="width: 32px; opacity: .1;" />
+                    <img src="/static/img/remove.png" style="width: 32px; opacity: .1;" />
+                </div>
+            </div>
+        </article>
+        {{ end }}
+    </div>
+</div>
+{{ end }}

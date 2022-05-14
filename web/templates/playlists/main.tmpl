@@ -1,7 +1,5 @@
 {{ if .Playlists }}
-{{ range .Playlists }}
-<div>{{.}}</div>    
-{{ end }}
+    {{template "playlists" .Playlists }}
 {{ else }}
 <div>no playlists</div>
 {{ end }}

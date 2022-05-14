@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
-	"github.com/k0kubun/pp"
 	"krizz.org/sleepi/pkg/playlist"
 )
 
@@ -58,6 +57,7 @@ func (routes *Routes) PlaylistCreate(w http.ResponseWriter, r *http.Request) {
 		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
 		return
 	}
+
 	for _, v := range []string(r.PostForm["order"]) {
 		id, err := uuid.Parse(v)
 		if err != nil {
@@ -68,5 +68,9 @@ func (routes *Routes) PlaylistCreate(w http.ResponseWriter, r *http.Request) {
 		pl.Add(f)
 	}
 
-	pp.Println(pl)
+	if pl.Valid() {
+		routes.api.playlists.AddPlaylist(pl)
+	}
+
+	http.Redirect(routes.withoutFrontendCache(w), r, "/playlists/", http.StatusPermanentRedirect)
 }

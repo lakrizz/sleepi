@@ -3,6 +3,7 @@ package manager
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -37,8 +38,14 @@ func getPlaylistManager() (*PlaylistManager, error) {
 func (pm *PlaylistManager) AddPlaylist(playlist *playlist.Playlist) error {
 	if !pm.isInList(playlist) {
 		pm.Playlists = append(pm.Playlists, playlist)
+		return pm.Save()
 	}
-	return nil
+
+	if playlist == nil {
+		return errors.New("you are trying to add an empty playlist")
+	}
+
+	return fmt.Errorf("a playlist with the id %v is already exists - is this a coincidence?", playlist.Id.String())
 }
 
 func (pm *PlaylistManager) isInList(playlist *playlist.Playlist) bool {
@@ -51,7 +58,21 @@ func (pm *PlaylistManager) isInList(playlist *playlist.Playlist) bool {
 }
 
 func (pm *PlaylistManager) Save() error {
-	return nil
+	for _, v := range pm.Playlists {
+		if !v.Valid() {
+			return fmt.Errorf("can't save playlists. playlist %s is not valid", v.Name)
+		}
+	}
+
+	filename := path.Join(xdg.UserDirs.Documents, "sleepi", playlists_file_name)
+
+	dat, err := json.Marshal(pm)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(filename, dat, 07777)
+	return err
 }
 
 func searchPlaylistFile(folder string) (*PlaylistManager, error) {

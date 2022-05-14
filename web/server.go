@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -25,6 +26,7 @@ func Serve(app *app.App) error {
 	ren = render.New(render.Options{
 		Directory:     path.Join(dir, "web", "templates"),
 		IsDevelopment: true,
+		Funcs:         []template.FuncMap{template.FuncMap(app.GetFuncMap())},
 		Layout:        "layout",
 	})
 
