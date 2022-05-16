@@ -40,7 +40,7 @@
             <div class="field">
                 <label class="label">Hour</label>
                 <div class="control">
-                    <input class="input is-medium" type="text" name="alarm-title" placeholder="HH">
+                    <input class="input is-medium" type="text" name="alarm-hour" placeholder="HH">
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
             <div class="field">
                 <label class="label">Minute</label>
                 <div class="control">
-                    <input class="input is-medium" type="text" name="alarm-title" placeholder="MM">
+                    <input class="input is-medium" type="text" name="alarm-minute" placeholder="MM">
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
             <div class="field">
                 <div class="control day-picker">
                     <div class="select is-medium" style="width: 100%;">
-                        <select style="width: 100%;">
+                        <select style="width: 100%;" name="alarm-playlist">
                             {{ range .Playlists}}
                             <option value="{{.Id}}">{{.Name}} ({{len .Files }} Songs)</option>
                             {{ end }}
@@ -83,7 +83,7 @@
     <div class="columns">
         <div class="column">
             <label>
-            <input type="checkbox" style="width: 32px; height: 32px; margin-right: 8px; margin-bottom: 4px; float: left;" id="volumewarmup">
+            <input name="cb_volumewarmup" type="checkbox" style="width: 32px; height: 32px; margin-right: 8px; margin-bottom: 4px; float: left;" id="volumewarmup">
             <h3 class="title is-3">Volume Warmup</h1>
             </label>
             <div style="clear: both;">
@@ -100,7 +100,7 @@
             <div class="field">
                 <label class="label">Start-Volume (in %)</label>
                 <div class="control">
-                    <input class="input is-medium" type="text" name="alarm-title" placeholder="Start Volume">
+                    <input class="input is-medium" type="text" name="warmup-start-volume" placeholder="Start Volume">
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
             <div class="field">
                 <label class="label">End-Volume (in %)</label>
                 <div class="control">
-                    <input class="input is-medium" type="text" name="alarm-title" placeholder="End Volume">
+									<input class="input is-medium" type="text" name="warmup-end-volume" placeholder="End Volume">
                 </div>
             </div>
         </div>
@@ -116,7 +116,7 @@
             <div class="field">
                 <label class="label">Duration</label>
                 <div class="control">
-                    <input class="input is-medium" type="text" name="alarm-title" placeholder="Duration (e.g. 30m)">
+                    <input class="input is-medium" type="text" name="warmup-duration" placeholder="Duration (e.g. 30m)">
                 </div>
             </div>
         </div>
