@@ -34,7 +34,7 @@ func InitApp(man *manager.Managers) (*App, error) {
 func (a *App) InitRoutes(mux *mux.Router, ren *render.Render) error {
 	r := &Routes{a, mux, ren}
 	routes := []func() error{
-		// r.addAlarmRoutes,
+		r.addAlarmRoutes,
 		r.addLibraryRoutes,
 		r.addPlayerRoutes,
 		r.addPlaylistRoutes,
@@ -60,6 +60,12 @@ func (a *App) GetFuncMap() template.FuncMap {
 				return slice[:num]
 			}
 			return slice
+		},
+		"Cut": func(s string, i int) string {
+			if len(s) <= i {
+				return s
+			}
+			return s[:i]
 		},
 	})
 }

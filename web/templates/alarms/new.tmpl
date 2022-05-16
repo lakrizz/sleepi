@@ -1,0 +1,130 @@
+<script src="/static/js/alarm.js"></script>
+
+<form action="/alarms/create" method="POST">
+    <div class="columns">
+        <div class="column">
+            <h1 class="title is-1">New Alarm</h1>
+            <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                    <input class="input is-medium" type="text" name="alarm-title" placeholder="Alarm Name">
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <h1 class="title is-2">Days and Time</h1>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label class="label">Days</label>
+                <div class="control day-picker">
+                    {{ range $k, $v := .Days}}
+                    <label class="checkbox" for="{{$k}}">
+                        <input class="day-checkbox-box" type="checkbox" name="days" value="{{$k}}" id="{{$k}}">
+                        <div class="day-box">{{ Cut $v.String 2 }}</div>
+                    </label>
+                    {{ end }}
+                    <div class="is-clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="field">
+                <label class="label">Hour</label>
+                <div class="control">
+                    <input class="input is-medium" type="text" name="alarm-title" placeholder="HH">
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="field">
+                <label class="label">Minute</label>
+                <div class="control">
+                    <input class="input is-medium" type="text" name="alarm-title" placeholder="MM">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <h1 class="title is-2">Playlist</h1>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <div class="control day-picker">
+                    <div class="select is-medium" style="width: 100%;">
+                        <select style="width: 100%;">
+                            {{ range .Playlists}}
+                            <option value="{{.Id}}">{{.Name}} ({{len .Files }} Songs)</option>
+                            {{ end }}
+                        </select>
+                    </div>
+                    <div class="is-clearfix"></div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="columns">
+        <div class="column">
+            <label>
+            <input type="checkbox" style="width: 32px; height: 32px; margin-right: 8px; margin-bottom: 4px; float: left;" id="volumewarmup">
+            <h3 class="title is-3">Volume Warmup</h1>
+            </label>
+            <div style="clear: both;">
+            <p>
+            This feature allows you to enter a warmup time in which the volume will gradually increase to grant you a nicer wakeup. This will be added before the 
+            chosen wakeup-time. e.g., if your wakeup time is 7.30am and you have a warmup of 1h, it will start at 6.30am and reach the end at 7.30am.
+            </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns div-disabled" id="volume-warmup">
+        <div class="column">
+            <div class="field">
+                <label class="label">Start-Volume (in %)</label>
+                <div class="control">
+                    <input class="input is-medium" type="text" name="alarm-title" placeholder="Start Volume">
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="field">
+                <label class="label">End-Volume (in %)</label>
+                <div class="control">
+                    <input class="input is-medium" type="text" name="alarm-title" placeholder="End Volume">
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="field">
+                <label class="label">Duration</label>
+                <div class="control">
+                    <input class="input is-medium" type="text" name="alarm-title" placeholder="Duration (e.g. 30m)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <input type="submit" class="button is-medium is-primary" value="Create" />
+        </div>
+    </div>
+</form>

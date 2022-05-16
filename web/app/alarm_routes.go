@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/k0kubun/pp"
+	"krizz.org/sleepi/pkg/util"
 )
 
 func (r *Routes) addAlarmRoutes() error {
@@ -14,7 +14,8 @@ func (r *Routes) addAlarmRoutes() error {
 	}
 	prefix := "/alarms"
 	routes := map[string]func(http.ResponseWriter, *http.Request){
-		"/": r.AlarmIndex,
+		"/":    r.AlarmIndex,
+		"/new": r.AlarmNew,
 	}
 	for url, fn := range routes {
 		u := fmt.Sprintf("%v%v", prefix, url)
@@ -25,7 +26,13 @@ func (r *Routes) addAlarmRoutes() error {
 
 func (routes *Routes) AlarmIndex(w http.ResponseWriter, r *http.Request) {
 	vars := make(map[string]interface{})
-	vars["alarms"] = routes.api.alarms.Alarms
-	pp.Println(vars)
-	routes.ren.HTML(w, http.StatusOK, "alarms/index", vars)
+	vars["Alarms"] = routes.api.alarms.Alarms
+	routes.ren.HTML(w, http.StatusOK, "alarms/main", vars)
+}
+
+func (routes *Routes) AlarmNew(w http.ResponseWriter, r *http.Request) {
+	vars := make(map[string]interface{})
+	vars["Days"] = util.Weekdays()
+	vars["Playlists"] = routes.api.playlists.Playlists
+	routes.ren.HTML(w, http.StatusOK, "alarms/new", vars)
 }

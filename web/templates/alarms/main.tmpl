@@ -1,0 +1,11 @@
+{{ if .Alarms }}
+    {{template "alarms" .Alarms }}
+{{ else }}
+<div>no alarms</div>
+{{ end }}
+
+<hr />
+
+<div style="margin: 8px;" >
+	<a href="/alarms/new" class="button is-large is-primary">New Alarm</a>
+</div>

@@ -1,11 +1,14 @@
 package manager
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"time"
 
 	"krizz.org/sleepi/pkg/alarm"
+	"krizz.org/sleepi/pkg/util"
 )
 
 type AlarmManager struct {
@@ -20,6 +23,16 @@ const (
 
 func getAlarmManager() (*AlarmManager, error) {
 	am := &AlarmManager{}
+	path, err := util.GetFullConfigPath(alarmManagerFileName)
+	if err != nil {
+		return nil, err
+	}
+
+	err = util.ReadOrCreateConfigFile(path, am)
+	if err != nil {
+		return nil, err
+	}
+
 	closest, err := am.GetClosestAlarm()
 	if err == nil {
 		am.setNext(closest)
@@ -51,7 +64,7 @@ func (am *AlarmManager) listen() {
 	for {
 		select {
 		case <-am.alarm_timer.C:
-			go am.next.AlarmFunction()
+			go am.next.Trigger()
 			closest, _ := am.GetClosestAlarm()
 			am.setNext(closest)
 		default:
@@ -70,7 +83,8 @@ func (am *AlarmManager) AddAlarm(alarm *alarm.Alarm) error {
 	if new_next, _ := am.GetClosestAlarm(); am.next != new_next {
 		am.setNext(new_next)
 	}
-	return nil
+
+	return am.save()
 }
 
 func (am *AlarmManager) isInAlarmList(alarm *alarm.Alarm) bool {
@@ -89,4 +103,18 @@ func (am *AlarmManager) setNext(alarm *alarm.Alarm) {
 	am.next, _ = am.GetClosestAlarm()
 	am.alarm_timer = time.NewTimer(am.next.DurationUntilNextAlarm())
 	fmt.Println("new next:", am.next.WakeHour, am.next.WakeMinute)
+}
+
+func (am *AlarmManager) save() error {
+	dat, err := json.Marshal(am)
+	if err != nil {
+		return err
+	}
+
+	fname, err := util.GetFullConfigPath("alarms")
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile(fname, dat, 0777)
 }

@@ -1,7 +1,9 @@
-package helper
+package util
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 
@@ -27,4 +29,22 @@ func GetFullConfigPath(name string) (string, error) {
 	}
 
 	return filename, nil
+}
+
+func ReadOrCreateConfigFile(filename string, obj any) error {
+	dat, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	if len(dat) == 0 {
+		return nil // file is empty, but that's valid
+	}
+
+	err = json.Unmarshal(dat, &obj)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

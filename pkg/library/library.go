@@ -12,7 +12,7 @@ import (
 	"github.com/adrg/xdg"
 	"github.com/google/uuid"
 	"github.com/k0kubun/pp"
-	"krizz.org/sleepi/pkg/helper"
+	"krizz.org/sleepi/pkg/util"
 )
 
 type Library struct {
@@ -27,7 +27,7 @@ var config_name string = "library.json"
 // for any file consumer to access files without having the need
 // to know about the location
 func GetLibrary() (*Library, error) {
-	file, err := helper.GetFullConfigPath(config_name)
+	file, err := util.GetFullConfigPath(config_name)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (l *Library) AddFile(data []byte, name string) error {
 }
 
 func (l *Library) save() error {
-	fn, err := helper.GetFullConfigPath(config_name)
+	fn, err := util.GetFullConfigPath(config_name)
 	if err != nil {
 		return err
 	}

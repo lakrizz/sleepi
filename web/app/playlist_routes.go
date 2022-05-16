@@ -16,7 +16,7 @@ func (r *Routes) addPlaylistRoutes() error {
 	}
 	prefix := "/playlists"
 	routes := map[string]func(http.ResponseWriter, *http.Request){
-		"/":       r.PlaylistIndex,
+		"/":       r.PlaylistMain,
 		"/new":    r.PlaylistNew,
 		"/create": r.PlaylistCreate,
 	}
@@ -28,7 +28,7 @@ func (r *Routes) addPlaylistRoutes() error {
 	return nil
 }
 
-func (routes *Routes) PlaylistIndex(w http.ResponseWriter, r *http.Request) {
+func (routes *Routes) PlaylistMain(w http.ResponseWriter, r *http.Request) {
 	params := make(map[string]interface{})
 	params["Playlists"] = routes.api.playlists.Playlists
 	routes.ren.HTML(w, http.StatusOK, "playlists/main", params)
