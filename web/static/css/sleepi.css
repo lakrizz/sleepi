@@ -52,39 +52,45 @@
 }
 
 .noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Old versions of Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
-  }
+}
 
-  .day-checkbox-box {
+.day-checkbox-box {
     display: none;
-  }
+}
 
-  .checkbox {
-      display: block;
-      float: left;
-      width: 48px;
-      padding: 0;
-      margin: 0;
-      line-height: 48px;
-      text-align: center;
-  }
+.checkbox {
+    display: block;
+    float: left;
+    width: 48px;
+    padding: 0;
+    margin: 0;
+    line-height: 48px;
+    text-align: center;
+}
 
-  .day-picker .day-box:first{
-      border-radius: 15px;
-  }
+.day-picker .day-box:first {
+    border-radius: 15px;
+}
 
-  .day-box {
-      background-color: #e8e8e8;
-  }
+.day-box {
+    background-color: #e8e8e8;
+}
 
-:checked + .day-box {
-      background-color: #bbd7b1;
+:checked+.day-box {
+    background-color: #bbd7b1;
 }
 
 .div-disabled {
@@ -98,15 +104,34 @@
     color: #7f888f !important;
 }
 
-#volume-warmup input:disabled::-webkit-input-placeholder { /* WebKit browsers */
+#volume-warmup input:disabled::-webkit-input-placeholder {
+    /* WebKit browsers */
     color: #7f888f !important;
 }
-#volume-warmup input:disabled:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+
+#volume-warmup input:disabled:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
     color: #7f888f !important;
 }
-#volume-warmup input:disabled::-moz-placeholder { /* Mozilla Firefox 19+ */
+
+#volume-warmup input:disabled::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
     color: #7f888f !important;
 }
-#volume-warmup input:disabled:-ms-input-placeholder { /* Internet Explorer 10+ */
+
+#volume-warmup input:disabled:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
     color: #7f888f !important;
+}
+
+.overview-day-box {
+    padding: 8px;
+}
+
+.day-box-active {
+    background-color: #bbd7b1;
+}
+
+.material-icons a {
+    text-decoration: none;
 }

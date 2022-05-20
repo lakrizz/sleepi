@@ -9,6 +9,8 @@ import (
 )
 
 type Alarm struct {
+	Enabled    bool
+	Name       string
 	Id         uuid.UUID
 	ActiveDays []time.Weekday
 	WakeHour   int
@@ -19,8 +21,8 @@ type Alarm struct {
 	VolumeWarmup *effects.VolumeWarmup
 }
 
-func CreateAlarm(playlist_id *uuid.UUID, activedays []time.Weekday, wakehour, wakeminute int) (*Alarm, error) {
-	a := &Alarm{ActiveDays: activedays, WakeHour: wakehour, WakeMinute: wakeminute, Playlist: playlist_id}
+func CreateAlarm(playlist_id *uuid.UUID, name string, activedays []time.Weekday, wakehour, wakeminute int) (*Alarm, error) {
+	a := &Alarm{Enabled: true, ActiveDays: activedays, WakeHour: wakehour, WakeMinute: wakeminute, Playlist: playlist_id, Name: name}
 	id := uuid.New()
 	a.Id = id
 	return a, nil
@@ -46,14 +48,14 @@ func (a *Alarm) DurationUntilNextAlarm() time.Duration {
 
 	// otherwise add days until we look at an active weekday
 	checkdate = checkdate.Add(24 * time.Hour)
-	for !a.isActiveDay(checkdate.Weekday()) {
+	for !a.IsActiveDay(checkdate.Weekday()) {
 		checkdate = checkdate.Add(24 * time.Hour)
 	}
 
 	return time.Until(checkdate)
 }
 
-func (a *Alarm) isActiveDay(day time.Weekday) bool {
+func (a *Alarm) IsActiveDay(day time.Weekday) bool {
 	for _, v := range a.ActiveDays {
 		if v == day {
 			return true

@@ -3,12 +3,13 @@ package app
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/k0kubun/pp"
+	"github.com/gorilla/mux"
 	"krizz.org/sleepi/pkg/alarm"
 	"krizz.org/sleepi/pkg/effects"
 	"krizz.org/sleepi/pkg/util"
@@ -20,9 +21,11 @@ func (r *Routes) addAlarmRoutes() error {
 	}
 	prefix := "/alarms"
 	routes := map[string]func(http.ResponseWriter, *http.Request){
-		"/":       r.AlarmIndex,
-		"/new":    r.AlarmNew,
-		"/create": r.AlarmCreate,
+		"/":                 r.AlarmIndex,
+		"/new":              r.AlarmNew,
+		"/create":           r.AlarmCreate,
+		"/{id}/activate/":   r.AlarmActivate,
+		"/{id}/deactivate/": r.AlarmDeactivate,
 	}
 	for url, fn := range routes {
 		u := fmt.Sprintf("%v%v", prefix, url)
@@ -34,6 +37,7 @@ func (r *Routes) addAlarmRoutes() error {
 func (routes *Routes) AlarmIndex(w http.ResponseWriter, r *http.Request) {
 	vars := make(map[string]interface{})
 	vars["Alarms"] = routes.api.alarms.Alarms
+	vars["Days"] = util.Weekdays()
 	routes.ren.HTML(w, http.StatusOK, "alarms/main", vars)
 }
 
@@ -42,6 +46,67 @@ func (routes *Routes) AlarmNew(w http.ResponseWriter, r *http.Request) {
 	vars["Days"] = util.Weekdays()
 	vars["Playlists"] = routes.api.playlists.Playlists
 	routes.ren.HTML(w, http.StatusOK, "alarms/new", vars)
+}
+
+func (routes *Routes) AlarmActivate(w http.ResponseWriter, r *http.Request) {
+	id_s := mux.Vars(r)["id"]
+	id, err := uuid.Parse(id_s)
+	if err != nil {
+		log.Println(err)
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	a, err := routes.api.alarms.GetAlarm(id)
+	if err != nil {
+		log.Println(err)
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	a.Enabled = true
+	err = routes.api.alarms.UpdateNextAlarm()
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	err = routes.api.alarms.Save()
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+	http.Redirect(routes.withoutFrontendCache(w), r, "/alarms/", http.StatusPermanentRedirect)
+}
+
+func (routes *Routes) AlarmDeactivate(w http.ResponseWriter, r *http.Request) {
+	id_s := mux.Vars(r)["id"]
+	id, err := uuid.Parse(id_s)
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	a, err := routes.api.alarms.GetAlarm(id)
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	a.Enabled = false
+	err = routes.api.alarms.UpdateNextAlarm()
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	err = routes.api.alarms.Save()
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	http.Redirect(routes.withoutFrontendCache(w), r, "/alarms/", http.StatusPermanentRedirect)
 }
 
 func (routes *Routes) AlarmCreate(w http.ResponseWriter, r *http.Request) {
@@ -83,7 +148,9 @@ func (routes *Routes) AlarmCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a, err := alarm.CreateAlarm(&id, days, hour, minute)
+	name := r.PostFormValue("alarm-name")
+
+	a, err := alarm.CreateAlarm(&id, name, days, hour, minute)
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return
@@ -116,7 +183,6 @@ func (routes *Routes) AlarmCreate(w http.ResponseWriter, r *http.Request) {
 		a.VolumeWarmup = warmup
 	}
 
-	pp.Println(a)
 	err = routes.api.alarms.AddAlarm(a)
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))

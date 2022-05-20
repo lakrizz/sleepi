@@ -2,7 +2,6 @@ package app
 
 import (
 	"errors"
-	"html/template"
 
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
@@ -51,21 +50,4 @@ func (a *App) InitRoutes(mux *mux.Router, ren *render.Render) error {
 		return err
 	}
 	return nil
-}
-
-func (a *App) GetFuncMap() template.FuncMap {
-	return template.FuncMap(map[string]interface{}{
-		"TopFiles": func(slice []*library.File, num int) []*library.File {
-			if len(slice) > num {
-				return slice[:num]
-			}
-			return slice
-		},
-		"Cut": func(s string, i int) string {
-			if len(s) <= i {
-				return s
-			}
-			return s[:i]
-		},
-	})
 }

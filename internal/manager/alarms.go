@@ -5,8 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"time"
 
+	"github.com/google/uuid"
 	"krizz.org/sleepi/pkg/alarm"
 	"krizz.org/sleepi/pkg/util"
 )
@@ -33,15 +35,22 @@ func getAlarmManager() (*AlarmManager, error) {
 		return nil, err
 	}
 
-	closest, err := am.GetClosestAlarm()
-	if err == nil {
-		am.setNext(closest)
+	err = am.setNext()
+	if err != nil {
+		return nil, err
+	}
+
+	if am.next != nil { // only do this if there's actually an enabled alarm
 		go am.listen()
 	}
 	return am, nil
 }
 
-func (am *AlarmManager) GetClosestAlarm() (*alarm.Alarm, error) {
+func (am *AlarmManager) UpdateNextAlarm() error {
+	return am.setNext()
+}
+
+func (am *AlarmManager) getClosestAlarm() (*alarm.Alarm, error) {
 	if len(am.Alarms) == 0 {
 		return nil, errors.New("no alarms")
 	}
@@ -50,9 +59,9 @@ func (am *AlarmManager) GetClosestAlarm() (*alarm.Alarm, error) {
 		return am.Alarms[0], nil
 	}
 
-	closest := am.Alarms[0]
+	var closest *alarm.Alarm
 	for _, a := range am.Alarms[0:] {
-		if a.DurationUntilNextAlarm() < closest.DurationUntilNextAlarm() {
+		if a.Enabled && (closest == nil || a.DurationUntilNextAlarm() < closest.DurationUntilNextAlarm()) {
 			closest = a
 		}
 	}
@@ -65,8 +74,7 @@ func (am *AlarmManager) listen() {
 		select {
 		case <-am.alarm_timer.C:
 			go am.next.Trigger()
-			closest, _ := am.GetClosestAlarm()
-			am.setNext(closest)
+			am.setNext()
 		default:
 			// log.Println(am.next.DurationUntilNextAlarm().String())
 			// time.Sleep(150 * time.Millisecond)
@@ -80,11 +88,19 @@ func (am *AlarmManager) AddAlarm(alarm *alarm.Alarm) error {
 		return fmt.Errorf("could not add alarm with id %v - it's already in list", alarm.Id.String())
 	}
 	am.Alarms = append(am.Alarms, alarm)
-	if new_next, _ := am.GetClosestAlarm(); am.next != new_next {
-		am.setNext(new_next)
+	am.setNext()
+
+	return am.Save()
+}
+
+func (am *AlarmManager) GetAlarm(id uuid.UUID) (*alarm.Alarm, error) {
+	for _, v := range am.Alarms {
+		if v.Id == id {
+			return v, nil
+		}
 	}
 
-	return am.save()
+	return nil, errors.New("alarm not found")
 }
 
 func (am *AlarmManager) isInAlarmList(alarm *alarm.Alarm) bool {
@@ -96,22 +112,38 @@ func (am *AlarmManager) isInAlarmList(alarm *alarm.Alarm) bool {
 	return false
 }
 
-func (am *AlarmManager) setNext(alarm *alarm.Alarm) {
+func (am *AlarmManager) setNext() error {
 	if len(am.Alarms) == 0 {
-		return
+		return errors.New("there are no alarms")
 	}
-	am.next, _ = am.GetClosestAlarm()
+
+	next, err := am.getClosestAlarm()
+	if err != nil {
+		return err
+	}
+
+	if next == nil {
+		// see if there was a timer running and stop it
+		if am.alarm_timer != nil {
+			am.alarm_timer.Stop()
+		}
+		// stop all timers
+		log.Println("new next NONE!")
+		return nil
+	}
+	am.next = next
 	am.alarm_timer = time.NewTimer(am.next.DurationUntilNextAlarm())
-	fmt.Println("new next:", am.next.WakeHour, am.next.WakeMinute)
+	log.Println("new next", am.next)
+	return nil
 }
 
-func (am *AlarmManager) save() error {
+func (am *AlarmManager) Save() error {
 	dat, err := json.Marshal(am)
 	if err != nil {
 		return err
 	}
 
-	fname, err := util.GetFullConfigPath("alarms")
+	fname, err := util.GetFullConfigPath(alarmManagerFileName)
 	if err != nil {
 		return err
 	}
