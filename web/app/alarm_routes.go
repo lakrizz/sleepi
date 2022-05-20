@@ -4,8 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/k0kubun/pp"
+	"krizz.org/sleepi/pkg/alarm"
+	"krizz.org/sleepi/pkg/effects"
 	"krizz.org/sleepi/pkg/util"
 )
 
@@ -51,7 +56,72 @@ func (routes *Routes) AlarmCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pp.Println(r.PostForm)
+	id, err := uuid.Parse(r.PostFormValue("alarm-playlist"))
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
 
-	http.Redirect(routes.withoutFrontendCache(w), r, "/playlists/", http.StatusPermanentRedirect)
+	days := make([]time.Weekday, 0)
+	for _, v := range []string(r.PostForm["days"]) {
+		vi, err := strconv.Atoi(v)
+		if err != nil {
+			routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+			return
+		}
+		days = append(days, time.Weekday(vi))
+	}
+
+	minute, err := strconv.Atoi(r.PostFormValue("alarm-minute"))
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+	hour, err := strconv.Atoi(r.PostFormValue("alarm-hour"))
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	a, err := alarm.CreateAlarm(&id, days, hour, minute)
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	// check for volume warmup
+	warmup_enabled := r.PostFormValue("cb_volumewarmup")
+	if warmup_enabled != "" && warmup_enabled == "on" {
+		warmup := &effects.VolumeWarmup{}
+		wu_sv, err := strconv.Atoi(r.PostFormValue("warmup-start-volume"))
+		if err != nil {
+			routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+			return
+		}
+		warmup.StartVolume = wu_sv
+
+		wu_ev, err := strconv.Atoi(r.PostFormValue("warmup-end-volume"))
+		if err != nil {
+			routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+			return
+		}
+		warmup.EndVolume = wu_ev
+
+		wu_dur, err := time.ParseDuration(r.PostFormValue("warmup-duration"))
+		if err != nil {
+			routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+			return
+		}
+		warmup.Duration = &wu_dur
+		a.VolumeWarmup = warmup
+	}
+
+	pp.Println(a)
+	err = routes.api.alarms.AddAlarm(a)
+	if err != nil {
+		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
+		return
+	}
+
+	http.Redirect(routes.withoutFrontendCache(w), r, "/alarms/", http.StatusPermanentRedirect)
 }
