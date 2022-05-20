@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -128,12 +127,10 @@ func (am *AlarmManager) setNext() error {
 			am.alarm_timer.Stop()
 		}
 		// stop all timers
-		log.Println("new next NONE!")
 		return nil
 	}
 	am.next = next
 	am.alarm_timer = time.NewTimer(am.next.DurationUntilNextAlarm())
-	log.Println("new next", am.next)
 	return nil
 }
 
