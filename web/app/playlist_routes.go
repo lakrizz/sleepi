@@ -65,7 +65,7 @@ func (routes *Routes) PlaylistCreate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		f := routes.api.library.Files[id]
-		pl.Add(f)
+		pl.AddFile(f)
 	}
 
 	if pl.Valid() {

@@ -113,6 +113,25 @@ func (l *Library) AddFile(data []byte, name string) error {
 	return l.save()
 }
 
+func (l *Library) Remove(id uuid.UUID) error {
+	if _, ok := l.Files[id]; !ok {
+		return errors.New("file not found")
+	}
+
+	f := l.Files[id]
+	if !f.existsPhysically() {
+		delete(l.Files, id)
+		return nil
+	}
+
+	err := os.Remove(f.Path)
+	if err != nil {
+		return err
+	}
+	delete(l.Files, id)
+	return l.save()
+}
+
 func (l *Library) save() error {
 	fn, err := util.GetFullConfigPath(config_name)
 	if err != nil {

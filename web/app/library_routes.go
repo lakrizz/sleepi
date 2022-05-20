@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 	"github.com/gosimple/slug"
 	"krizz.org/sleepi/pkg/services"
 )
@@ -19,8 +21,9 @@ func (r *Routes) addLibraryRoutes() error {
 	}
 	prefix := "/library"
 	routes := map[string]func(http.ResponseWriter, *http.Request){
-		"/":       r.LibraryIndex,
-		"/upload": r.LibraryUpload,
+		"/":            r.LibraryIndex,
+		"/upload":      r.LibraryUpload,
+		"/remove/{id}": r.LibraryRemove,
 	}
 	for url, fn := range routes {
 		u := fmt.Sprintf("%v%v", prefix, url)
@@ -34,6 +37,29 @@ func (routes *Routes) LibraryIndex(w http.ResponseWriter, r *http.Request) {
 	vars := make(map[string]interface{})
 	vars["files"] = routes.api.library.Files
 	routes.ren.HTML(routes.withoutFrontendCache(w), http.StatusOK, "library/main", vars)
+}
+
+func (routes *Routes) LibraryRemove(w http.ResponseWriter, r *http.Request) {
+	id_s := mux.Vars(r)["id"]
+	id, err := uuid.Parse(id_s)
+	if err != nil {
+		routes.ren.Text(w, 404, err.Error())
+		return
+	}
+	err = routes.api.library.Remove(id)
+	if err != nil {
+		routes.ren.Text(w, 404, err.Error())
+		return
+	}
+
+	// remove from all playlists
+	for _, v := range routes.api.playlists.Playlists {
+		if v.ContainsFile(id) {
+			v.RemoveFile(id)
+		}
+	}
+
+	routes.ren.HTML(routes.withoutFrontendCache(w), http.StatusPermanentRedirect, "util/redirect", "/library/")
 }
 
 func (routes *Routes) LibraryUpload(w http.ResponseWriter, r *http.Request) {

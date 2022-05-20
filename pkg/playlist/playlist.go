@@ -26,7 +26,7 @@ func NewPlaylist(name string) (*Playlist, error) {
 	return p, nil
 }
 
-func (p *Playlist) contains(id uuid.UUID) bool {
+func (p *Playlist) ContainsFile(id uuid.UUID) bool {
 	for _, v := range p.Files {
 		if v.Id == id {
 			return true
@@ -36,12 +36,12 @@ func (p *Playlist) contains(id uuid.UUID) bool {
 
 }
 
-func (p *Playlist) Add(file *library.File) error {
+func (p *Playlist) AddFile(file *library.File) error {
 	if file == nil {
 		return errors.New("cannot add nil-file")
 	}
 
-	if p.contains(file.Id) {
+	if p.ContainsFile(file.Id) {
 		return errors.New("this file is already part of this playlist")
 	}
 
@@ -49,12 +49,12 @@ func (p *Playlist) Add(file *library.File) error {
 	return nil
 }
 
-func (p *Playlist) Remove(id uuid.UUID) error {
+func (p *Playlist) RemoveFile(id uuid.UUID) error {
 	if id == uuid.Nil {
 		return errors.New("id is nil, i don't want to remove this")
 	}
 
-	if !p.contains(id) {
+	if !p.ContainsFile(id) {
 		return errors.New("this id is not part of this playlist, i can't remove it")
 	}
 

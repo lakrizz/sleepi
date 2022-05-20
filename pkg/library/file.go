@@ -15,7 +15,7 @@ type File struct {
 }
 
 func (f *File) existsPhysically() bool {
-	if _, err := os.Stat(f.Path); err != os.ErrNotExist {
+	if _, err := os.Stat(f.Path); os.IsExist(err) {
 		return true
 	}
 	return false
