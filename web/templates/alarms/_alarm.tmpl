@@ -11,11 +11,11 @@
         <table class="table" style="background-color: transparent;">
         <tr>
         {{ if  $alarm.Enabled }}
-            <td rowspan="4" style="width: 96px; border: none; vertical-align: middle; -8px;">
+            <td rowspan="5" style="width: 96px; border: none; vertical-align: middle; -8px;">
                 <span class="material-icons" style="font-size: 64px; line-height: 100%; color: #4a942b;"><a style="text-decoration: none;" href="/alarms/{{$alarm.Id}}/deactivate">alarm</a></span>
             </td>
             {{ else }}
-            <td rowspan="4" style="width: 96px; border: none; vertical-align: middle; -8px;">
+            <td rowspan="5" style="width: 96px; border: none; vertical-align: middle; -8px;">
                 <span class="material-icons" style="font-size: 64px; line-height: 100%; color: #d25050;"><a style="text-decoration: none;" href="/alarms/{{$alarm.Id}}/activate">alarm_off</a></span>
             </td>
             {{ end }}
@@ -45,6 +45,14 @@
                     {{ .Playlist}}
                 </td>
             </tr>
+            {{ if $alarm.VolumeWarmup }}
+            <tr>
+                <td><strong>volume warmup</strong></td>
+                <td>
+                    from {{ $alarm.VolumeWarmup.StartVolume }} to {{ $alarm.VolumeWarmup.EndVolume }} in {{ $alarm.VolumeWarmup.Duration}}
+                </td>
+            </tr>
+            {{ end }}
             <tr>
             <td rowspan="2"><a href="/alarms/{{$alarm.Id}}/edit">edit</a></td>
             </tr>
