@@ -7,7 +7,10 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
+	"krizz.org/sleepi/pkg/library"
 	"krizz.org/sleepi/pkg/playlist"
+	"krizz.org/sleepi/pkg/util"
 )
 
 func (r *Routes) addPlaylistRoutes() error {
@@ -19,6 +22,7 @@ func (r *Routes) addPlaylistRoutes() error {
 		"/":       r.PlaylistMain,
 		"/new":    r.PlaylistNew,
 		"/create": r.PlaylistCreate,
+		"/{id}":   r.PlaylistEdit,
 	}
 	for url, fn := range routes {
 		u := fmt.Sprintf("%v%v", prefix, url)
@@ -73,4 +77,31 @@ func (routes *Routes) PlaylistCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(routes.withoutFrontendCache(w), r, "/playlists/", http.StatusPermanentRedirect)
+}
+
+func (routes *Routes) PlaylistEdit(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte("this is not a get request"))
+		return
+	}
+
+	id_s := mux.Vars(r)["id"]
+	id, err := uuid.Parse(id_s)
+	if err != nil {
+		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
+		return
+	}
+
+	pl, err := routes.api.playlists.GetPlaylistById(id)
+	if err != nil {
+		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
+		return
+	}
+
+	params := make(map[string]interface{})
+
+	params["Songs"] = util.IntersectFiles(routes.api.library.GetAllFiles(), pl.Files, func(a, b *library.File) bool { return a.Id == b.Id })
+	params["Playlist"] = pl
+
+	routes.ren.HTML(w, http.StatusOK, "playlists/edit", params)
 }

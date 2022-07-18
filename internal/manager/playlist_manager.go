@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/adrg/xdg"
+	"github.com/google/uuid"
 	"krizz.org/sleepi/pkg/playlist"
 )
 
@@ -104,4 +105,18 @@ func searchPlaylistFile(folder string) (*PlaylistManager, error) {
 	}
 
 	return nil, errors.New("no config found")
+}
+
+func (pm *PlaylistManager) GetPlaylistById(id uuid.UUID) (*playlist.Playlist, error) {
+	if id == uuid.Nil {
+		return nil, errors.New("playlist id can't be null")
+	}
+
+	for _, v := range pm.Playlists {
+		if v.Id == id {
+			return v, nil
+		}
+	}
+
+	return nil, fmt.Errorf("no playlist found for id %s", id.String())
 }
