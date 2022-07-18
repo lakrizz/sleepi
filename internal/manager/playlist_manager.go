@@ -46,7 +46,7 @@ func (pm *PlaylistManager) AddPlaylist(playlist *playlist.Playlist) error {
 		return errors.New("you are trying to add an empty playlist")
 	}
 
-	return fmt.Errorf("a playlist with the id %v is already exists - is this a coincidence?", playlist.Id.String())
+	return fmt.Errorf("a playlist with the id %v already exists - is this a coincidence?", playlist.Id.String())
 }
 
 func (pm *PlaylistManager) isInList(playlist *playlist.Playlist) bool {
@@ -119,4 +119,22 @@ func (pm *PlaylistManager) GetPlaylistById(id uuid.UUID) (*playlist.Playlist, er
 	}
 
 	return nil, fmt.Errorf("no playlist found for id %s", id.String())
+}
+
+func (pm *PlaylistManager) UpdatePlaylist(playlist *playlist.Playlist) error {
+	if pm.isInList(playlist) {
+		for _, v := range pm.Playlists {
+			if v.Id == playlist.Id {
+				v.Files = playlist.Files
+				break
+			}
+		}
+		return pm.Save()
+	}
+
+	if playlist == nil {
+		return errors.New("you are trying to update an empty playlist")
+	}
+
+	return fmt.Errorf("a playlist with the id %v does not exist", playlist.Id.String())
 }

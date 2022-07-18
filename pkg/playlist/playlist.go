@@ -68,6 +68,11 @@ func (p *Playlist) RemoveFile(id uuid.UUID) error {
 	return nil
 }
 
+func (p *Playlist) ClearFiles() error {
+	p.Files = make([]*library.File, 0)
+	return nil
+}
+
 func (p *Playlist) GetFileByIndex(index int) (*library.File, error) {
 	if len(p.Files) == 0 {
 		return nil, errors.New("there are no files here, can't return anything")

@@ -19,10 +19,11 @@ func (r *Routes) addPlaylistRoutes() error {
 	}
 	prefix := "/playlists"
 	routes := map[string]func(http.ResponseWriter, *http.Request){
-		"/":       r.PlaylistMain,
-		"/new":    r.PlaylistNew,
-		"/create": r.PlaylistCreate,
-		"/{id}":   r.PlaylistEdit,
+		"/":          r.PlaylistMain,
+		"/new":       r.PlaylistNew,
+		"/create":    r.PlaylistCreate,
+		"/{id}":      r.PlaylistEdit,
+		"/{id}/save": r.PlaylistSave,
 	}
 	for url, fn := range routes {
 		u := fmt.Sprintf("%v%v", prefix, url)
@@ -104,4 +105,54 @@ func (routes *Routes) PlaylistEdit(w http.ResponseWriter, r *http.Request) {
 	params["Playlist"] = pl
 
 	routes.ren.HTML(w, http.StatusOK, "playlists/edit", params)
+}
+
+func (routes *Routes) PlaylistSave(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte("this is not a post request"))
+		return
+	}
+
+	err := r.ParseForm()
+	if err != nil {
+		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
+		return
+	}
+
+	id_s := mux.Vars(r)["id"]
+	id, err := uuid.Parse(id_s)
+	if err != nil {
+		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
+		return
+	}
+
+	pl, err := routes.api.playlists.GetPlaylistById(id)
+	if err != nil {
+		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
+		return
+	}
+
+	err = pl.ClearFiles()
+	if err != nil {
+		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
+		return
+	}
+
+	for _, v := range []string(r.PostForm["order"]) {
+		id, err := uuid.Parse(v)
+		if err != nil {
+			routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
+			return
+		}
+		f := routes.api.library.Files[id]
+		pl.AddFile(f)
+	}
+
+	pl.Name = r.PostFormValue("playlist-title")
+
+	if pl.Valid() {
+		routes.api.playlists.UpdatePlaylist(pl)
+	}
+
+	http.Redirect(routes.withoutFrontendCache(w), r, "/playlists/", http.StatusPermanentRedirect)
 }

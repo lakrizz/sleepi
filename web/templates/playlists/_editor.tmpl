@@ -26,6 +26,8 @@
     </div>
 </div>
 <div id="playlist-order" style="display: none;">
-
+        {{ range .Playlist.Files }}
+            <input type='hidden' name='order' value='{{.Id}}' />
+        {{ end }}
 </div>
 {{ end }}
