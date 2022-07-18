@@ -1,20 +1,5 @@
 $(document).ready(function () {
 
-    $('.builder-song').each(function(e) {
-        console.log(e);
-        ele = $(e.target)
-        if (ele.hasClass("in-library")) {
-            console.log("is in library");
-            ele.find(".playlist-remove").hide();
-        } 
-        else
-        {
-            console.log("is not in library");
-            ele.find(".playlist-remove").show();
-        }
-    });
-
-
     $("#playlist-songs").sortable({
         update: rebuild_playlist,
     }
