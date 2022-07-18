@@ -34,10 +34,7 @@ func getAlarmManager() (*AlarmManager, error) {
 		return nil, err
 	}
 
-	err = am.setNext()
-	if err != nil {
-		return nil, err
-	}
+	am.setNext() // we surpress the error here since it's not relevant whether there's actually alarms
 
 	if am.next != nil { // only do this if there's actually an enabled alarm
 		go am.listen()
