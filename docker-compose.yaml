@@ -8,9 +8,9 @@ services:
       - 6600:6600  # MPD Client
       - 8000:8000  # Stream
     volumes:
-      - ./Music:/var/lib/mpd/music:rw
-      - ./playlists:/var/lib/mpd/playlists:rw
-      - ./data:/var/lib/mpd/data:rw
+      - ./run/music:/var/lib/mpd/music:rw
+      - ./run/playlists:/var/lib/mpd/playlists:rw
+      - ./run/data:/var/lib/mpd/data:rw
       #- ./mpd.conf:/etc/mpd.conf:rw
     devices:
       - "/dev/snd:/dev/snd"
