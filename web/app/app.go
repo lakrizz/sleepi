@@ -5,16 +5,15 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
-	"krizz.org/sleepi/internal/manager"
-	"krizz.org/sleepi/pkg/audioplayer"
-	"krizz.org/sleepi/pkg/library"
+
+	"github.com/lakrizz/sleepi/internal/manager"
+	"github.com/lakrizz/sleepi/pkg/library"
 )
 
 type App struct {
 	alarms    *manager.AlarmManager
 	playlists *manager.PlaylistManager
 	library   *library.Library
-	player    *audioplayer.Audioplayer
 }
 
 func InitApp(man *manager.Managers) (*App, error) {
@@ -26,7 +25,6 @@ func InitApp(man *manager.Managers) (*App, error) {
 	app.alarms = man.Alarms
 	app.playlists = man.Playlists
 	app.library = man.Library
-	app.player = man.AudioPlayer
 	return app, nil
 }
 

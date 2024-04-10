@@ -8,9 +8,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"krizz.org/sleepi/pkg/library"
-	"krizz.org/sleepi/pkg/playlist"
-	"krizz.org/sleepi/pkg/util"
+	"github.com/lakrizz/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/pkg/playlist"
+	"github.com/lakrizz/sleepi/pkg/util"
 )
 
 func (r *Routes) addPlaylistRoutes() error {

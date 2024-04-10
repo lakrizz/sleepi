@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"krizz.org/sleepi/pkg/alarm"
-	"krizz.org/sleepi/pkg/util"
+	"github.com/lakrizz/sleepi/pkg/alarm"
+	"github.com/lakrizz/sleepi/pkg/util"
 )
 
 type AlarmManager struct {

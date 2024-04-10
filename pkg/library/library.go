@@ -12,7 +12,8 @@ import (
 	"github.com/adrg/xdg"
 	"github.com/google/uuid"
 	"github.com/k0kubun/pp"
-	"krizz.org/sleepi/pkg/util"
+
+	"github.com/lakrizz/sleepi/pkg/util"
 )
 
 type Library struct {
@@ -119,7 +120,7 @@ func (l *Library) Remove(id uuid.UUID) error {
 	}
 
 	f := l.Files[id]
-	if !f.existsPhysically() {
+	if !f.Exists() {
 		delete(l.Files, id)
 		return nil
 	}

@@ -11,8 +11,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
-	"krizz.org/sleepi/config"
-	"krizz.org/sleepi/web/app"
+	"github.com/lakrizz/sleepi/config"
+	"github.com/lakrizz/sleepi/web/app"
 )
 
 var ren *render.Render

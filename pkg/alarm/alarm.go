@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"krizz.org/sleepi/pkg/effects"
+	"github.com/lakrizz/sleepi/pkg/effects"
 )
 
 type Alarm struct {

@@ -5,8 +5,8 @@ import (
 	"html/template"
 	"time"
 
-	"krizz.org/sleepi/pkg/alarm"
-	"krizz.org/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/pkg/alarm"
+	"github.com/lakrizz/sleepi/pkg/library"
 )
 
 func (a *App) GetFuncMap() template.FuncMap {

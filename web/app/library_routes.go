@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/gosimple/slug"
-	"krizz.org/sleepi/pkg/services"
+	"github.com/lakrizz/sleepi/pkg/services"
 )
 
 func (r *Routes) addLibraryRoutes() error {

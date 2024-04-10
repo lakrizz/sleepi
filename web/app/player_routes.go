@@ -3,11 +3,7 @@ package app
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
-
-	"github.com/google/uuid"
-	"github.com/gorilla/mux"
 )
 
 func (r *Routes) addPlayerRoutes() error {
@@ -26,29 +22,5 @@ func (r *Routes) addPlayerRoutes() error {
 }
 
 func (routes *Routes) PlayerPlay(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	uu_id, err := uuid.Parse(id)
-	if err != nil {
-		log.Println(err)
-		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
-		return
-	}
-
-	file := routes.api.library.Files[uu_id]
-	err = routes.api.player.Clear()
-	if err != nil {
-		log.Println("player/clear", err)
-		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
-		return
-	}
-
-	err = routes.api.player.Add(file)
-	if err != nil {
-		log.Println("player/add", err)
-		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
-		return
-	}
-
-	routes.api.player.Play()
 	http.Redirect(routes.withoutFrontendCache(w), r, r.Referer(), http.StatusPermanentRedirect)
 }

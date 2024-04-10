@@ -11,7 +11,7 @@ import (
 
 	"github.com/adrg/xdg"
 	"github.com/google/uuid"
-	"krizz.org/sleepi/pkg/playlist"
+	"github.com/lakrizz/sleepi/pkg/playlist"
 )
 
 type PlaylistManager struct {

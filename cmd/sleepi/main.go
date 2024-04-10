@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"krizz.org/sleepi/internal/manager"
-	"krizz.org/sleepi/web"
-	"krizz.org/sleepi/web/app"
+	"github.com/lakrizz/sleepi/internal/manager"
+	"github.com/lakrizz/sleepi/web"
+	"github.com/lakrizz/sleepi/web/app"
 )
 
 func main() {

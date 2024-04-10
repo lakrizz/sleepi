@@ -10,9 +10,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"krizz.org/sleepi/pkg/alarm"
-	"krizz.org/sleepi/pkg/effects"
-	"krizz.org/sleepi/pkg/util"
+	"github.com/lakrizz/sleepi/pkg/alarm"
+	"github.com/lakrizz/sleepi/pkg/effects"
+	"github.com/lakrizz/sleepi/pkg/util"
 )
 
 func (r *Routes) addAlarmRoutes() error {

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"krizz.org/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/pkg/library"
 )
 
 // a playlist is nothing more than a loose collection of files that reside in "the" library
