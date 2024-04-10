@@ -18,6 +18,8 @@ type MPDPlayer struct {
 	musicPath string
 	listener  *listener
 	client    *mpd.Client
+
+	cancel chan bool
 }
 
 type MPDOption func(*MPDPlayer) error
@@ -27,6 +29,7 @@ func NewMPDPlayer(opts ...MPDOption) (*MPDPlayer, error) {
 		volume:    100,
 		mpdHost:   "127.0.0.1",
 		musicPath: "./run/music",
+		cancel:    make(chan bool),
 	}
 
 	for _, o := range opts {
@@ -43,8 +46,9 @@ func NewMPDPlayer(opts ...MPDOption) (*MPDPlayer, error) {
 	p.SetVolume(p.volume)
 
 	// create listener
-	l := createListener(fmt.Sprintf("http://%s:8000", p.mpdHost))
+	l := createListener(fmt.Sprintf("http://%s:8000", p.mpdHost), p.cancel)
 	p.listener = l
+	go p.listener.run()
 
 	return p, nil
 }

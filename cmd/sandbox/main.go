@@ -26,6 +26,4 @@ func main() {
 	}
 
 	pp.Println(bp.Play())
-	for {
-	}
 }

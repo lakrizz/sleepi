@@ -1,7 +1,6 @@
 package mpd
 
 import (
-	"log"
 	"os/exec"
 )
 
@@ -17,10 +16,10 @@ type listener struct {
 	cmd     *exec.Cmd
 }
 
-func createListener(url string) *listener {
+func createListener(url string, cancel chan bool) *listener {
 	l := &listener{
 		running: false,
-		cancel:  make(chan bool),
+		cancel:  cancel,
 		cmd:     exec.Command("mplayer", url),
 	}
 
@@ -28,15 +27,10 @@ func createListener(url string) *listener {
 }
 
 func (l *listener) run() {
-	err := l.cmd.Start() // use builtin logic to prevent double execution
+	l.running = true
+	err := l.cmd.Run() // use builtin logic to prevent double execution
+	l.running = false
 	if err != nil {
 		return
 	}
-
-	log.Printf("started mplayer process with pid: %v\n", l.cmd.Process.Pid)
-	l.running = true
-
-	// run a second
-	l.cmd.Wait()
-	l.running = false
 }
