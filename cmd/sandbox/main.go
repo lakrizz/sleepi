@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/google/uuid"
 	"github.com/k0kubun/pp"
 
@@ -10,7 +12,10 @@ import (
 
 func main() {
 
-	bp, err := mpd.NewMPDPlayer()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	bp, err := mpd.NewMPDPlayer(ctx)
 	if err != nil {
 		pp.Println(err)
 		return
@@ -26,4 +31,5 @@ func main() {
 	}
 
 	pp.Println(bp.Play())
+	select {}
 }

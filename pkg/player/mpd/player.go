@@ -1,6 +1,7 @@
 package mpd
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path"
@@ -24,7 +25,7 @@ type MPDPlayer struct {
 
 type MPDOption func(*MPDPlayer) error
 
-func NewMPDPlayer(opts ...MPDOption) (*MPDPlayer, error) {
+func NewMPDPlayer(ctx context.Context, opts ...MPDOption) (*MPDPlayer, error) {
 	p := &MPDPlayer{
 		volume:    100,
 		mpdHost:   "127.0.0.1",
@@ -46,7 +47,7 @@ func NewMPDPlayer(opts ...MPDOption) (*MPDPlayer, error) {
 	p.SetVolume(p.volume)
 
 	// create listener
-	l := createListener(fmt.Sprintf("http://%s:8000", p.mpdHost), p.cancel)
+	l := createListener(ctx, fmt.Sprintf("http://%s:8000", p.mpdHost), p.cancel)
 	p.listener = l
 	go p.listener.run()
 

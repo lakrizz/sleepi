@@ -1,8 +1,8 @@
 sw_volume: 100
 audio_device_state:1:MPD HTTP Audio Stream
 state: play
-current: 5
-time: 120.001000
+current: 18
+time: 23.301000
 random: 0
 repeat: 0
 single: 0
@@ -33,4 +33,11 @@ playlist_begin
 19:ttng.mp3
 20:ttng.mp3
 21:ttng.mp3
+22:ttng.mp3
+23:ttng.mp3
+24:ttng.mp3
+25:ttng.mp3
+26:ttng.mp3
+27:ttng.mp3
+28:ttng.mp3
 playlist_end

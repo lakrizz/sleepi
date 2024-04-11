@@ -1,6 +1,8 @@
 package mpd
 
 import (
+	"context"
+	"log"
 	"os/exec"
 )
 
@@ -16,11 +18,11 @@ type listener struct {
 	cmd     *exec.Cmd
 }
 
-func createListener(url string, cancel chan bool) *listener {
+func createListener(ctx context.Context, url string, cancel chan bool) *listener {
 	l := &listener{
 		running: false,
 		cancel:  cancel,
-		cmd:     exec.Command("mplayer", url),
+		cmd:     exec.CommandContext(ctx, "mplayer", url),
 	}
 
 	return l
@@ -28,9 +30,13 @@ func createListener(url string, cancel chan bool) *listener {
 
 func (l *listener) run() {
 	l.running = true
-	err := l.cmd.Run() // use builtin logic to prevent double execution
-	l.running = false
+	log.Println("listener is now running")
+	err := l.cmd.Start() // use builtin logic to prevent double execution
 	if err != nil {
 		return
 	}
+
+	l.cmd.Wait()
+	log.Println("listener is not running anymore")
+	l.running = false
 }
