@@ -1,6 +1,8 @@
 sw_volume: 100
 audio_device_state:1:MPD HTTP Audio Stream
-state: stop
+state: play
+current: 0
+time: 22.846000
 random: 0
 repeat: 0
 single: 0
@@ -9,34 +11,5 @@ crossfade: 0
 mixrampdb: 0.000000
 mixrampdelay: -1.000000
 playlist_begin
-0:ttng.mp3
-1:ttng.mp3
-2:ttng.mp3
-3:ttng.mp3
-4:ttng.mp3
-5:ttng.mp3
-6:ttng.mp3
-7:ttng.mp3
-8:ttng.mp3
-9:ttng.mp3
-10:ttng.mp3
-11:ttng.mp3
-12:ttng.mp3
-13:ttng.mp3
-14:ttng.mp3
-15:ttng.mp3
-16:ttng.mp3
-17:ttng.mp3
-18:ttng.mp3
-19:ttng.mp3
-20:ttng.mp3
-21:ttng.mp3
-22:ttng.mp3
-23:ttng.mp3
-24:ttng.mp3
-25:ttng.mp3
-26:ttng.mp3
-27:ttng.mp3
-28:ttng.mp3
-29:ttng.mp3
+0:lakes-start-again-02-no-excuses.mp3
 playlist_end

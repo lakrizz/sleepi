@@ -3,6 +3,7 @@ package mpd
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"path"
 
@@ -97,24 +98,26 @@ func (mp *MPDPlayer) Queue(f *models.File) error {
 		return player.ErrFileNotFound
 	}
 	targetFilename := path.Join(mp.musicPath, f.Name())
+	log.Printf("copying %v to %v", f.Path, targetFilename)
 
 	if _, err := os.Stat(targetFilename); os.IsNotExist(err) {
 		dat, err := f.Read()
 		if err != nil {
-			return err
+			return fmt.Errorf("error while queueing file: %w", err)
 		}
 
 		err = os.WriteFile(targetFilename, dat, 0777)
 		if err != nil {
-			return err
+			return fmt.Errorf("error while writing queued file: %w", err)
 		}
 
 		err = mp.refresh()
 		if err != nil {
-			return err
+			return fmt.Errorf("error while refreshing mpd database: %w", err)
 		}
 	}
 
+	log.Println("trying to play", f.Name())
 	return mp.client.Add(f.Name())
 }
 
@@ -132,6 +135,10 @@ func (mp *MPDPlayer) GetCurrentSong() (player.Song, error) {
 }
 
 func (mp *MPDPlayer) refresh() error {
-	_, err := mp.client.Rescan("")
+	_, err := mp.client.Update("")
 	return err
+}
+
+func (mp *MPDPlayer) Clear() error {
+	return mp.client.Clear()
 }

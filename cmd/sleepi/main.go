@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/lakrizz/sleepi/config"
@@ -10,12 +11,13 @@ import (
 )
 
 func main() {
-	if err := run(); err != nil {
+	ctx := context.Background()
+	if err := run(ctx); err != nil {
 		log.Println(err)
 	}
 }
 
-func run() error {
+func run(ctx context.Context) error {
 	log.Println("loading config...")
 	cfg, err := config.GetConfig()
 	if err != nil {
@@ -23,7 +25,7 @@ func run() error {
 	}
 
 	log.Println("initializing runtime...")
-	rt, err := runtime.InitRuntime(cfg)
+	rt, err := runtime.InitRuntime(ctx, cfg)
 	if err != nil {
 		return err
 	}

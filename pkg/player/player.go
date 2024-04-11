@@ -30,6 +30,7 @@ type Player interface {
 	Pause() error
 
 	Skip() error
+	Clear() error
 
 	SetVolume(int) error
 	GetVolume() (int, error)

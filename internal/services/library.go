@@ -33,7 +33,7 @@ func NewLibraryService(cfg *config.Config) (*LibraryService, error) {
 		return nil, err
 	}
 
-	lib := &LibraryService{}
+	lib := &LibraryService{config: cfg}
 	err = json.Unmarshal(dat, &lib)
 	if err != nil {
 		return nil, err

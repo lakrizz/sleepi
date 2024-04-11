@@ -7,7 +7,7 @@
         <hr />
 
         {{ range .Songs }}
-        <div class="builder-song in-library noselect" id="{{.Id}}">{{ .Name }}<span class="playlist-remove"><img
+        <div class="builder-song in-library noselect" id="{{.ID}}">{{ .Name }}<span class="playlist-remove"><img
                     src="/static/img/remove.png"></span></div>
         {{ end }}
 
@@ -18,7 +18,7 @@
         <ul id="playlist-songs">
 
         {{ range .Playlist.Files }}
-        <div class="builder-song noselect" id="{{.Id}}">{{ .Name }}<span class="playlist-remove" style="display: inline;"><img
+        <div class="builder-song noselect" id="{{.ID}}">{{ .Name }}<span class="playlist-remove" style="display: inline;"><img
                     src="/static/img/remove.png"></span></div>
         {{ end }}
         
@@ -27,7 +27,7 @@
 </div>
 <div id="playlist-order" style="display: none;">
         {{ range .Playlist.Files }}
-            <input type='hidden' name='order' value='{{.Id}}' />
+            <input type='hidden' name='order' value='{{.ID}}' />
         {{ end }}
 </div>
 {{ end }}
