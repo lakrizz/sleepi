@@ -16,12 +16,12 @@ var (
 
 type Alarm struct {
 	Enabled    bool
-	name       string
+	Name       string
 	ID         uuid.UUID
 	activeDays []time.Weekday
 	wakeHour   int
 	wakeMinute int
-	playlist   *uuid.UUID
+	Playlist   *uuid.UUID
 
 	// effects go here
 	effects []pkg.Effect
@@ -33,8 +33,8 @@ func CreateAlarm(playlistID *uuid.UUID, name string, activedays []time.Weekday, 
 		activeDays: activedays,
 		wakeHour:   wakehour,
 		wakeMinute: wakeminute,
-		playlist:   playlistID,
-		name:       name,
+		Playlist:   playlistID,
+		Name:       name,
 		ID:         uuid.New(),
 	}
 	return a, nil

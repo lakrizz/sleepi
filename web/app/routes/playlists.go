@@ -99,8 +99,7 @@ func (routes *Routes) PlaylistEdit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id_s := mux.Vars(r)["id"]
-	id, err := uuid.Parse(id_s)
+	id, err := uuid.Parse(mux.Vars(r)["id"])
 	if err != nil {
 		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
 		return

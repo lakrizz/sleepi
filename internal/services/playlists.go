@@ -24,7 +24,7 @@ func NewPlaylistService(cfg *config.Config) (*PlaylistService, error) {
 		return &PlaylistService{Playlists: make([]*playlist.Playlist, 0)}, nil
 	}
 
-	ps := &PlaylistService{}
+	ps := &PlaylistService{cfg: cfg}
 	err = json.Unmarshal(dat, &ps)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (pm *PlaylistService) Save() error {
 		return err
 	}
 
-	err = os.WriteFile(pm.cfg.PlaylistsFileName, dat, 07777)
+	err = os.WriteFile(pm.cfg.PlaylistsFileName, dat, 0777)
 	return err
 }
 

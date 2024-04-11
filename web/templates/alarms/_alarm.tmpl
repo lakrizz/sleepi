@@ -4,7 +4,7 @@
 {{ $alarm := .}}
 <article class="message">
     <div class="message-header">
-        <h4 class="title is-4" style="color: #fff;"><a href="/alarms/edit/{{.Id}}">{{ .Name }}</a></h3>
+        <h4 class="title is-4" style="color: #fff;"><a href="/alarms/edit/{{.ID}}">{{ .Name }}</a></h3>
     </div>
     <div class="message-body">
 
@@ -12,11 +12,11 @@
         <tr>
         {{ if  $alarm.Enabled }}
             <td rowspan="5" style="width: 96px; border: none; vertical-align: middle; -8px;">
-                <span class="material-icons" style="font-size: 64px; line-height: 100%; color: #4a942b;"><a style="text-decoration: none;" href="/alarms/{{$alarm.Id}}/deactivate">alarm</a></span>
+                <span class="material-icons" style="font-size: 64px; line-height: 100%; color: #4a942b;"><a style="text-decoration: none;" href="/alarms/{{$alarm.ID}}/deactivate">alarm</a></span>
             </td>
             {{ else }}
             <td rowspan="5" style="width: 96px; border: none; vertical-align: middle; -8px;">
-                <span class="material-icons" style="font-size: 64px; line-height: 100%; color: #d25050;"><a style="text-decoration: none;" href="/alarms/{{$alarm.Id}}/activate">alarm_off</a></span>
+                <span class="material-icons" style="font-size: 64px; line-height: 100%; color: #d25050;"><a style="text-decoration: none;" href="/alarms/{{$alarm.ID}}/activate">alarm_off</a></span>
             </td>
             {{ end }}
         </tr>
@@ -36,7 +36,7 @@
             <tr>
                 <td><strong>time until</strong></td>
                 <td>
-                    {{ .DurationUntilNextAlarm | formatDurationWithDays}}
+                    {{ .DurationUntilNextTrigger | formatDurationWithDays}}
                 </td>
             </tr>
             <tr>
@@ -45,16 +45,8 @@
                     {{ .Playlist}}
                 </td>
             </tr>
-            {{ if $alarm.VolumeWarmup }}
             <tr>
-                <td><strong>volume warmup</strong></td>
-                <td>
-                    from {{ $alarm.VolumeWarmup.StartVolume }} to {{ $alarm.VolumeWarmup.EndVolume }} in {{ $alarm.VolumeWarmup.Duration}}
-                </td>
-            </tr>
-            {{ end }}
-            <tr>
-            <td rowspan="2"><a href="/alarms/{{$alarm.Id}}/edit">edit</a></td>
+            <td rowspan="2"><a href="/alarms/{{$alarm.ID}}/edit">edit</a></td>
             </tr>
         </table>
     </div>

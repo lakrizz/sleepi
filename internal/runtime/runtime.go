@@ -50,5 +50,6 @@ func InitRuntime(ctx context.Context, cfg *config.Config) (*Runtime, error) {
 		Player:    player,
 	}
 
+
 	return rt, nil
 }

@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"slices"
 
 	"github.com/google/uuid"
 
@@ -16,7 +17,7 @@ import (
 type LibraryService struct {
 	config *config.Config
 
-	Files map[uuid.UUID]*models.File
+	Files []*models.File
 }
 
 var (
@@ -51,27 +52,27 @@ func (l *LibraryService) AddFile(data []byte, name string) error {
 	}
 
 	f := &models.File{Path: targetFile, ID: uuid.New()}
-	l.Files[f.ID] = f // add to the map
+	l.Files = append(l.Files, f)
 
 	return l.Save()
 }
 
 func (l *LibraryService) RemoveByID(id uuid.UUID) error {
-	if _, ok := l.Files[id]; !ok {
-		return errors.New("file not found")
+	idx := slices.IndexFunc(l.Files, func(f *models.File) bool { return f.ID == id })
+	if idx == -1 {
+		return errFileNotFound
 	}
 
-	f := l.Files[id]
-	if !f.Exists() {
-		delete(l.Files, id)
-		return nil
+	f := l.Files[idx]
+
+	if f.Exists() {
+		err := os.Remove(f.Path)
+		if err != nil {
+			return err
+		}
 	}
 
-	err := os.Remove(f.Path)
-	if err != nil {
-		return err
-	}
-	delete(l.Files, id)
+	l.Files = slices.Delete(l.Files, idx, idx+1)
 	return l.Save()
 }
 
@@ -88,17 +89,13 @@ func (l *LibraryService) Save() error {
 }
 
 func (l *LibraryService) GetFiles() []*models.File {
-	r := make([]*models.File, 0)
-	for _, v := range l.Files {
-		r = append(r, v)
-	}
-	return r
+	return l.Files
 }
 
 func (li *LibraryService) GetFileByID(id uuid.UUID) (*models.File, error) {
-	v, ok := li.Files[id]
-	if !ok {
+	idx := slices.IndexFunc(li.Files, func(f *models.File) bool { return f.ID == id })
+	if idx == -1 {
 		return nil, errFileNotFound
 	}
-	return v, nil
+	return li.Files[idx], nil
 }
