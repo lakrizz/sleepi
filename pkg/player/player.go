@@ -3,7 +3,7 @@ package player
 import (
 	"errors"
 
-	"github.com/lakrizz/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/pkg/models"
 )
 
 const (
@@ -34,8 +34,8 @@ type Player interface {
 	SetVolume(int) error
 	GetVolume() (int, error)
 
-	Queue(*library.File) error
-	QueueMany([]*library.File, bool) error
+	Queue(*models.File) error
+	QueueMany([]*models.File, bool) error
 
 	GetCurrentSong() (Song, error)
 }

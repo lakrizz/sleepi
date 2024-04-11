@@ -1,11 +1,11 @@
-package services
+package util
 
 import (
 	"mime/multipart"
 	"net/http"
 )
 
-func ParseFiles(r *http.Request) ([]*multipart.FileHeader, error) {
+func ParseHTTPMultiFormFiles(r *http.Request) ([]*multipart.FileHeader, error) {
 	if err := r.ParseMultipartForm(32 << 20); err != nil {
 		return nil, err
 	}

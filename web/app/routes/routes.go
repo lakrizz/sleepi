@@ -1,4 +1,4 @@
-package app
+package routes
 
 import (
 	"fmt"
@@ -6,12 +6,24 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
+
+	"github.com/lakrizz/sleepi/internal/runtime"
 )
 
 type Routes struct {
-	api *App
+	rt  *runtime.Runtime
 	m   *mux.Router
 	ren *render.Render
+}
+
+func CreateRouter(rt *runtime.Runtime, mux *mux.Router, renderer *render.Render) (*Routes, error) {
+  r := &Routes{
+  	rt:  rt,
+  	m:   mux,
+  	ren: renderer,
+  }
+
+  return r, nil
 }
 
 func (r *Routes) Debug() error {

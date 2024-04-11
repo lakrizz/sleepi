@@ -8,7 +8,7 @@ import (
 	"github.com/gopxl/beep/mp3"
 	"github.com/gopxl/beep/speaker"
 
-	"github.com/lakrizz/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/pkg/models"
 	"github.com/lakrizz/sleepi/pkg/player"
 )
 
@@ -17,7 +17,7 @@ type BeepPlayer struct {
 	state       int
 	currentSong *player.Song
 
-	queue []*library.File
+	queue []*models.File
 
 	command chan func() error
 }
@@ -26,7 +26,7 @@ func NewBeepPlayer(opts ...player.PlayerOption) (*BeepPlayer, error) {
 	player := &BeepPlayer{
 		volume:  0,
 		state:   player.StateStopped,
-		queue:   make([]*library.File, 0),
+		queue:   make([]*models.File, 0),
 		command: make(chan func() error, 0),
 	}
 
@@ -81,7 +81,7 @@ func (be *BeepPlayer) GetVolume() (int, error) {
 	return be.volume, nil
 }
 
-func (be *BeepPlayer) Queue(file *library.File) error {
+func (be *BeepPlayer) Queue(file *models.File) error {
 	// pushing the given file at the end of the queue
 	if !file.Exists() {
 		return player.ErrFileNotFound
@@ -91,7 +91,7 @@ func (be *BeepPlayer) Queue(file *library.File) error {
 	return nil
 }
 
-func (be *BeepPlayer) QueueMany(files []*library.File, shuffle bool) error {
+func (be *BeepPlayer) QueueMany(files []*models.File, shuffle bool) error {
 	if shuffle {
 		fmt.Println("TODO: shuffling list")
 	}
@@ -118,7 +118,7 @@ func (be *BeepPlayer) GetCurrentSong() (player.Song, error) {
 	return *be.currentSong, nil // we are returning a copy to keep the current song immutable
 }
 
-func (be *BeepPlayer) load(f *library.File) (beep.StreamSeekCloser, error) {
+func (be *BeepPlayer) load(f *models.File) (beep.StreamSeekCloser, error) {
 	rc, err := f.GetReadCloser()
 	if err != nil {
 		return nil, err

@@ -1,4 +1,4 @@
-package app
+package routes
 
 import (
 	"errors"
@@ -10,12 +10,13 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+
 	"github.com/lakrizz/sleepi/pkg/alarm"
 	"github.com/lakrizz/sleepi/pkg/effects"
 	"github.com/lakrizz/sleepi/pkg/util"
 )
 
-func (r *Routes) addAlarmRoutes() error {
+func (r *Routes) AddAlarmRoutes() error {
 	if r == nil {
 		return errors.New("routes is null")
 	}
@@ -35,29 +36,41 @@ func (r *Routes) addAlarmRoutes() error {
 }
 
 func (routes *Routes) AlarmIndex(w http.ResponseWriter, r *http.Request) {
-	vars := make(map[string]interface{})
-	vars["Alarms"] = routes.api.alarms.Alarms
-	vars["Days"] = util.Weekdays()
+	alarms, err := routes.rt.Alarms.GetAllAlarms()
+	if err != nil {
+		return
+	}
+
+	vars := map[string]any{
+		"Alarms": alarms,
+		"Days":   util.Weekdays(),
+	}
+
 	routes.ren.HTML(w, http.StatusOK, "alarms/main", vars)
 }
 
 func (routes *Routes) AlarmNew(w http.ResponseWriter, r *http.Request) {
-	vars := make(map[string]interface{})
-	vars["Days"] = util.Weekdays()
-	vars["Playlists"] = routes.api.playlists.Playlists
+	playlists, err := routes.rt.Playlists.GetAllPlaylists()
+	if err != nil {
+		return
+	}
+
+	vars := map[string]any{
+		"Days":      util.Weekdays(),
+		"Playlists": playlists,
+	}
 	routes.ren.HTML(w, http.StatusOK, "alarms/new", vars)
 }
 
 func (routes *Routes) AlarmActivate(w http.ResponseWriter, r *http.Request) {
-	id_s := mux.Vars(r)["id"]
-	id, err := uuid.Parse(id_s)
+	id, err := uuid.Parse(mux.Vars(r)["id"])
 	if err != nil {
 		log.Println(err)
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return
 	}
 
-	a, err := routes.api.alarms.GetAlarm(id)
+	a, err := routes.rt.Alarms.GetAlarm(id)
 	if err != nil {
 		log.Println(err)
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
@@ -65,13 +78,13 @@ func (routes *Routes) AlarmActivate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	a.Enabled = true
-	err = routes.api.alarms.UpdateNextAlarm()
+	err = routes.rt.Alarms.UpdateTimings()
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return
 	}
 
-	err = routes.api.alarms.Save()
+	err = routes.rt.Alarms.Save()
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return
@@ -80,27 +93,26 @@ func (routes *Routes) AlarmActivate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (routes *Routes) AlarmDeactivate(w http.ResponseWriter, r *http.Request) {
-	id_s := mux.Vars(r)["id"]
-	id, err := uuid.Parse(id_s)
+	id, err := uuid.Parse(mux.Vars(r)["id"])
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return
 	}
 
-	a, err := routes.api.alarms.GetAlarm(id)
+	a, err := routes.rt.Alarms.GetAlarm(id)
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return
 	}
 
 	a.Enabled = false
-	err = routes.api.alarms.UpdateNextAlarm()
+	err = routes.rt.Alarms.UpdateTimings()
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return
 	}
 
-	err = routes.api.alarms.Save()
+	err = routes.rt.Alarms.Save()
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return
@@ -180,10 +192,9 @@ func (routes *Routes) AlarmCreate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		warmup.Duration = &wu_dur
-		a.VolumeWarmup = warmup
 	}
 
-	err = routes.api.alarms.AddAlarm(a)
+	err = routes.rt.Alarms.AddAlarm(a)
 	if err != nil {
 		routes.ren.Data(w, http.StatusBadRequest, []byte(err.Error()))
 		return

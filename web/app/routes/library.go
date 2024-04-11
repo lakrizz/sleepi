@@ -1,4 +1,4 @@
-package app
+package routes
 
 import (
 	"errors"
@@ -12,10 +12,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/gosimple/slug"
-	"github.com/lakrizz/sleepi/pkg/services"
+
+	"github.com/lakrizz/sleepi/pkg/util"
 )
 
-func (r *Routes) addLibraryRoutes() error {
+func (r *Routes) AddLibraryRoutes() error {
 	if r == nil {
 		return errors.New("routes is null")
 	}
@@ -34,26 +35,31 @@ func (r *Routes) addLibraryRoutes() error {
 }
 
 func (routes *Routes) LibraryIndex(w http.ResponseWriter, r *http.Request) {
-	vars := make(map[string]interface{})
-	vars["files"] = routes.api.library.Files
+	vars := map[string]any{
+		"Files": routes.rt.Library.GetFiles(),
+	}
 	routes.ren.HTML(routes.withoutFrontendCache(w), http.StatusOK, "library/main", vars)
 }
 
 func (routes *Routes) LibraryRemove(w http.ResponseWriter, r *http.Request) {
-	id_s := mux.Vars(r)["id"]
-	id, err := uuid.Parse(id_s)
+	id, err := uuid.Parse(mux.Vars(r)["id"])
 	if err != nil {
 		routes.ren.Text(w, 404, err.Error())
 		return
 	}
-	err = routes.api.library.Remove(id)
+	err = routes.rt.Library.RemoveByID(id)
 	if err != nil {
 		routes.ren.Text(w, 404, err.Error())
 		return
 	}
 
+	playlists, err := routes.rt.Playlists.GetAllPlaylists()
+	if err != nil {
+		return
+	}
+
 	// remove from all playlists
-	for _, v := range routes.api.playlists.Playlists {
+	for _, v := range playlists {
 		if v.ContainsFile(id) {
 			v.RemoveFile(id)
 		}
@@ -68,7 +74,7 @@ func (routes *Routes) LibraryUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files, err := services.ParseFiles(r)
+	files, err := util.ParseHTTPMultiFormFiles(r)
 	if err != nil {
 		routes.ren.Text(w, 404, err.Error())
 		return
@@ -89,7 +95,7 @@ func (routes *Routes) LibraryUpload(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		new_fname_wo_extension := slug.Make(strings.TrimSuffix(filepath.Base(file.Filename), filepath.Ext(file.Filename)))
-		err = routes.api.library.AddFile(dat, fmt.Sprintf("%v%v", new_fname_wo_extension, filepath.Ext(file.Filename)))
+		err = routes.rt.Library.AddFile(dat, fmt.Sprintf("%v%v", new_fname_wo_extension, filepath.Ext(file.Filename)))
 		if err != nil {
 			log.Println(err.Error())
 			routes.ren.Text(w, 404, err.Error())

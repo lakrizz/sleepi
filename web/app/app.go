@@ -1,40 +1,33 @@
 package app
 
 import (
-	"errors"
-
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 
-	"github.com/lakrizz/sleepi/internal/manager"
-	"github.com/lakrizz/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/internal/runtime"
+	"github.com/lakrizz/sleepi/web/app/routes"
 )
 
 type App struct {
-	alarms    *manager.AlarmManager
-	playlists *manager.PlaylistManager
-	library   *library.Library
+	rt *runtime.Runtime
 }
 
-func InitApp(man *manager.Managers) (*App, error) {
-	if man == nil {
-		return nil, errors.New("managers not initialized")
-	}
-
-	app := &App{}
-	app.alarms = man.Alarms
-	app.playlists = man.Playlists
-	app.library = man.Library
+func InitApp(rt *runtime.Runtime) (*App, error) {
+	app := &App{rt: rt}
 	return app, nil
 }
 
 func (a *App) InitRoutes(mux *mux.Router, ren *render.Render) error {
-	r := &Routes{a, mux, ren}
+	r, err := routes.CreateRouter(a.rt, mux, ren)
+	if err != nil {
+		return err
+	}
+
 	routes := []func() error{
-		r.addAlarmRoutes,
-		r.addLibraryRoutes,
-		r.addPlayerRoutes,
-		r.addPlaylistRoutes,
+		r.AddAlarmRoutes,
+		r.AddLibraryRoutes,
+		r.AddPlayerRoutes,
+		r.AddPlaylistRoutes,
 	}
 
 	for _, r := range routes {

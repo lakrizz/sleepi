@@ -1,4 +1,4 @@
-package app
+package routes
 
 import (
 	"errors"
@@ -8,12 +8,13 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"github.com/lakrizz/sleepi/pkg/library"
+
+	"github.com/lakrizz/sleepi/pkg/models"
 	"github.com/lakrizz/sleepi/pkg/playlist"
 	"github.com/lakrizz/sleepi/pkg/util"
 )
 
-func (r *Routes) addPlaylistRoutes() error {
+func (r *Routes) AddPlaylistRoutes() error {
 	if r == nil {
 		return errors.New("routes is null")
 	}
@@ -34,14 +35,23 @@ func (r *Routes) addPlaylistRoutes() error {
 }
 
 func (routes *Routes) PlaylistMain(w http.ResponseWriter, r *http.Request) {
-	params := make(map[string]interface{})
-	params["Playlists"] = routes.api.playlists.Playlists
+	playlists, err := routes.rt.Playlists.GetAllPlaylists()
+	if err != nil {
+		return
+	}
+
+	params := map[string]any{
+		"Playlists": playlists,
+	}
+
 	routes.ren.HTML(w, http.StatusOK, "playlists/main", params)
 }
 
 func (routes *Routes) PlaylistNew(w http.ResponseWriter, r *http.Request) {
-	params := make(map[string]interface{})
-	params["Songs"] = routes.api.library.GetAllFiles()
+	params := map[string]any{
+		"Songs": routes.rt.Library.GetFiles(),
+	}
+
 	routes.ren.HTML(w, http.StatusOK, "playlists/new", params)
 }
 
@@ -69,12 +79,15 @@ func (routes *Routes) PlaylistCreate(w http.ResponseWriter, r *http.Request) {
 			routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
 			return
 		}
-		f := routes.api.library.Files[id]
+		f, err := routes.rt.Library.GetFileByID(id)
+		if err != nil {
+			return
+		}
 		pl.AddFile(f)
 	}
 
 	if pl.Valid() {
-		routes.api.playlists.AddPlaylist(pl)
+		routes.rt.Playlists.AddPlaylist(pl)
 	}
 
 	http.Redirect(routes.withoutFrontendCache(w), r, "/playlists/", http.StatusPermanentRedirect)
@@ -93,15 +106,15 @@ func (routes *Routes) PlaylistEdit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pl, err := routes.api.playlists.GetPlaylistById(id)
+	pl, err := routes.rt.Playlists.GetPlaylistById(id)
 	if err != nil {
 		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
 		return
 	}
 
-	params := make(map[string]interface{})
+	params := make(map[string]any)
 
-	params["Songs"] = util.IntersectFiles(routes.api.library.GetAllFiles(), pl.Files, func(a, b *library.File) bool { return a.Id == b.Id })
+	params["Songs"] = util.IntersectFiles(routes.rt.Library.GetFiles(), pl.Files, func(a, b *models.File) bool { return a.ID == b.ID })
 	params["Playlist"] = pl
 
 	routes.ren.HTML(w, http.StatusOK, "playlists/edit", params)
@@ -119,14 +132,13 @@ func (routes *Routes) PlaylistSave(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id_s := mux.Vars(r)["id"]
-	id, err := uuid.Parse(id_s)
+	id, err := uuid.Parse(mux.Vars(r)["id"])
 	if err != nil {
 		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
 		return
 	}
 
-	pl, err := routes.api.playlists.GetPlaylistById(id)
+	pl, err := routes.rt.Playlists.GetPlaylistById(id)
 	if err != nil {
 		routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
 		return
@@ -144,15 +156,15 @@ func (routes *Routes) PlaylistSave(w http.ResponseWriter, r *http.Request) {
 			routes.ren.Data(w, http.StatusMethodNotAllowed, []byte(err.Error()))
 			return
 		}
-		f := routes.api.library.Files[id]
+		f, err := routes.rt.Library.GetFileByID(id)
+		if err != nil {
+			return
+		}
+
 		pl.AddFile(f)
 	}
 
 	pl.Name = r.PostFormValue("playlist-title")
-
-	if pl.Valid() {
-		routes.api.playlists.UpdatePlaylist(pl)
-	}
 
 	http.Redirect(routes.withoutFrontendCache(w), r, "/playlists/", http.StatusPermanentRedirect)
 }

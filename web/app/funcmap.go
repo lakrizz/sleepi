@@ -6,12 +6,12 @@ import (
 	"time"
 
 	"github.com/lakrizz/sleepi/pkg/alarm"
-	"github.com/lakrizz/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/pkg/models"
 )
 
 func (a *App) GetFuncMap() template.FuncMap {
 	return template.FuncMap(map[string]interface{}{
-		"TopFiles": func(slice []*library.File, num int) []*library.File {
+		"TopFiles": func(slice []*models.File, num int) []*models.File {
 			if len(slice) > num {
 				return slice[:num]
 			}

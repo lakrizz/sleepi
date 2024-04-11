@@ -9,7 +9,7 @@ import (
 	"github.com/fhs/gompd/v2/mpd"
 	"github.com/k0kubun/pp"
 
-	"github.com/lakrizz/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/pkg/models"
 	"github.com/lakrizz/sleepi/pkg/player"
 )
 
@@ -92,7 +92,7 @@ func (mp *MPDPlayer) GetVolume() (int, error) {
 }
 
 // Queue method adds a song, updates the db and then queues the song
-func (mp *MPDPlayer) Queue(f *library.File) error {
+func (mp *MPDPlayer) Queue(f *models.File) error {
 	if !f.Exists() {
 		return player.ErrFileNotFound
 	}
@@ -118,7 +118,7 @@ func (mp *MPDPlayer) Queue(f *library.File) error {
 	return mp.client.Add(f.Name())
 }
 
-func (mp *MPDPlayer) QueueMany(_ []*library.File, _ bool) error {
+func (mp *MPDPlayer) QueueMany(_ []*models.File, _ bool) error {
 	panic("not implemented") // TODO: Implement
 }
 

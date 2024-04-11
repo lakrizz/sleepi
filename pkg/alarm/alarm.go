@@ -2,47 +2,59 @@ package alarm
 
 import (
 	"errors"
+	"slices"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/lakrizz/sleepi/pkg/effects"
+
+	"github.com/lakrizz/sleepi/pkg"
+)
+
+var (
+	errNoActiveDays = errors.New("no active days set")
 )
 
 type Alarm struct {
 	Enabled    bool
-	Name       string
-	Id         uuid.UUID
-	ActiveDays []time.Weekday
-	WakeHour   int
-	WakeMinute int
-	Playlist   *uuid.UUID
+	name       string
+	ID         uuid.UUID
+	activeDays []time.Weekday
+	wakeHour   int
+	wakeMinute int
+	playlist   *uuid.UUID
 
 	// effects go here
-	VolumeWarmup *effects.VolumeWarmup
+	effects []pkg.Effect
 }
 
-func CreateAlarm(playlist_id *uuid.UUID, name string, activedays []time.Weekday, wakehour, wakeminute int) (*Alarm, error) {
-	a := &Alarm{Enabled: true, ActiveDays: activedays, WakeHour: wakehour, WakeMinute: wakeminute, Playlist: playlist_id, Name: name}
-	id := uuid.New()
-	a.Id = id
+func CreateAlarm(playlistID *uuid.UUID, name string, activedays []time.Weekday, wakehour, wakeminute int) (*Alarm, error) {
+	a := &Alarm{
+		Enabled:    true,
+		activeDays: activedays,
+		wakeHour:   wakehour,
+		wakeMinute: wakeminute,
+		playlist:   playlistID,
+		name:       name,
+		ID:         uuid.New(),
+	}
 	return a, nil
 }
 
-func (a *Alarm) AddVolumeWarmup(fx *effects.VolumeWarmup) error {
-	if fx == nil {
-		return errors.New("effect shouldn't be null")
-	}
-
-	a.VolumeWarmup = fx
+func (a *Alarm) AddEffects(fx ...pkg.Effect) error {
+	a.effects = append(a.effects, fx...)
 	return nil
 }
 
-func (a *Alarm) DurationUntilNextAlarm() time.Duration {
+func (a *Alarm) DurationUntilNextTrigger() time.Duration {
+	if len(a.activeDays) == 0 {
+		return time.Duration(-1)
+	}
+
 	now := time.Now()
-	checkdate := time.Date(now.Year(), now.Month(), now.Day(), a.WakeHour, a.WakeMinute, 0, 0, now.Location())
+	checkdate := time.Date(now.Year(), now.Month(), now.Day(), a.wakeHour, a.wakeMinute, 0, 0, now.Location())
 
 	// special case when the alarm is still going off on this particular day
-	if (a.WakeHour*60 + a.WakeMinute) > (now.Hour()*60 + now.Minute()) {
+	if (a.wakeHour*60 + a.wakeMinute) > (now.Hour()*60 + now.Minute()) {
 		return checkdate.Sub(now)
 	}
 
@@ -55,13 +67,10 @@ func (a *Alarm) DurationUntilNextAlarm() time.Duration {
 	return time.Until(checkdate)
 }
 
+// IsActiveDay method returns a boolean value on whether the alarm will be
+// triggered on a given weekday
 func (a *Alarm) IsActiveDay(day time.Weekday) bool {
-	for _, v := range a.ActiveDays {
-		if v == day {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(a.activeDays, day)
 }
 
 func (a *Alarm) Trigger() error {

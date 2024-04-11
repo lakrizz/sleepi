@@ -3,7 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/lakrizz/sleepi/internal/manager"
+	"github.com/lakrizz/sleepi/config"
+	"github.com/lakrizz/sleepi/internal/runtime"
 	"github.com/lakrizz/sleepi/web"
 	"github.com/lakrizz/sleepi/web/app"
 )
@@ -15,13 +16,22 @@ func main() {
 }
 
 func run() error {
-	managers, err := manager.GetManagers()
+	log.Println("loading config...")
+	cfg, err := config.GetConfig()
 	if err != nil {
 		return err
 	}
-	app, err := app.InitApp(managers)
+
+	log.Println("initializing runtime...")
+	rt, err := runtime.InitRuntime(cfg)
 	if err != nil {
 		return err
 	}
-	return web.Serve(app)
+
+	app, err := app.InitApp(rt)
+	if err != nil {
+		return err
+	}
+
+	return web.Serve(app, cfg)
 }

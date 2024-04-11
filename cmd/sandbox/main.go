@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/k0kubun/pp"
 
-	"github.com/lakrizz/sleepi/pkg/library"
+	"github.com/lakrizz/sleepi/pkg/models"
 	"github.com/lakrizz/sleepi/pkg/player/mpd"
 )
 
@@ -21,9 +21,9 @@ func main() {
 		return
 	}
 
-	err = bp.Queue(&library.File{
+	err = bp.Queue(&models.File{
 		Path: "./cmd/sandbox/ttng.mp3",
-		Id:   uuid.New(),
+		ID:   uuid.New(),
 	})
 
 	if err != nil {

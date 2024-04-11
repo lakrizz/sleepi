@@ -1,4 +1,4 @@
-package app
+package routes
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (r *Routes) addPlayerRoutes() error {
+func (r *Routes) AddPlayerRoutes() error {
 	if r == nil {
 		return errors.New("routes is null")
 	}

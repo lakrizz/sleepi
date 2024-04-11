@@ -4,6 +4,7 @@ go 1.21
 
 require (
 	github.com/adrg/xdg v0.4.0
+	github.com/fhs/gompd/v2 v2.3.0
 	github.com/google/uuid v1.3.0
 	github.com/gopxl/beep v1.4.0
 	github.com/gorilla/mux v1.8.0
@@ -15,7 +16,6 @@ require (
 require (
 	github.com/ebitengine/oto/v3 v3.1.0 // indirect
 	github.com/ebitengine/purego v0.5.0 // indirect
-	github.com/fhs/gompd/v2 v2.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/hajimehoshi/go-mp3 v0.3.4 // indirect

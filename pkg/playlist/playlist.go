@@ -2,12 +2,11 @@ package playlist
 
 import (
 	"errors"
-	"fmt"
 	"math/rand"
-	"time"
 
 	"github.com/google/uuid"
-	"github.com/lakrizz/sleepi/pkg/library"
+
+	"github.com/lakrizz/sleepi/pkg/models"
 )
 
 // a playlist is nothing more than a loose collection of files that reside in "the" library
@@ -15,51 +14,60 @@ import (
 // thus the playlist is NOT managed from within and is not aware of itself
 
 type Playlist struct {
-	Id    uuid.UUID
+	ID    uuid.UUID
 	Name  string
-	Files []*library.File
+	Files []*models.File
 }
 
+var (
+	errIDIsNill              = errors.New("file id is nil")
+	errFileNotInPlaylist     = errors.New("this id is not part of this playlist, i can't remove it")
+	errFileAlreadyInPlaylist = errors.New("this file is already part of this playlist")
+	errPlaylistEmpty         = errors.New("playlist is empty")
+	errOutOfBounds           = errors.New("index out of bounds")
+	errFileIsNil             = errors.New("file is found but nil")
+)
+
 func NewPlaylist(name string) (*Playlist, error) {
-	id := uuid.New()
-	p := &Playlist{Name: name, Files: make([]*library.File, 0), Id: id}
+	p := &Playlist{Name: name, Files: make([]*models.File, 0), ID: uuid.New()}
 	return p, nil
 }
 
 func (p *Playlist) ContainsFile(id uuid.UUID) bool {
 	for _, v := range p.Files {
-		if v.Id == id {
+		if v.ID == id {
 			return true
 		}
 	}
-	return false
 
+	return false
 }
 
-func (p *Playlist) AddFile(file *library.File) error {
+func (p *Playlist) AddFile(file *models.File) error {
 	if file == nil {
-		return errors.New("cannot add nil-file")
+		return errIDIsNill
 	}
 
-	if p.ContainsFile(file.Id) {
-		return errors.New("this file is already part of this playlist")
+	if p.ContainsFile(file.ID) {
+		return errFileAlreadyInPlaylist
 	}
 
 	p.Files = append(p.Files, file)
+
 	return nil
 }
 
 func (p *Playlist) RemoveFile(id uuid.UUID) error {
 	if id == uuid.Nil {
-		return errors.New("id is nil, i don't want to remove this")
+		return errIDIsNill
 	}
 
 	if !p.ContainsFile(id) {
-		return errors.New("this id is not part of this playlist, i can't remove it")
+		return errFileNotInPlaylist
 	}
 
 	for i, v := range p.Files {
-		if v.Id == id {
+		if v.ID == id {
 			p.Files = append(p.Files[:i], p.Files[i+1:]...) // removes item at position i
 			break
 		}
@@ -69,34 +77,32 @@ func (p *Playlist) RemoveFile(id uuid.UUID) error {
 }
 
 func (p *Playlist) ClearFiles() error {
-	p.Files = make([]*library.File, 0)
+	p.Files = make([]*models.File, 0)
 	return nil
 }
 
-func (p *Playlist) GetFileByIndex(index int) (*library.File, error) {
+func (p *Playlist) GetFileByIndex(index int) (*models.File, error) {
 	if len(p.Files) == 0 {
-		return nil, errors.New("there are no files here, can't return anything")
+		return nil, errPlaylistEmpty
 	}
 
 	if index >= len(p.Files) {
-		return nil, fmt.Errorf("index out of bounds: %v", index)
+		return nil, errOutOfBounds
 	}
 
 	if p.Files[index] == nil {
-		return nil, fmt.Errorf("index was found but is still nil / somethings terribly fucked here: %v", index)
+		return nil, errFileIsNil
 	}
 
 	return p.Files[index], nil
 }
 
-func (p *Playlist) GetRandomFile() (*library.File, error) {
+func (p *Playlist) GetRandomFile() (*models.File, error) {
 	if len(p.Files) == 0 {
-		return nil, errors.New("there are no files here, can't return anything")
+		return nil, errPlaylistEmpty
 	}
 
-	rand.Seed(time.Now().UnixMicro())
-	i := rand.Intn(len(p.Files))
-	return p.Files[i], nil
+	return p.Files[rand.Intn(len(p.Files))], nil
 }
 
 func (p *Playlist) Valid() bool {
