@@ -50,4 +50,4 @@ tags
 ./tmp/*
 
 main
-./run/**
+run/**
