@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package sleepi.v1;
+
+option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "common.proto";
+
+message Alarm {
+  string id = 1;                        // uuid
+  string label = 2;
+  string time = 3;                      // "HH:MM" (24h)
+  repeated Weekday repeat_days = 4;     // empty => one-time
+  bool enabled = 5;
+
+  google.protobuf.Duration warmup_duration = 10; // e.g. 15m
+  RGB led_target = 11;                            // LED target color
+  string music_playlist_id = 12;                  // playlist id, optional
+  string music_file_id = 13;                      // alternative single file id, optional
+}
+
+message ListAlarmsRequest { Page page = 1; }
+message ListAlarmsResponse {
+  repeated Alarm alarms = 1;
+  PageResult result = 2;
+}
+
+message GetAlarmRequest { string id = 1; }
+message GetAlarmResponse { Alarm alarm = 1; }
+
+message CreateAlarmRequest { Alarm alarm = 1; }
+message CreateAlarmResponse { Alarm alarm = 1; }
+
+message UpdateAlarmRequest { Alarm alarm = 1; }
+message UpdateAlarmResponse { Alarm alarm = 1; }
+
+message DeleteAlarmRequest { string id = 1; }
+message DeleteAlarmResponse {}
+
+message ToggleAlarmRequest { string id = 1; bool enabled = 2; }
+message ToggleAlarmResponse { Alarm alarm = 1; }
+
+service AlarmService {
+  rpc ListAlarms (ListAlarmsRequest) returns (ListAlarmsResponse);
+  rpc GetAlarm (GetAlarmRequest) returns (GetAlarmResponse);
+  rpc CreateAlarm (CreateAlarmRequest) returns (CreateAlarmResponse);
+  rpc UpdateAlarm (UpdateAlarmRequest) returns (UpdateAlarmResponse);
+  rpc DeleteAlarm (DeleteAlarmRequest) returns (DeleteAlarmResponse);
+  rpc ToggleAlarm (ToggleAlarmRequest) returns (ToggleAlarmResponse);
+}
+

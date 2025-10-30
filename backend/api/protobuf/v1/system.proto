@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package sleepi.v1;
+
+option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+message UpdateInfo {
+  bool update_available = 1;
+  string current_version = 2;
+  string latest_version = 3;
+  repeated string release_notes = 4;
+  google.protobuf.Timestamp build_date = 5;
+}
+
+message ResourceUsage {
+  string disk_used = 1;   // "6.8 GB"
+  string disk_total = 2;  // "16 GB"
+  float disk_used_pct = 3;
+
+  string mem_used = 4;    // "1.9 GB"
+  string mem_total = 5;   // "4 GB"
+  float mem_used_pct = 6;
+
+  float cpu_load_pct = 7; // e.g. 23.6
+  float temperature_c = 8;
+}
+
+message AppStats {
+  uint32 alarms = 1;
+  uint32 playlists = 2;
+  uint32 library_files = 3;
+  uint32 sleepscapes = 4;
+}
+
+message SystemInfo {
+  string os = 1;      // "Raspberry Pi OS (Debian 12 Bookworm)"
+  string arch = 2;    // "arm64"
+  string hostname = 3;
+  string ip = 4;
+  string network_iface = 5;
+
+  google.protobuf.Timestamp last_boot = 10;
+  google.protobuf.Duration uptime = 11;
+
+  UpdateInfo update = 20;
+  ResourceUsage resources = 21;
+  AppStats stats = 22;
+}
+
+message GetSystemInfoRequest {}
+message GetSystemInfoResponse { SystemInfo system = 1; }
+
+message CheckUpdateRequest {}
+message CheckUpdateResponse { UpdateInfo update = 1; }
+
+message InstallUpdateRequest { bool reboot_after = 1; }
+message InstallUpdateResponse {
+  bool started = 1;
+  string status = 2; // "downloading", "installing", etc.
+}
+
+service SystemService {
+  rpc GetSystemInfo (GetSystemInfoRequest) returns (GetSystemInfoResponse);
+  rpc CheckUpdate (CheckUpdateRequest) returns (CheckUpdateResponse);
+  rpc InstallUpdate (InstallUpdateRequest) returns (InstallUpdateResponse);
+}
+

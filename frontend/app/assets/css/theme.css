@@ -1,0 +1,31 @@
+:root {
+  /* Primary brand colors */
+  --color-primary: #C63D3D;   /* Raspberry Red */
+  --color-primary-muted: #D86A6A;
+  --color-primary-dark: #9C2C2C;
+
+  --color-accent: #4C8C4A;    /* Leaf Green */
+  --color-bg: #F8F3E8;        /* Off-white background */
+  --color-surface: #3f4248;   /* Deep navy */
+  --color-border: #B5B8BA;    /* Cool gray */
+  --color-text: #F8F3E8;      /* Light text on dark bg */
+
+  --color-dark: #131313;
+
+  /* UI states */
+  --hover-bg: rgba(248, 243, 232, 0.08);
+  --active-bg: rgba(248, 243, 232, 0.18);
+  --inactive-bg: #f4e0d2;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-slow: 0.4s ease;
+}
+
+/* Optional dark theme toggle */
+[data-theme="dark"] {
+  --color-bg: #1F2C3A;
+  --color-text: #F8F3E8;
+  --color-surface: #1F2C3A;
+  --hover-bg: rgba(248, 243, 232, 0.05);
+}

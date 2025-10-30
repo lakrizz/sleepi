@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package sleepi.v1;
+
+option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+message RGB {
+  uint32 r = 1; // 0..255
+  uint32 g = 2; // 0..255
+  uint32 b = 3; // 0..255
+}
+
+enum Weekday {
+  WEEKDAY_UNSPECIFIED = 0;
+  SUNDAY    = 1;
+  MONDAY    = 2;
+  TUESDAY   = 3;
+  WEDNESDAY = 4;
+  THURSDAY  = 5;
+  FRIDAY    = 6;
+  SATURDAY  = 7;
+}
+
+message Page {
+  uint32 page_size = 1;       // optional, default server-side
+  string page_token = 2;      // from List responses
+}
+
+message PageResult {
+  string next_page_token = 1; // empty when no more
+}
+

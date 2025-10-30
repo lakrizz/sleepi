@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package sleepi.v1;
+
+option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
+
+import "library.proto";
+import "common.proto";
+
+message PlaylistFile {
+  string file_id = 1;
+  uint32 position = 2; // 0-based order
+}
+
+message Playlist {
+  string id = 1;                   // uuid
+  string name = 2;
+  repeated PlaylistFile files = 3; // persistent order
+}
+
+message ListPlaylistsRequest { Page page = 1; }
+message ListPlaylistsResponse {
+  repeated Playlist playlists = 1;
+  PageResult result = 2;
+}
+
+message GetPlaylistRequest { string id = 1; }
+message GetPlaylistResponse {
+  Playlist playlist = 1;
+  // optional expanded files (handy for editors)
+  repeated MediaFile resolved_files = 2;
+}
+
+message CreatePlaylistRequest { Playlist playlist = 1; }
+message CreatePlaylistResponse { Playlist playlist = 1; }
+
+message UpdatePlaylistRequest { Playlist playlist = 1; }
+message UpdatePlaylistResponse { Playlist playlist = 1; }
+
+message DeletePlaylistRequest { string id = 1; }
+message DeletePlaylistResponse {}
+
+message ReorderPlaylistRequest {
+  string id = 1;
+  repeated PlaylistFile files = 2; // new order
+}
+message ReorderPlaylistResponse { Playlist playlist = 1; }
+
+message AddPlaylistFilesRequest {
+  string id = 1;
+  repeated string file_ids = 2;
+  bool append = 3; // default true
+}
+message AddPlaylistFilesResponse { Playlist playlist = 1; }
+
+message RemovePlaylistFilesRequest {
+  string id = 1;
+  repeated string file_ids = 2;
+}
+message RemovePlaylistFilesResponse { Playlist playlist = 1; }
+
+service PlaylistService {
+  rpc ListPlaylists (ListPlaylistsRequest) returns (ListPlaylistsResponse);
+  rpc GetPlaylist (GetPlaylistRequest) returns (GetPlaylistResponse);
+  rpc CreatePlaylist (CreatePlaylistRequest) returns (CreatePlaylistResponse);
+  rpc UpdatePlaylist (UpdatePlaylistRequest) returns (UpdatePlaylistResponse);
+  rpc DeletePlaylist (DeletePlaylistRequest) returns (DeletePlaylistResponse);
+
+  rpc ReorderPlaylist (ReorderPlaylistRequest) returns (ReorderPlaylistResponse);
+  rpc AddPlaylistFiles (AddPlaylistFilesRequest) returns (AddPlaylistFilesResponse);
+  rpc RemovePlaylistFiles (RemovePlaylistFilesRequest) returns (RemovePlaylistFilesResponse);
+}
+

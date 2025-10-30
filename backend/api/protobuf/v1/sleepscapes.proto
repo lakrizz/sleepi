@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package sleepi.v1;
+
+option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
+
+import "google/protobuf/duration.proto";
+import "common.proto";
+
+enum SourceType {
+  SOURCE_TYPE_UNSPECIFIED = 0;
+  SOURCE_TYPE_PLAYLIST = 1;
+  SOURCE_TYPE_FILE = 2;
+}
+
+message Sleepscape {
+  string id = 1;                 // uuid
+  string name = 2;
+
+  SourceType source_type = 3;
+  string source_id = 4;          // playlist id or file id
+  string source_name = 5;        // optional display name
+
+  // Expr-based LED logic (multi-line allowed, compiled with expr.AsProgram)
+  string led_expression = 10;
+
+  // Optional metadata for marketplace/future sharing
+  string author = 20;
+  string description = 21;
+  repeated string tags = 22;
+  bool verified = 23;
+}
+
+message ListSleepscapesRequest { Page page = 1; }
+message ListSleepscapesResponse {
+  repeated Sleepscape sleepscapes = 1;
+  PageResult result = 2;
+}
+
+message GetSleepscapeRequest { string id = 1; }
+message GetSleepscapeResponse { Sleepscape sleepscape = 1; }
+
+message CreateSleepscapeRequest { Sleepscape sleepscape = 1; }
+message CreateSleepscapeResponse { Sleepscape sleepscape = 1; }
+
+message UpdateSleepscapeRequest { Sleepscape sleepscape = 1; }
+message UpdateSleepscapeResponse { Sleepscape sleepscape = 1; }
+
+message DeleteSleepscapeRequest { string id = 1; }
+message DeleteSleepscapeResponse {}
+
+message ValidateExpressionRequest {
+  // validate Expr syntax/semantics against provided env (e.g., led_count)
+  string led_expression = 1;
+  uint32 led_count = 2; // for validation context
+}
+message ValidateExpressionResponse {
+  bool ok = 1;
+  string error = 2;     // parser/runtime error explanation
+}
+
+message PreviewRequest {
+  string led_expression = 1;
+  uint32 led_count = 2;
+  uint32 fps = 3;                     // e.g. 30
+  google.protobuf.Duration duration = 4; // e.g. 3s
+}
+message LedFrame {
+  uint64 frame_index = 1;
+  repeated RGB leds = 2; // length == led_count
+}
+
+service SleepscapeService {
+  rpc ListSleepscapes (ListSleepscapesRequest) returns (ListSleepscapesResponse);
+  rpc GetSleepscape (GetSleepscapeRequest) returns (GetSleepscapeResponse);
+  rpc CreateSleepscape (CreateSleepscapeRequest) returns (CreateSleepscapeResponse);
+  rpc UpdateSleepscape (UpdateSleepscapeRequest) returns (UpdateSleepscapeResponse);
+  rpc DeleteSleepscape (DeleteSleepscapeRequest) returns (DeleteSleepscapeResponse);
+
+  rpc ValidateExpression (ValidateExpressionRequest) returns (ValidateExpressionResponse);
+
+  // Server-streaming preview frames for UI simulators.
+  rpc Preview (PreviewRequest) returns (stream LedFrame);
+}
+
