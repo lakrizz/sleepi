@@ -2,10 +2,8 @@ syntax = "proto3";
 
 package sleepi.v1;
 
-option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
-
-import "library.proto";
-import "common.proto";
+import "v1/library.proto";
+import "v1/common.proto";
 
 message PlaylistFile {
   string file_id = 1;

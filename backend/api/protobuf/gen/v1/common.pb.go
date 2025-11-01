@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        (unknown)
-// source: common.proto
+// source: v1/common.proto
 
 package sleepiv1
 
@@ -27,36 +27,36 @@ type Weekday int32
 
 const (
 	Weekday_WEEKDAY_UNSPECIFIED Weekday = 0
-	Weekday_SUNDAY              Weekday = 1
-	Weekday_MONDAY              Weekday = 2
-	Weekday_TUESDAY             Weekday = 3
-	Weekday_WEDNESDAY           Weekday = 4
-	Weekday_THURSDAY            Weekday = 5
-	Weekday_FRIDAY              Weekday = 6
-	Weekday_SATURDAY            Weekday = 7
+	Weekday_WEEKDAY_SUNDAY      Weekday = 1
+	Weekday_WEEKDAY_MONDAY      Weekday = 2
+	Weekday_WEEKDAY_TUESDAY     Weekday = 3
+	Weekday_WEEKDAY_WEDNESDAY   Weekday = 4
+	Weekday_WEEKDAY_THURSDAY    Weekday = 5
+	Weekday_WEEKDAY_FRIDAY      Weekday = 6
+	Weekday_WEEKDAY_SATURDAY    Weekday = 7
 )
 
 // Enum value maps for Weekday.
 var (
 	Weekday_name = map[int32]string{
 		0: "WEEKDAY_UNSPECIFIED",
-		1: "SUNDAY",
-		2: "MONDAY",
-		3: "TUESDAY",
-		4: "WEDNESDAY",
-		5: "THURSDAY",
-		6: "FRIDAY",
-		7: "SATURDAY",
+		1: "WEEKDAY_SUNDAY",
+		2: "WEEKDAY_MONDAY",
+		3: "WEEKDAY_TUESDAY",
+		4: "WEEKDAY_WEDNESDAY",
+		5: "WEEKDAY_THURSDAY",
+		6: "WEEKDAY_FRIDAY",
+		7: "WEEKDAY_SATURDAY",
 	}
 	Weekday_value = map[string]int32{
 		"WEEKDAY_UNSPECIFIED": 0,
-		"SUNDAY":              1,
-		"MONDAY":              2,
-		"TUESDAY":             3,
-		"WEDNESDAY":           4,
-		"THURSDAY":            5,
-		"FRIDAY":              6,
-		"SATURDAY":            7,
+		"WEEKDAY_SUNDAY":      1,
+		"WEEKDAY_MONDAY":      2,
+		"WEEKDAY_TUESDAY":     3,
+		"WEEKDAY_WEDNESDAY":   4,
+		"WEEKDAY_THURSDAY":    5,
+		"WEEKDAY_FRIDAY":      6,
+		"WEEKDAY_SATURDAY":    7,
 	}
 )
 
@@ -71,11 +71,11 @@ func (x Weekday) String() string {
 }
 
 func (Weekday) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[0].Descriptor()
+	return file_v1_common_proto_enumTypes[0].Descriptor()
 }
 
 func (Weekday) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[0]
+	return &file_v1_common_proto_enumTypes[0]
 }
 
 func (x Weekday) Number() protoreflect.EnumNumber {
@@ -84,7 +84,7 @@ func (x Weekday) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Weekday.Descriptor instead.
 func (Weekday) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{0}
+	return file_v1_common_proto_rawDescGZIP(), []int{0}
 }
 
 type RGB struct {
@@ -98,7 +98,7 @@ type RGB struct {
 
 func (x *RGB) Reset() {
 	*x = RGB{}
-	mi := &file_common_proto_msgTypes[0]
+	mi := &file_v1_common_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -110,7 +110,7 @@ func (x *RGB) String() string {
 func (*RGB) ProtoMessage() {}
 
 func (x *RGB) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[0]
+	mi := &file_v1_common_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -123,7 +123,7 @@ func (x *RGB) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RGB.ProtoReflect.Descriptor instead.
 func (*RGB) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{0}
+	return file_v1_common_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *RGB) GetR() uint32 {
@@ -157,7 +157,7 @@ type Page struct {
 
 func (x *Page) Reset() {
 	*x = Page{}
-	mi := &file_common_proto_msgTypes[1]
+	mi := &file_v1_common_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -169,7 +169,7 @@ func (x *Page) String() string {
 func (*Page) ProtoMessage() {}
 
 func (x *Page) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[1]
+	mi := &file_v1_common_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -182,7 +182,7 @@ func (x *Page) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Page.ProtoReflect.Descriptor instead.
 func (*Page) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{1}
+	return file_v1_common_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Page) GetPageSize() uint32 {
@@ -208,7 +208,7 @@ type PageResult struct {
 
 func (x *PageResult) Reset() {
 	*x = PageResult{}
-	mi := &file_common_proto_msgTypes[2]
+	mi := &file_v1_common_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -220,7 +220,7 @@ func (x *PageResult) String() string {
 func (*PageResult) ProtoMessage() {}
 
 func (x *PageResult) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[2]
+	mi := &file_v1_common_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -233,7 +233,7 @@ func (x *PageResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageResult.ProtoReflect.Descriptor instead.
 func (*PageResult) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{2}
+	return file_v1_common_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PageResult) GetNextPageToken() string {
@@ -243,11 +243,11 @@ func (x *PageResult) GetNextPageToken() string {
 	return ""
 }
 
-var File_common_proto protoreflect.FileDescriptor
+var File_v1_common_proto protoreflect.FileDescriptor
 
-const file_common_proto_rawDesc = "" +
+const file_v1_common_proto_rawDesc = "" +
 	"\n" +
-	"\fcommon.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"/\n" +
+	"\x0fv1/common.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"/\n" +
 	"\x03RGB\x12\f\n" +
 	"\x01r\x18\x01 \x01(\rR\x01r\x12\f\n" +
 	"\x01g\x18\x02 \x01(\rR\x01g\x12\f\n" +
@@ -258,41 +258,40 @@ const file_common_proto_rawDesc = "" +
 	"page_token\x18\x02 \x01(\tR\tpageToken\"4\n" +
 	"\n" +
 	"PageResult\x12&\n" +
-	"\x0fnext_page_token\x18\x01 \x01(\tR\rnextPageToken*~\n" +
+	"\x0fnext_page_token\x18\x01 \x01(\tR\rnextPageToken*\xb6\x01\n" +
 	"\aWeekday\x12\x17\n" +
-	"\x13WEEKDAY_UNSPECIFIED\x10\x00\x12\n" +
-	"\n" +
-	"\x06SUNDAY\x10\x01\x12\n" +
-	"\n" +
-	"\x06MONDAY\x10\x02\x12\v\n" +
-	"\aTUESDAY\x10\x03\x12\r\n" +
-	"\tWEDNESDAY\x10\x04\x12\f\n" +
-	"\bTHURSDAY\x10\x05\x12\n" +
-	"\n" +
-	"\x06FRIDAY\x10\x06\x12\f\n" +
-	"\bSATURDAY\x10\aB6Z4github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1b\x06proto3"
+	"\x13WEEKDAY_UNSPECIFIED\x10\x00\x12\x12\n" +
+	"\x0eWEEKDAY_SUNDAY\x10\x01\x12\x12\n" +
+	"\x0eWEEKDAY_MONDAY\x10\x02\x12\x13\n" +
+	"\x0fWEEKDAY_TUESDAY\x10\x03\x12\x15\n" +
+	"\x11WEEKDAY_WEDNESDAY\x10\x04\x12\x14\n" +
+	"\x10WEEKDAY_THURSDAY\x10\x05\x12\x12\n" +
+	"\x0eWEEKDAY_FRIDAY\x10\x06\x12\x14\n" +
+	"\x10WEEKDAY_SATURDAY\x10\aB\x99\x01\n" +
+	"\rcom.sleepi.v1B\vCommonProtoP\x01Z6github.com/lakrizz/sleepi/api/protobuf/gen/v1;sleepiv1\xa2\x02\x03SXX\xaa\x02\tSleepi.V1\xca\x02\tSleepi\\V1\xe2\x02\x15Sleepi\\V1\\GPBMetadata\xea\x02\n" +
+	"Sleepi::V1b\x06proto3"
 
 var (
-	file_common_proto_rawDescOnce sync.Once
-	file_common_proto_rawDescData []byte
+	file_v1_common_proto_rawDescOnce sync.Once
+	file_v1_common_proto_rawDescData []byte
 )
 
-func file_common_proto_rawDescGZIP() []byte {
-	file_common_proto_rawDescOnce.Do(func() {
-		file_common_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_common_proto_rawDesc), len(file_common_proto_rawDesc)))
+func file_v1_common_proto_rawDescGZIP() []byte {
+	file_v1_common_proto_rawDescOnce.Do(func() {
+		file_v1_common_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_v1_common_proto_rawDesc), len(file_v1_common_proto_rawDesc)))
 	})
-	return file_common_proto_rawDescData
+	return file_v1_common_proto_rawDescData
 }
 
-var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_common_proto_goTypes = []any{
+var file_v1_common_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_v1_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_v1_common_proto_goTypes = []any{
 	(Weekday)(0),       // 0: sleepi.v1.Weekday
 	(*RGB)(nil),        // 1: sleepi.v1.RGB
 	(*Page)(nil),       // 2: sleepi.v1.Page
 	(*PageResult)(nil), // 3: sleepi.v1.PageResult
 }
-var file_common_proto_depIdxs = []int32{
+var file_v1_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -300,27 +299,27 @@ var file_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_common_proto_init() }
-func file_common_proto_init() {
-	if File_common_proto != nil {
+func init() { file_v1_common_proto_init() }
+func file_v1_common_proto_init() {
+	if File_v1_common_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_common_proto_rawDesc), len(file_common_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_common_proto_rawDesc), len(file_v1_common_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_common_proto_goTypes,
-		DependencyIndexes: file_common_proto_depIdxs,
-		EnumInfos:         file_common_proto_enumTypes,
-		MessageInfos:      file_common_proto_msgTypes,
+		GoTypes:           file_v1_common_proto_goTypes,
+		DependencyIndexes: file_v1_common_proto_depIdxs,
+		EnumInfos:         file_v1_common_proto_enumTypes,
+		MessageInfos:      file_v1_common_proto_msgTypes,
 	}.Build()
-	File_common_proto = out.File
-	file_common_proto_goTypes = nil
-	file_common_proto_depIdxs = nil
+	File_v1_common_proto = out.File
+	file_v1_common_proto_goTypes = nil
+	file_v1_common_proto_depIdxs = nil
 }

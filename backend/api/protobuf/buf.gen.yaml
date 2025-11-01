@@ -1,15 +1,18 @@
-version: v1
+version: v2
 plugins:
-  - plugin: go
-    out: ../gen/v1
+  - local: protoc-gen-go
+    out: gen
+    opt: paths=source_relative
+  - local: protoc-gen-connect-go
+    out: gen
     opt:
       - paths=source_relative
-  - plugin: go-grpc
-    out: ../gen/v1
-    opt:
-      - paths=source_relative
-  - plugin: connect-go
-    out: ../gen/v1
-    opt:
-      - paths=source_relative
-
+      - simple
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/lakrizz/sleepi/api/protobuf/gen
+  disable:
+    - file_option: go_package
+      module: buf.build/bufbuild/protovalidate

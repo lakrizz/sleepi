@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        (unknown)
-// source: sleepscapes.proto
+// source: v1/sleepscapes.proto
 
 package sleepiv1
 
@@ -55,11 +55,11 @@ func (x SourceType) String() string {
 }
 
 func (SourceType) Descriptor() protoreflect.EnumDescriptor {
-	return file_sleepscapes_proto_enumTypes[0].Descriptor()
+	return file_v1_sleepscapes_proto_enumTypes[0].Descriptor()
 }
 
 func (SourceType) Type() protoreflect.EnumType {
-	return &file_sleepscapes_proto_enumTypes[0]
+	return &file_v1_sleepscapes_proto_enumTypes[0]
 }
 
 func (x SourceType) Number() protoreflect.EnumNumber {
@@ -68,7 +68,7 @@ func (x SourceType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SourceType.Descriptor instead.
 func (SourceType) EnumDescriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{0}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{0}
 }
 
 type Sleepscape struct {
@@ -91,7 +91,7 @@ type Sleepscape struct {
 
 func (x *Sleepscape) Reset() {
 	*x = Sleepscape{}
-	mi := &file_sleepscapes_proto_msgTypes[0]
+	mi := &file_v1_sleepscapes_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -103,7 +103,7 @@ func (x *Sleepscape) String() string {
 func (*Sleepscape) ProtoMessage() {}
 
 func (x *Sleepscape) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[0]
+	mi := &file_v1_sleepscapes_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -116,7 +116,7 @@ func (x *Sleepscape) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Sleepscape.ProtoReflect.Descriptor instead.
 func (*Sleepscape) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{0}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Sleepscape) GetId() string {
@@ -198,7 +198,7 @@ type ListSleepscapesRequest struct {
 
 func (x *ListSleepscapesRequest) Reset() {
 	*x = ListSleepscapesRequest{}
-	mi := &file_sleepscapes_proto_msgTypes[1]
+	mi := &file_v1_sleepscapes_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -210,7 +210,7 @@ func (x *ListSleepscapesRequest) String() string {
 func (*ListSleepscapesRequest) ProtoMessage() {}
 
 func (x *ListSleepscapesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[1]
+	mi := &file_v1_sleepscapes_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -223,7 +223,7 @@ func (x *ListSleepscapesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSleepscapesRequest.ProtoReflect.Descriptor instead.
 func (*ListSleepscapesRequest) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{1}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ListSleepscapesRequest) GetPage() *Page {
@@ -243,7 +243,7 @@ type ListSleepscapesResponse struct {
 
 func (x *ListSleepscapesResponse) Reset() {
 	*x = ListSleepscapesResponse{}
-	mi := &file_sleepscapes_proto_msgTypes[2]
+	mi := &file_v1_sleepscapes_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -255,7 +255,7 @@ func (x *ListSleepscapesResponse) String() string {
 func (*ListSleepscapesResponse) ProtoMessage() {}
 
 func (x *ListSleepscapesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[2]
+	mi := &file_v1_sleepscapes_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -268,7 +268,7 @@ func (x *ListSleepscapesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSleepscapesResponse.ProtoReflect.Descriptor instead.
 func (*ListSleepscapesResponse) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{2}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListSleepscapesResponse) GetSleepscapes() []*Sleepscape {
@@ -294,7 +294,7 @@ type GetSleepscapeRequest struct {
 
 func (x *GetSleepscapeRequest) Reset() {
 	*x = GetSleepscapeRequest{}
-	mi := &file_sleepscapes_proto_msgTypes[3]
+	mi := &file_v1_sleepscapes_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -306,7 +306,7 @@ func (x *GetSleepscapeRequest) String() string {
 func (*GetSleepscapeRequest) ProtoMessage() {}
 
 func (x *GetSleepscapeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[3]
+	mi := &file_v1_sleepscapes_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -319,7 +319,7 @@ func (x *GetSleepscapeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSleepscapeRequest.ProtoReflect.Descriptor instead.
 func (*GetSleepscapeRequest) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{3}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetSleepscapeRequest) GetId() string {
@@ -338,7 +338,7 @@ type GetSleepscapeResponse struct {
 
 func (x *GetSleepscapeResponse) Reset() {
 	*x = GetSleepscapeResponse{}
-	mi := &file_sleepscapes_proto_msgTypes[4]
+	mi := &file_v1_sleepscapes_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -350,7 +350,7 @@ func (x *GetSleepscapeResponse) String() string {
 func (*GetSleepscapeResponse) ProtoMessage() {}
 
 func (x *GetSleepscapeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[4]
+	mi := &file_v1_sleepscapes_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -363,7 +363,7 @@ func (x *GetSleepscapeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSleepscapeResponse.ProtoReflect.Descriptor instead.
 func (*GetSleepscapeResponse) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{4}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetSleepscapeResponse) GetSleepscape() *Sleepscape {
@@ -382,7 +382,7 @@ type CreateSleepscapeRequest struct {
 
 func (x *CreateSleepscapeRequest) Reset() {
 	*x = CreateSleepscapeRequest{}
-	mi := &file_sleepscapes_proto_msgTypes[5]
+	mi := &file_v1_sleepscapes_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -394,7 +394,7 @@ func (x *CreateSleepscapeRequest) String() string {
 func (*CreateSleepscapeRequest) ProtoMessage() {}
 
 func (x *CreateSleepscapeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[5]
+	mi := &file_v1_sleepscapes_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -407,7 +407,7 @@ func (x *CreateSleepscapeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSleepscapeRequest.ProtoReflect.Descriptor instead.
 func (*CreateSleepscapeRequest) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{5}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CreateSleepscapeRequest) GetSleepscape() *Sleepscape {
@@ -426,7 +426,7 @@ type CreateSleepscapeResponse struct {
 
 func (x *CreateSleepscapeResponse) Reset() {
 	*x = CreateSleepscapeResponse{}
-	mi := &file_sleepscapes_proto_msgTypes[6]
+	mi := &file_v1_sleepscapes_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -438,7 +438,7 @@ func (x *CreateSleepscapeResponse) String() string {
 func (*CreateSleepscapeResponse) ProtoMessage() {}
 
 func (x *CreateSleepscapeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[6]
+	mi := &file_v1_sleepscapes_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -451,7 +451,7 @@ func (x *CreateSleepscapeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSleepscapeResponse.ProtoReflect.Descriptor instead.
 func (*CreateSleepscapeResponse) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{6}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateSleepscapeResponse) GetSleepscape() *Sleepscape {
@@ -470,7 +470,7 @@ type UpdateSleepscapeRequest struct {
 
 func (x *UpdateSleepscapeRequest) Reset() {
 	*x = UpdateSleepscapeRequest{}
-	mi := &file_sleepscapes_proto_msgTypes[7]
+	mi := &file_v1_sleepscapes_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -482,7 +482,7 @@ func (x *UpdateSleepscapeRequest) String() string {
 func (*UpdateSleepscapeRequest) ProtoMessage() {}
 
 func (x *UpdateSleepscapeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[7]
+	mi := &file_v1_sleepscapes_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -495,7 +495,7 @@ func (x *UpdateSleepscapeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSleepscapeRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSleepscapeRequest) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{7}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateSleepscapeRequest) GetSleepscape() *Sleepscape {
@@ -514,7 +514,7 @@ type UpdateSleepscapeResponse struct {
 
 func (x *UpdateSleepscapeResponse) Reset() {
 	*x = UpdateSleepscapeResponse{}
-	mi := &file_sleepscapes_proto_msgTypes[8]
+	mi := &file_v1_sleepscapes_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -526,7 +526,7 @@ func (x *UpdateSleepscapeResponse) String() string {
 func (*UpdateSleepscapeResponse) ProtoMessage() {}
 
 func (x *UpdateSleepscapeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[8]
+	mi := &file_v1_sleepscapes_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -539,7 +539,7 @@ func (x *UpdateSleepscapeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSleepscapeResponse.ProtoReflect.Descriptor instead.
 func (*UpdateSleepscapeResponse) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{8}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UpdateSleepscapeResponse) GetSleepscape() *Sleepscape {
@@ -558,7 +558,7 @@ type DeleteSleepscapeRequest struct {
 
 func (x *DeleteSleepscapeRequest) Reset() {
 	*x = DeleteSleepscapeRequest{}
-	mi := &file_sleepscapes_proto_msgTypes[9]
+	mi := &file_v1_sleepscapes_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -570,7 +570,7 @@ func (x *DeleteSleepscapeRequest) String() string {
 func (*DeleteSleepscapeRequest) ProtoMessage() {}
 
 func (x *DeleteSleepscapeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[9]
+	mi := &file_v1_sleepscapes_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -583,7 +583,7 @@ func (x *DeleteSleepscapeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSleepscapeRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSleepscapeRequest) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{9}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *DeleteSleepscapeRequest) GetId() string {
@@ -601,7 +601,7 @@ type DeleteSleepscapeResponse struct {
 
 func (x *DeleteSleepscapeResponse) Reset() {
 	*x = DeleteSleepscapeResponse{}
-	mi := &file_sleepscapes_proto_msgTypes[10]
+	mi := &file_v1_sleepscapes_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -613,7 +613,7 @@ func (x *DeleteSleepscapeResponse) String() string {
 func (*DeleteSleepscapeResponse) ProtoMessage() {}
 
 func (x *DeleteSleepscapeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[10]
+	mi := &file_v1_sleepscapes_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -626,7 +626,7 @@ func (x *DeleteSleepscapeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSleepscapeResponse.ProtoReflect.Descriptor instead.
 func (*DeleteSleepscapeResponse) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{10}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{10}
 }
 
 type ValidateExpressionRequest struct {
@@ -640,7 +640,7 @@ type ValidateExpressionRequest struct {
 
 func (x *ValidateExpressionRequest) Reset() {
 	*x = ValidateExpressionRequest{}
-	mi := &file_sleepscapes_proto_msgTypes[11]
+	mi := &file_v1_sleepscapes_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -652,7 +652,7 @@ func (x *ValidateExpressionRequest) String() string {
 func (*ValidateExpressionRequest) ProtoMessage() {}
 
 func (x *ValidateExpressionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[11]
+	mi := &file_v1_sleepscapes_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -665,7 +665,7 @@ func (x *ValidateExpressionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateExpressionRequest.ProtoReflect.Descriptor instead.
 func (*ValidateExpressionRequest) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{11}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ValidateExpressionRequest) GetLedExpression() string {
@@ -692,7 +692,7 @@ type ValidateExpressionResponse struct {
 
 func (x *ValidateExpressionResponse) Reset() {
 	*x = ValidateExpressionResponse{}
-	mi := &file_sleepscapes_proto_msgTypes[12]
+	mi := &file_v1_sleepscapes_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -704,7 +704,7 @@ func (x *ValidateExpressionResponse) String() string {
 func (*ValidateExpressionResponse) ProtoMessage() {}
 
 func (x *ValidateExpressionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[12]
+	mi := &file_v1_sleepscapes_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -717,7 +717,7 @@ func (x *ValidateExpressionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateExpressionResponse.ProtoReflect.Descriptor instead.
 func (*ValidateExpressionResponse) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{12}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ValidateExpressionResponse) GetOk() bool {
@@ -746,7 +746,7 @@ type PreviewRequest struct {
 
 func (x *PreviewRequest) Reset() {
 	*x = PreviewRequest{}
-	mi := &file_sleepscapes_proto_msgTypes[13]
+	mi := &file_v1_sleepscapes_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -758,7 +758,7 @@ func (x *PreviewRequest) String() string {
 func (*PreviewRequest) ProtoMessage() {}
 
 func (x *PreviewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[13]
+	mi := &file_v1_sleepscapes_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -771,7 +771,7 @@ func (x *PreviewRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreviewRequest.ProtoReflect.Descriptor instead.
 func (*PreviewRequest) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{13}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *PreviewRequest) GetLedExpression() string {
@@ -812,7 +812,7 @@ type LedFrame struct {
 
 func (x *LedFrame) Reset() {
 	*x = LedFrame{}
-	mi := &file_sleepscapes_proto_msgTypes[14]
+	mi := &file_v1_sleepscapes_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -824,7 +824,7 @@ func (x *LedFrame) String() string {
 func (*LedFrame) ProtoMessage() {}
 
 func (x *LedFrame) ProtoReflect() protoreflect.Message {
-	mi := &file_sleepscapes_proto_msgTypes[14]
+	mi := &file_v1_sleepscapes_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -837,7 +837,7 @@ func (x *LedFrame) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LedFrame.ProtoReflect.Descriptor instead.
 func (*LedFrame) Descriptor() ([]byte, []int) {
-	return file_sleepscapes_proto_rawDescGZIP(), []int{14}
+	return file_v1_sleepscapes_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *LedFrame) GetFrameIndex() uint64 {
@@ -854,11 +854,11 @@ func (x *LedFrame) GetLeds() []*RGB {
 	return nil
 }
 
-var File_sleepscapes_proto protoreflect.FileDescriptor
+var File_v1_sleepscapes_proto protoreflect.FileDescriptor
 
-const file_sleepscapes_proto_rawDesc = "" +
+const file_v1_sleepscapes_proto_rawDesc = "" +
 	"\n" +
-	"\x11sleepscapes.proto\x12\tsleepi.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\fcommon.proto\"\xb7\x02\n" +
+	"\x14v1/sleepscapes.proto\x12\tsleepi.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x0fv1/common.proto\"\xb7\x02\n" +
 	"\n" +
 	"Sleepscape\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
@@ -931,23 +931,25 @@ const file_sleepscapes_proto_rawDesc = "" +
 	"\x10UpdateSleepscape\x12\".sleepi.v1.UpdateSleepscapeRequest\x1a#.sleepi.v1.UpdateSleepscapeResponse\x12[\n" +
 	"\x10DeleteSleepscape\x12\".sleepi.v1.DeleteSleepscapeRequest\x1a#.sleepi.v1.DeleteSleepscapeResponse\x12a\n" +
 	"\x12ValidateExpression\x12$.sleepi.v1.ValidateExpressionRequest\x1a%.sleepi.v1.ValidateExpressionResponse\x12;\n" +
-	"\aPreview\x12\x19.sleepi.v1.PreviewRequest\x1a\x13.sleepi.v1.LedFrame0\x01B6Z4github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1b\x06proto3"
+	"\aPreview\x12\x19.sleepi.v1.PreviewRequest\x1a\x13.sleepi.v1.LedFrame0\x01B\x9e\x01\n" +
+	"\rcom.sleepi.v1B\x10SleepscapesProtoP\x01Z6github.com/lakrizz/sleepi/api/protobuf/gen/v1;sleepiv1\xa2\x02\x03SXX\xaa\x02\tSleepi.V1\xca\x02\tSleepi\\V1\xe2\x02\x15Sleepi\\V1\\GPBMetadata\xea\x02\n" +
+	"Sleepi::V1b\x06proto3"
 
 var (
-	file_sleepscapes_proto_rawDescOnce sync.Once
-	file_sleepscapes_proto_rawDescData []byte
+	file_v1_sleepscapes_proto_rawDescOnce sync.Once
+	file_v1_sleepscapes_proto_rawDescData []byte
 )
 
-func file_sleepscapes_proto_rawDescGZIP() []byte {
-	file_sleepscapes_proto_rawDescOnce.Do(func() {
-		file_sleepscapes_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_sleepscapes_proto_rawDesc), len(file_sleepscapes_proto_rawDesc)))
+func file_v1_sleepscapes_proto_rawDescGZIP() []byte {
+	file_v1_sleepscapes_proto_rawDescOnce.Do(func() {
+		file_v1_sleepscapes_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_v1_sleepscapes_proto_rawDesc), len(file_v1_sleepscapes_proto_rawDesc)))
 	})
-	return file_sleepscapes_proto_rawDescData
+	return file_v1_sleepscapes_proto_rawDescData
 }
 
-var file_sleepscapes_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_sleepscapes_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
-var file_sleepscapes_proto_goTypes = []any{
+var file_v1_sleepscapes_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_v1_sleepscapes_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_v1_sleepscapes_proto_goTypes = []any{
 	(SourceType)(0),                    // 0: sleepi.v1.SourceType
 	(*Sleepscape)(nil),                 // 1: sleepi.v1.Sleepscape
 	(*ListSleepscapesRequest)(nil),     // 2: sleepi.v1.ListSleepscapesRequest
@@ -969,7 +971,7 @@ var file_sleepscapes_proto_goTypes = []any{
 	(*durationpb.Duration)(nil),        // 18: google.protobuf.Duration
 	(*RGB)(nil),                        // 19: sleepi.v1.RGB
 }
-var file_sleepscapes_proto_depIdxs = []int32{
+var file_v1_sleepscapes_proto_depIdxs = []int32{
 	0,  // 0: sleepi.v1.Sleepscape.source_type:type_name -> sleepi.v1.SourceType
 	16, // 1: sleepi.v1.ListSleepscapesRequest.page:type_name -> sleepi.v1.Page
 	1,  // 2: sleepi.v1.ListSleepscapesResponse.sleepscapes:type_name -> sleepi.v1.Sleepscape
@@ -1002,28 +1004,28 @@ var file_sleepscapes_proto_depIdxs = []int32{
 	0,  // [0:11] is the sub-list for field type_name
 }
 
-func init() { file_sleepscapes_proto_init() }
-func file_sleepscapes_proto_init() {
-	if File_sleepscapes_proto != nil {
+func init() { file_v1_sleepscapes_proto_init() }
+func file_v1_sleepscapes_proto_init() {
+	if File_v1_sleepscapes_proto != nil {
 		return
 	}
-	file_common_proto_init()
+	file_v1_common_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sleepscapes_proto_rawDesc), len(file_sleepscapes_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_sleepscapes_proto_rawDesc), len(file_v1_sleepscapes_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_sleepscapes_proto_goTypes,
-		DependencyIndexes: file_sleepscapes_proto_depIdxs,
-		EnumInfos:         file_sleepscapes_proto_enumTypes,
-		MessageInfos:      file_sleepscapes_proto_msgTypes,
+		GoTypes:           file_v1_sleepscapes_proto_goTypes,
+		DependencyIndexes: file_v1_sleepscapes_proto_depIdxs,
+		EnumInfos:         file_v1_sleepscapes_proto_enumTypes,
+		MessageInfos:      file_v1_sleepscapes_proto_msgTypes,
 	}.Build()
-	File_sleepscapes_proto = out.File
-	file_sleepscapes_proto_goTypes = nil
-	file_sleepscapes_proto_depIdxs = nil
+	File_v1_sleepscapes_proto = out.File
+	file_v1_sleepscapes_proto_goTypes = nil
+	file_v1_sleepscapes_proto_depIdxs = nil
 }

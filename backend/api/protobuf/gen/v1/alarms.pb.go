@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        (unknown)
-// source: alarms.proto
+// source: v1/alarms.proto
 
 package sleepiv1
 
@@ -40,7 +40,7 @@ type Alarm struct {
 
 func (x *Alarm) Reset() {
 	*x = Alarm{}
-	mi := &file_alarms_proto_msgTypes[0]
+	mi := &file_v1_alarms_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -52,7 +52,7 @@ func (x *Alarm) String() string {
 func (*Alarm) ProtoMessage() {}
 
 func (x *Alarm) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[0]
+	mi := &file_v1_alarms_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -65,7 +65,7 @@ func (x *Alarm) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Alarm.ProtoReflect.Descriptor instead.
 func (*Alarm) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{0}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Alarm) GetId() string {
@@ -140,7 +140,7 @@ type ListAlarmsRequest struct {
 
 func (x *ListAlarmsRequest) Reset() {
 	*x = ListAlarmsRequest{}
-	mi := &file_alarms_proto_msgTypes[1]
+	mi := &file_v1_alarms_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -152,7 +152,7 @@ func (x *ListAlarmsRequest) String() string {
 func (*ListAlarmsRequest) ProtoMessage() {}
 
 func (x *ListAlarmsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[1]
+	mi := &file_v1_alarms_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -165,7 +165,7 @@ func (x *ListAlarmsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAlarmsRequest.ProtoReflect.Descriptor instead.
 func (*ListAlarmsRequest) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{1}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ListAlarmsRequest) GetPage() *Page {
@@ -185,7 +185,7 @@ type ListAlarmsResponse struct {
 
 func (x *ListAlarmsResponse) Reset() {
 	*x = ListAlarmsResponse{}
-	mi := &file_alarms_proto_msgTypes[2]
+	mi := &file_v1_alarms_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -197,7 +197,7 @@ func (x *ListAlarmsResponse) String() string {
 func (*ListAlarmsResponse) ProtoMessage() {}
 
 func (x *ListAlarmsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[2]
+	mi := &file_v1_alarms_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -210,7 +210,7 @@ func (x *ListAlarmsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAlarmsResponse.ProtoReflect.Descriptor instead.
 func (*ListAlarmsResponse) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{2}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListAlarmsResponse) GetAlarms() []*Alarm {
@@ -236,7 +236,7 @@ type GetAlarmRequest struct {
 
 func (x *GetAlarmRequest) Reset() {
 	*x = GetAlarmRequest{}
-	mi := &file_alarms_proto_msgTypes[3]
+	mi := &file_v1_alarms_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -248,7 +248,7 @@ func (x *GetAlarmRequest) String() string {
 func (*GetAlarmRequest) ProtoMessage() {}
 
 func (x *GetAlarmRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[3]
+	mi := &file_v1_alarms_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -261,7 +261,7 @@ func (x *GetAlarmRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAlarmRequest.ProtoReflect.Descriptor instead.
 func (*GetAlarmRequest) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{3}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetAlarmRequest) GetId() string {
@@ -280,7 +280,7 @@ type GetAlarmResponse struct {
 
 func (x *GetAlarmResponse) Reset() {
 	*x = GetAlarmResponse{}
-	mi := &file_alarms_proto_msgTypes[4]
+	mi := &file_v1_alarms_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -292,7 +292,7 @@ func (x *GetAlarmResponse) String() string {
 func (*GetAlarmResponse) ProtoMessage() {}
 
 func (x *GetAlarmResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[4]
+	mi := &file_v1_alarms_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -305,7 +305,7 @@ func (x *GetAlarmResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAlarmResponse.ProtoReflect.Descriptor instead.
 func (*GetAlarmResponse) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{4}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetAlarmResponse) GetAlarm() *Alarm {
@@ -324,7 +324,7 @@ type CreateAlarmRequest struct {
 
 func (x *CreateAlarmRequest) Reset() {
 	*x = CreateAlarmRequest{}
-	mi := &file_alarms_proto_msgTypes[5]
+	mi := &file_v1_alarms_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -336,7 +336,7 @@ func (x *CreateAlarmRequest) String() string {
 func (*CreateAlarmRequest) ProtoMessage() {}
 
 func (x *CreateAlarmRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[5]
+	mi := &file_v1_alarms_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -349,7 +349,7 @@ func (x *CreateAlarmRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAlarmRequest.ProtoReflect.Descriptor instead.
 func (*CreateAlarmRequest) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{5}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CreateAlarmRequest) GetAlarm() *Alarm {
@@ -368,7 +368,7 @@ type CreateAlarmResponse struct {
 
 func (x *CreateAlarmResponse) Reset() {
 	*x = CreateAlarmResponse{}
-	mi := &file_alarms_proto_msgTypes[6]
+	mi := &file_v1_alarms_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -380,7 +380,7 @@ func (x *CreateAlarmResponse) String() string {
 func (*CreateAlarmResponse) ProtoMessage() {}
 
 func (x *CreateAlarmResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[6]
+	mi := &file_v1_alarms_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -393,7 +393,7 @@ func (x *CreateAlarmResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAlarmResponse.ProtoReflect.Descriptor instead.
 func (*CreateAlarmResponse) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{6}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateAlarmResponse) GetAlarm() *Alarm {
@@ -412,7 +412,7 @@ type UpdateAlarmRequest struct {
 
 func (x *UpdateAlarmRequest) Reset() {
 	*x = UpdateAlarmRequest{}
-	mi := &file_alarms_proto_msgTypes[7]
+	mi := &file_v1_alarms_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -424,7 +424,7 @@ func (x *UpdateAlarmRequest) String() string {
 func (*UpdateAlarmRequest) ProtoMessage() {}
 
 func (x *UpdateAlarmRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[7]
+	mi := &file_v1_alarms_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -437,7 +437,7 @@ func (x *UpdateAlarmRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAlarmRequest.ProtoReflect.Descriptor instead.
 func (*UpdateAlarmRequest) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{7}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateAlarmRequest) GetAlarm() *Alarm {
@@ -456,7 +456,7 @@ type UpdateAlarmResponse struct {
 
 func (x *UpdateAlarmResponse) Reset() {
 	*x = UpdateAlarmResponse{}
-	mi := &file_alarms_proto_msgTypes[8]
+	mi := &file_v1_alarms_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -468,7 +468,7 @@ func (x *UpdateAlarmResponse) String() string {
 func (*UpdateAlarmResponse) ProtoMessage() {}
 
 func (x *UpdateAlarmResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[8]
+	mi := &file_v1_alarms_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -481,7 +481,7 @@ func (x *UpdateAlarmResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAlarmResponse.ProtoReflect.Descriptor instead.
 func (*UpdateAlarmResponse) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{8}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UpdateAlarmResponse) GetAlarm() *Alarm {
@@ -500,7 +500,7 @@ type DeleteAlarmRequest struct {
 
 func (x *DeleteAlarmRequest) Reset() {
 	*x = DeleteAlarmRequest{}
-	mi := &file_alarms_proto_msgTypes[9]
+	mi := &file_v1_alarms_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -512,7 +512,7 @@ func (x *DeleteAlarmRequest) String() string {
 func (*DeleteAlarmRequest) ProtoMessage() {}
 
 func (x *DeleteAlarmRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[9]
+	mi := &file_v1_alarms_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -525,7 +525,7 @@ func (x *DeleteAlarmRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAlarmRequest.ProtoReflect.Descriptor instead.
 func (*DeleteAlarmRequest) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{9}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *DeleteAlarmRequest) GetId() string {
@@ -543,7 +543,7 @@ type DeleteAlarmResponse struct {
 
 func (x *DeleteAlarmResponse) Reset() {
 	*x = DeleteAlarmResponse{}
-	mi := &file_alarms_proto_msgTypes[10]
+	mi := &file_v1_alarms_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -555,7 +555,7 @@ func (x *DeleteAlarmResponse) String() string {
 func (*DeleteAlarmResponse) ProtoMessage() {}
 
 func (x *DeleteAlarmResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[10]
+	mi := &file_v1_alarms_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -568,7 +568,7 @@ func (x *DeleteAlarmResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAlarmResponse.ProtoReflect.Descriptor instead.
 func (*DeleteAlarmResponse) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{10}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{10}
 }
 
 type ToggleAlarmRequest struct {
@@ -581,7 +581,7 @@ type ToggleAlarmRequest struct {
 
 func (x *ToggleAlarmRequest) Reset() {
 	*x = ToggleAlarmRequest{}
-	mi := &file_alarms_proto_msgTypes[11]
+	mi := &file_v1_alarms_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -593,7 +593,7 @@ func (x *ToggleAlarmRequest) String() string {
 func (*ToggleAlarmRequest) ProtoMessage() {}
 
 func (x *ToggleAlarmRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[11]
+	mi := &file_v1_alarms_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -606,7 +606,7 @@ func (x *ToggleAlarmRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleAlarmRequest.ProtoReflect.Descriptor instead.
 func (*ToggleAlarmRequest) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{11}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ToggleAlarmRequest) GetId() string {
@@ -632,7 +632,7 @@ type ToggleAlarmResponse struct {
 
 func (x *ToggleAlarmResponse) Reset() {
 	*x = ToggleAlarmResponse{}
-	mi := &file_alarms_proto_msgTypes[12]
+	mi := &file_v1_alarms_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -644,7 +644,7 @@ func (x *ToggleAlarmResponse) String() string {
 func (*ToggleAlarmResponse) ProtoMessage() {}
 
 func (x *ToggleAlarmResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alarms_proto_msgTypes[12]
+	mi := &file_v1_alarms_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -657,7 +657,7 @@ func (x *ToggleAlarmResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleAlarmResponse.ProtoReflect.Descriptor instead.
 func (*ToggleAlarmResponse) Descriptor() ([]byte, []int) {
-	return file_alarms_proto_rawDescGZIP(), []int{12}
+	return file_v1_alarms_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ToggleAlarmResponse) GetAlarm() *Alarm {
@@ -667,11 +667,11 @@ func (x *ToggleAlarmResponse) GetAlarm() *Alarm {
 	return nil
 }
 
-var File_alarms_proto protoreflect.FileDescriptor
+var File_v1_alarms_proto protoreflect.FileDescriptor
 
-const file_alarms_proto_rawDesc = "" +
+const file_v1_alarms_proto_rawDesc = "" +
 	"\n" +
-	"\falarms.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\fcommon.proto\"\xd3\x02\n" +
+	"\x0fv1/alarms.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x0fv1/common.proto\"\xd3\x02\n" +
 	"\x05Alarm\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05label\x18\x02 \x01(\tR\x05label\x12\x12\n" +
@@ -717,22 +717,24 @@ const file_alarms_proto_rawDesc = "" +
 	"\vCreateAlarm\x12\x1d.sleepi.v1.CreateAlarmRequest\x1a\x1e.sleepi.v1.CreateAlarmResponse\x12L\n" +
 	"\vUpdateAlarm\x12\x1d.sleepi.v1.UpdateAlarmRequest\x1a\x1e.sleepi.v1.UpdateAlarmResponse\x12L\n" +
 	"\vDeleteAlarm\x12\x1d.sleepi.v1.DeleteAlarmRequest\x1a\x1e.sleepi.v1.DeleteAlarmResponse\x12L\n" +
-	"\vToggleAlarm\x12\x1d.sleepi.v1.ToggleAlarmRequest\x1a\x1e.sleepi.v1.ToggleAlarmResponseB6Z4github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1b\x06proto3"
+	"\vToggleAlarm\x12\x1d.sleepi.v1.ToggleAlarmRequest\x1a\x1e.sleepi.v1.ToggleAlarmResponseB\x99\x01\n" +
+	"\rcom.sleepi.v1B\vAlarmsProtoP\x01Z6github.com/lakrizz/sleepi/api/protobuf/gen/v1;sleepiv1\xa2\x02\x03SXX\xaa\x02\tSleepi.V1\xca\x02\tSleepi\\V1\xe2\x02\x15Sleepi\\V1\\GPBMetadata\xea\x02\n" +
+	"Sleepi::V1b\x06proto3"
 
 var (
-	file_alarms_proto_rawDescOnce sync.Once
-	file_alarms_proto_rawDescData []byte
+	file_v1_alarms_proto_rawDescOnce sync.Once
+	file_v1_alarms_proto_rawDescData []byte
 )
 
-func file_alarms_proto_rawDescGZIP() []byte {
-	file_alarms_proto_rawDescOnce.Do(func() {
-		file_alarms_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_alarms_proto_rawDesc), len(file_alarms_proto_rawDesc)))
+func file_v1_alarms_proto_rawDescGZIP() []byte {
+	file_v1_alarms_proto_rawDescOnce.Do(func() {
+		file_v1_alarms_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_v1_alarms_proto_rawDesc), len(file_v1_alarms_proto_rawDesc)))
 	})
-	return file_alarms_proto_rawDescData
+	return file_v1_alarms_proto_rawDescData
 }
 
-var file_alarms_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
-var file_alarms_proto_goTypes = []any{
+var file_v1_alarms_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_v1_alarms_proto_goTypes = []any{
 	(*Alarm)(nil),               // 0: sleepi.v1.Alarm
 	(*ListAlarmsRequest)(nil),   // 1: sleepi.v1.ListAlarmsRequest
 	(*ListAlarmsResponse)(nil),  // 2: sleepi.v1.ListAlarmsResponse
@@ -752,7 +754,7 @@ var file_alarms_proto_goTypes = []any{
 	(*Page)(nil),                // 16: sleepi.v1.Page
 	(*PageResult)(nil),          // 17: sleepi.v1.PageResult
 }
-var file_alarms_proto_depIdxs = []int32{
+var file_v1_alarms_proto_depIdxs = []int32{
 	13, // 0: sleepi.v1.Alarm.repeat_days:type_name -> sleepi.v1.Weekday
 	14, // 1: sleepi.v1.Alarm.warmup_duration:type_name -> google.protobuf.Duration
 	15, // 2: sleepi.v1.Alarm.led_target:type_name -> sleepi.v1.RGB
@@ -784,27 +786,27 @@ var file_alarms_proto_depIdxs = []int32{
 	0,  // [0:12] is the sub-list for field type_name
 }
 
-func init() { file_alarms_proto_init() }
-func file_alarms_proto_init() {
-	if File_alarms_proto != nil {
+func init() { file_v1_alarms_proto_init() }
+func file_v1_alarms_proto_init() {
+	if File_v1_alarms_proto != nil {
 		return
 	}
-	file_common_proto_init()
+	file_v1_common_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alarms_proto_rawDesc), len(file_alarms_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_alarms_proto_rawDesc), len(file_v1_alarms_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_alarms_proto_goTypes,
-		DependencyIndexes: file_alarms_proto_depIdxs,
-		MessageInfos:      file_alarms_proto_msgTypes,
+		GoTypes:           file_v1_alarms_proto_goTypes,
+		DependencyIndexes: file_v1_alarms_proto_depIdxs,
+		MessageInfos:      file_v1_alarms_proto_msgTypes,
 	}.Build()
-	File_alarms_proto = out.File
-	file_alarms_proto_goTypes = nil
-	file_alarms_proto_depIdxs = nil
+	File_v1_alarms_proto = out.File
+	file_v1_alarms_proto_goTypes = nil
+	file_v1_alarms_proto_depIdxs = nil
 }

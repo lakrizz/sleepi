@@ -2,8 +2,6 @@ package players
 
 import (
 	"github.com/fhs/gompd/v2/mpd"
-
-	"example.com/sleepi/internal/playback/domain"
 )
 
 type MPDPlayer struct {

@@ -2,10 +2,8 @@ syntax = "proto3";
 
 package sleepi.v1;
 
-option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
-
 import "google/protobuf/duration.proto";
-import "common.proto";
+import "v1/common.proto";
 
 enum SourceType {
   SOURCE_TYPE_UNSPECIFIED = 0;

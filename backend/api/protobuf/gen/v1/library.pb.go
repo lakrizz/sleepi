@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        (unknown)
-// source: library.proto
+// source: v1/library.proto
 
 package sleepiv1
 
@@ -58,11 +58,11 @@ func (x FileType) String() string {
 }
 
 func (FileType) Descriptor() protoreflect.EnumDescriptor {
-	return file_library_proto_enumTypes[0].Descriptor()
+	return file_v1_library_proto_enumTypes[0].Descriptor()
 }
 
 func (FileType) Type() protoreflect.EnumType {
-	return &file_library_proto_enumTypes[0]
+	return &file_v1_library_proto_enumTypes[0]
 }
 
 func (x FileType) Number() protoreflect.EnumNumber {
@@ -71,7 +71,7 @@ func (x FileType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use FileType.Descriptor instead.
 func (FileType) EnumDescriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{0}
+	return file_v1_library_proto_rawDescGZIP(), []int{0}
 }
 
 type MediaFile struct {
@@ -90,7 +90,7 @@ type MediaFile struct {
 
 func (x *MediaFile) Reset() {
 	*x = MediaFile{}
-	mi := &file_library_proto_msgTypes[0]
+	mi := &file_v1_library_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -102,7 +102,7 @@ func (x *MediaFile) String() string {
 func (*MediaFile) ProtoMessage() {}
 
 func (x *MediaFile) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[0]
+	mi := &file_v1_library_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -115,7 +115,7 @@ func (x *MediaFile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MediaFile.ProtoReflect.Descriptor instead.
 func (*MediaFile) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{0}
+	return file_v1_library_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *MediaFile) GetId() string {
@@ -184,7 +184,7 @@ type ListFilesRequest struct {
 
 func (x *ListFilesRequest) Reset() {
 	*x = ListFilesRequest{}
-	mi := &file_library_proto_msgTypes[1]
+	mi := &file_v1_library_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -196,7 +196,7 @@ func (x *ListFilesRequest) String() string {
 func (*ListFilesRequest) ProtoMessage() {}
 
 func (x *ListFilesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[1]
+	mi := &file_v1_library_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -209,7 +209,7 @@ func (x *ListFilesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFilesRequest.ProtoReflect.Descriptor instead.
 func (*ListFilesRequest) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{1}
+	return file_v1_library_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ListFilesRequest) GetPage() *Page {
@@ -236,7 +236,7 @@ type ListFilesResponse struct {
 
 func (x *ListFilesResponse) Reset() {
 	*x = ListFilesResponse{}
-	mi := &file_library_proto_msgTypes[2]
+	mi := &file_v1_library_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -248,7 +248,7 @@ func (x *ListFilesResponse) String() string {
 func (*ListFilesResponse) ProtoMessage() {}
 
 func (x *ListFilesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[2]
+	mi := &file_v1_library_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -261,7 +261,7 @@ func (x *ListFilesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFilesResponse.ProtoReflect.Descriptor instead.
 func (*ListFilesResponse) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{2}
+	return file_v1_library_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListFilesResponse) GetFiles() []*MediaFile {
@@ -289,7 +289,7 @@ type UpdateFileMetaRequest struct {
 
 func (x *UpdateFileMetaRequest) Reset() {
 	*x = UpdateFileMetaRequest{}
-	mi := &file_library_proto_msgTypes[3]
+	mi := &file_v1_library_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -301,7 +301,7 @@ func (x *UpdateFileMetaRequest) String() string {
 func (*UpdateFileMetaRequest) ProtoMessage() {}
 
 func (x *UpdateFileMetaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[3]
+	mi := &file_v1_library_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -314,7 +314,7 @@ func (x *UpdateFileMetaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateFileMetaRequest.ProtoReflect.Descriptor instead.
 func (*UpdateFileMetaRequest) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{3}
+	return file_v1_library_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpdateFileMetaRequest) GetId() string {
@@ -347,7 +347,7 @@ type UpdateFileMetaResponse struct {
 
 func (x *UpdateFileMetaResponse) Reset() {
 	*x = UpdateFileMetaResponse{}
-	mi := &file_library_proto_msgTypes[4]
+	mi := &file_v1_library_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -359,7 +359,7 @@ func (x *UpdateFileMetaResponse) String() string {
 func (*UpdateFileMetaResponse) ProtoMessage() {}
 
 func (x *UpdateFileMetaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[4]
+	mi := &file_v1_library_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -372,7 +372,7 @@ func (x *UpdateFileMetaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateFileMetaResponse.ProtoReflect.Descriptor instead.
 func (*UpdateFileMetaResponse) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{4}
+	return file_v1_library_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UpdateFileMetaResponse) GetFile() *MediaFile {
@@ -391,7 +391,7 @@ type DeleteFileRequest struct {
 
 func (x *DeleteFileRequest) Reset() {
 	*x = DeleteFileRequest{}
-	mi := &file_library_proto_msgTypes[5]
+	mi := &file_v1_library_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -403,7 +403,7 @@ func (x *DeleteFileRequest) String() string {
 func (*DeleteFileRequest) ProtoMessage() {}
 
 func (x *DeleteFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[5]
+	mi := &file_v1_library_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -416,7 +416,7 @@ func (x *DeleteFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFileRequest.ProtoReflect.Descriptor instead.
 func (*DeleteFileRequest) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{5}
+	return file_v1_library_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteFileRequest) GetId() string {
@@ -434,7 +434,7 @@ type DeleteFileResponse struct {
 
 func (x *DeleteFileResponse) Reset() {
 	*x = DeleteFileResponse{}
-	mi := &file_library_proto_msgTypes[6]
+	mi := &file_v1_library_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -446,7 +446,7 @@ func (x *DeleteFileResponse) String() string {
 func (*DeleteFileResponse) ProtoMessage() {}
 
 func (x *DeleteFileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[6]
+	mi := &file_v1_library_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -459,7 +459,7 @@ func (x *DeleteFileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFileResponse.ProtoReflect.Descriptor instead.
 func (*DeleteFileResponse) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{6}
+	return file_v1_library_proto_rawDescGZIP(), []int{6}
 }
 
 type UploadFileRequest struct {
@@ -475,7 +475,7 @@ type UploadFileRequest struct {
 
 func (x *UploadFileRequest) Reset() {
 	*x = UploadFileRequest{}
-	mi := &file_library_proto_msgTypes[7]
+	mi := &file_v1_library_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -487,7 +487,7 @@ func (x *UploadFileRequest) String() string {
 func (*UploadFileRequest) ProtoMessage() {}
 
 func (x *UploadFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[7]
+	mi := &file_v1_library_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -500,7 +500,7 @@ func (x *UploadFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadFileRequest.ProtoReflect.Descriptor instead.
 func (*UploadFileRequest) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{7}
+	return file_v1_library_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UploadFileRequest) GetData() isUploadFileRequest_Data {
@@ -555,7 +555,7 @@ type FileMeta struct {
 
 func (x *FileMeta) Reset() {
 	*x = FileMeta{}
-	mi := &file_library_proto_msgTypes[8]
+	mi := &file_v1_library_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -567,7 +567,7 @@ func (x *FileMeta) String() string {
 func (*FileMeta) ProtoMessage() {}
 
 func (x *FileMeta) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[8]
+	mi := &file_v1_library_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -580,7 +580,7 @@ func (x *FileMeta) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FileMeta.ProtoReflect.Descriptor instead.
 func (*FileMeta) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{8}
+	return file_v1_library_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *FileMeta) GetFilename() string {
@@ -613,7 +613,7 @@ type UploadFileResponse struct {
 
 func (x *UploadFileResponse) Reset() {
 	*x = UploadFileResponse{}
-	mi := &file_library_proto_msgTypes[9]
+	mi := &file_v1_library_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -625,7 +625,7 @@ func (x *UploadFileResponse) String() string {
 func (*UploadFileResponse) ProtoMessage() {}
 
 func (x *UploadFileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_library_proto_msgTypes[9]
+	mi := &file_v1_library_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -638,7 +638,7 @@ func (x *UploadFileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadFileResponse.ProtoReflect.Descriptor instead.
 func (*UploadFileResponse) Descriptor() ([]byte, []int) {
-	return file_library_proto_rawDescGZIP(), []int{9}
+	return file_v1_library_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UploadFileResponse) GetFile() *MediaFile {
@@ -648,11 +648,11 @@ func (x *UploadFileResponse) GetFile() *MediaFile {
 	return nil
 }
 
-var File_library_proto protoreflect.FileDescriptor
+var File_v1_library_proto protoreflect.FileDescriptor
 
-const file_library_proto_rawDesc = "" +
+const file_v1_library_proto_rawDesc = "" +
 	"\n" +
-	"\rlibrary.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\fcommon.proto\"\x8a\x02\n" +
+	"\x10v1/library.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x0fv1/common.proto\"\x8a\x02\n" +
 	"\tMediaFile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x16\n" +
@@ -702,23 +702,25 @@ const file_library_proto_rawDesc = "" +
 	"\n" +
 	"DeleteFile\x12\x1c.sleepi.v1.DeleteFileRequest\x1a\x1d.sleepi.v1.DeleteFileResponse\x12K\n" +
 	"\n" +
-	"UploadFile\x12\x1c.sleepi.v1.UploadFileRequest\x1a\x1d.sleepi.v1.UploadFileResponse(\x01B6Z4github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1b\x06proto3"
+	"UploadFile\x12\x1c.sleepi.v1.UploadFileRequest\x1a\x1d.sleepi.v1.UploadFileResponse(\x01B\x9a\x01\n" +
+	"\rcom.sleepi.v1B\fLibraryProtoP\x01Z6github.com/lakrizz/sleepi/api/protobuf/gen/v1;sleepiv1\xa2\x02\x03SXX\xaa\x02\tSleepi.V1\xca\x02\tSleepi\\V1\xe2\x02\x15Sleepi\\V1\\GPBMetadata\xea\x02\n" +
+	"Sleepi::V1b\x06proto3"
 
 var (
-	file_library_proto_rawDescOnce sync.Once
-	file_library_proto_rawDescData []byte
+	file_v1_library_proto_rawDescOnce sync.Once
+	file_v1_library_proto_rawDescData []byte
 )
 
-func file_library_proto_rawDescGZIP() []byte {
-	file_library_proto_rawDescOnce.Do(func() {
-		file_library_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_library_proto_rawDesc), len(file_library_proto_rawDesc)))
+func file_v1_library_proto_rawDescGZIP() []byte {
+	file_v1_library_proto_rawDescOnce.Do(func() {
+		file_v1_library_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_v1_library_proto_rawDesc), len(file_v1_library_proto_rawDesc)))
 	})
-	return file_library_proto_rawDescData
+	return file_v1_library_proto_rawDescData
 }
 
-var file_library_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_library_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
-var file_library_proto_goTypes = []any{
+var file_v1_library_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_v1_library_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_v1_library_proto_goTypes = []any{
 	(FileType)(0),                  // 0: sleepi.v1.FileType
 	(*MediaFile)(nil),              // 1: sleepi.v1.MediaFile
 	(*ListFilesRequest)(nil),       // 2: sleepi.v1.ListFilesRequest
@@ -734,7 +736,7 @@ var file_library_proto_goTypes = []any{
 	(*Page)(nil),                   // 12: sleepi.v1.Page
 	(*PageResult)(nil),             // 13: sleepi.v1.PageResult
 }
-var file_library_proto_depIdxs = []int32{
+var file_v1_library_proto_depIdxs = []int32{
 	0,  // 0: sleepi.v1.MediaFile.type:type_name -> sleepi.v1.FileType
 	11, // 1: sleepi.v1.MediaFile.uploaded_at:type_name -> google.protobuf.Timestamp
 	12, // 2: sleepi.v1.ListFilesRequest.page:type_name -> sleepi.v1.Page
@@ -758,13 +760,13 @@ var file_library_proto_depIdxs = []int32{
 	0,  // [0:8] is the sub-list for field type_name
 }
 
-func init() { file_library_proto_init() }
-func file_library_proto_init() {
-	if File_library_proto != nil {
+func init() { file_v1_library_proto_init() }
+func file_v1_library_proto_init() {
+	if File_v1_library_proto != nil {
 		return
 	}
-	file_common_proto_init()
-	file_library_proto_msgTypes[7].OneofWrappers = []any{
+	file_v1_common_proto_init()
+	file_v1_library_proto_msgTypes[7].OneofWrappers = []any{
 		(*UploadFileRequest_Meta)(nil),
 		(*UploadFileRequest_Chunk)(nil),
 	}
@@ -772,18 +774,18 @@ func file_library_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_library_proto_rawDesc), len(file_library_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_library_proto_rawDesc), len(file_v1_library_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_library_proto_goTypes,
-		DependencyIndexes: file_library_proto_depIdxs,
-		EnumInfos:         file_library_proto_enumTypes,
-		MessageInfos:      file_library_proto_msgTypes,
+		GoTypes:           file_v1_library_proto_goTypes,
+		DependencyIndexes: file_v1_library_proto_depIdxs,
+		EnumInfos:         file_v1_library_proto_enumTypes,
+		MessageInfos:      file_v1_library_proto_msgTypes,
 	}.Build()
-	File_library_proto = out.File
-	file_library_proto_goTypes = nil
-	file_library_proto_depIdxs = nil
+	File_v1_library_proto = out.File
+	file_v1_library_proto_goTypes = nil
+	file_v1_library_proto_depIdxs = nil
 }

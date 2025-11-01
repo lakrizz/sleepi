@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package sleepi.v1;
 
-option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
-
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 
@@ -15,13 +13,13 @@ message RGB {
 
 enum Weekday {
   WEEKDAY_UNSPECIFIED = 0;
-  SUNDAY    = 1;
-  MONDAY    = 2;
-  TUESDAY   = 3;
-  WEDNESDAY = 4;
-  THURSDAY  = 5;
-  FRIDAY    = 6;
-  SATURDAY  = 7;
+  WEEKDAY_SUNDAY    = 1;
+  WEEKDAY_MONDAY    = 2;
+  WEEKDAY_TUESDAY   = 3;
+  WEEKDAY_WEDNESDAY = 4;
+  WEEKDAY_THURSDAY  = 5;
+  WEEKDAY_FRIDAY    = 6;
+  WEEKDAY_SATURDAY  = 7;
 }
 
 message Page {

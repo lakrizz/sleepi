@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/lmittmann/tint"
+
+	"github.com/lakrizz/sleepi/infra/grpc"
 )
 
 func main() {
@@ -18,4 +20,7 @@ func main() {
 	)
 	slog.SetDefault(lg)
 
+	slog.Info("HI!")
+
+	grpc.New()
 }

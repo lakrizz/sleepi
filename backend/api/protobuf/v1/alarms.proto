@@ -2,11 +2,9 @@ syntax = "proto3";
 
 package sleepi.v1;
 
-option go_package = "github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1";
-
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
-import "common.proto";
+import "v1/common.proto";
 
 message Alarm {
   string id = 1;                        // uuid

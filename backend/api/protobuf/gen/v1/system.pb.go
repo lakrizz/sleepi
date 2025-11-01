@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        (unknown)
-// source: system.proto
+// source: v1/system.proto
 
 package sleepiv1
 
@@ -36,7 +36,7 @@ type UpdateInfo struct {
 
 func (x *UpdateInfo) Reset() {
 	*x = UpdateInfo{}
-	mi := &file_system_proto_msgTypes[0]
+	mi := &file_v1_system_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -48,7 +48,7 @@ func (x *UpdateInfo) String() string {
 func (*UpdateInfo) ProtoMessage() {}
 
 func (x *UpdateInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[0]
+	mi := &file_v1_system_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +61,7 @@ func (x *UpdateInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateInfo.ProtoReflect.Descriptor instead.
 func (*UpdateInfo) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{0}
+	return file_v1_system_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *UpdateInfo) GetUpdateAvailable() bool {
@@ -115,7 +115,7 @@ type ResourceUsage struct {
 
 func (x *ResourceUsage) Reset() {
 	*x = ResourceUsage{}
-	mi := &file_system_proto_msgTypes[1]
+	mi := &file_v1_system_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -127,7 +127,7 @@ func (x *ResourceUsage) String() string {
 func (*ResourceUsage) ProtoMessage() {}
 
 func (x *ResourceUsage) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[1]
+	mi := &file_v1_system_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -140,7 +140,7 @@ func (x *ResourceUsage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceUsage.ProtoReflect.Descriptor instead.
 func (*ResourceUsage) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{1}
+	return file_v1_system_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ResourceUsage) GetDiskUsed() string {
@@ -211,7 +211,7 @@ type AppStats struct {
 
 func (x *AppStats) Reset() {
 	*x = AppStats{}
-	mi := &file_system_proto_msgTypes[2]
+	mi := &file_v1_system_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -223,7 +223,7 @@ func (x *AppStats) String() string {
 func (*AppStats) ProtoMessage() {}
 
 func (x *AppStats) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[2]
+	mi := &file_v1_system_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -236,7 +236,7 @@ func (x *AppStats) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppStats.ProtoReflect.Descriptor instead.
 func (*AppStats) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{2}
+	return file_v1_system_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *AppStats) GetAlarms() uint32 {
@@ -285,7 +285,7 @@ type SystemInfo struct {
 
 func (x *SystemInfo) Reset() {
 	*x = SystemInfo{}
-	mi := &file_system_proto_msgTypes[3]
+	mi := &file_v1_system_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -297,7 +297,7 @@ func (x *SystemInfo) String() string {
 func (*SystemInfo) ProtoMessage() {}
 
 func (x *SystemInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[3]
+	mi := &file_v1_system_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,7 +310,7 @@ func (x *SystemInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SystemInfo.ProtoReflect.Descriptor instead.
 func (*SystemInfo) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{3}
+	return file_v1_system_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *SystemInfo) GetOs() string {
@@ -391,7 +391,7 @@ type GetSystemInfoRequest struct {
 
 func (x *GetSystemInfoRequest) Reset() {
 	*x = GetSystemInfoRequest{}
-	mi := &file_system_proto_msgTypes[4]
+	mi := &file_v1_system_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -403,7 +403,7 @@ func (x *GetSystemInfoRequest) String() string {
 func (*GetSystemInfoRequest) ProtoMessage() {}
 
 func (x *GetSystemInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[4]
+	mi := &file_v1_system_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -416,7 +416,7 @@ func (x *GetSystemInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSystemInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetSystemInfoRequest) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{4}
+	return file_v1_system_proto_rawDescGZIP(), []int{4}
 }
 
 type GetSystemInfoResponse struct {
@@ -428,7 +428,7 @@ type GetSystemInfoResponse struct {
 
 func (x *GetSystemInfoResponse) Reset() {
 	*x = GetSystemInfoResponse{}
-	mi := &file_system_proto_msgTypes[5]
+	mi := &file_v1_system_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -440,7 +440,7 @@ func (x *GetSystemInfoResponse) String() string {
 func (*GetSystemInfoResponse) ProtoMessage() {}
 
 func (x *GetSystemInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[5]
+	mi := &file_v1_system_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -453,7 +453,7 @@ func (x *GetSystemInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSystemInfoResponse.ProtoReflect.Descriptor instead.
 func (*GetSystemInfoResponse) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{5}
+	return file_v1_system_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetSystemInfoResponse) GetSystem() *SystemInfo {
@@ -471,7 +471,7 @@ type CheckUpdateRequest struct {
 
 func (x *CheckUpdateRequest) Reset() {
 	*x = CheckUpdateRequest{}
-	mi := &file_system_proto_msgTypes[6]
+	mi := &file_v1_system_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -483,7 +483,7 @@ func (x *CheckUpdateRequest) String() string {
 func (*CheckUpdateRequest) ProtoMessage() {}
 
 func (x *CheckUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[6]
+	mi := &file_v1_system_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -496,7 +496,7 @@ func (x *CheckUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckUpdateRequest.ProtoReflect.Descriptor instead.
 func (*CheckUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{6}
+	return file_v1_system_proto_rawDescGZIP(), []int{6}
 }
 
 type CheckUpdateResponse struct {
@@ -508,7 +508,7 @@ type CheckUpdateResponse struct {
 
 func (x *CheckUpdateResponse) Reset() {
 	*x = CheckUpdateResponse{}
-	mi := &file_system_proto_msgTypes[7]
+	mi := &file_v1_system_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -520,7 +520,7 @@ func (x *CheckUpdateResponse) String() string {
 func (*CheckUpdateResponse) ProtoMessage() {}
 
 func (x *CheckUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[7]
+	mi := &file_v1_system_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -533,7 +533,7 @@ func (x *CheckUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckUpdateResponse.ProtoReflect.Descriptor instead.
 func (*CheckUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{7}
+	return file_v1_system_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CheckUpdateResponse) GetUpdate() *UpdateInfo {
@@ -552,7 +552,7 @@ type InstallUpdateRequest struct {
 
 func (x *InstallUpdateRequest) Reset() {
 	*x = InstallUpdateRequest{}
-	mi := &file_system_proto_msgTypes[8]
+	mi := &file_v1_system_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -564,7 +564,7 @@ func (x *InstallUpdateRequest) String() string {
 func (*InstallUpdateRequest) ProtoMessage() {}
 
 func (x *InstallUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[8]
+	mi := &file_v1_system_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -577,7 +577,7 @@ func (x *InstallUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InstallUpdateRequest.ProtoReflect.Descriptor instead.
 func (*InstallUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{8}
+	return file_v1_system_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *InstallUpdateRequest) GetRebootAfter() bool {
@@ -597,7 +597,7 @@ type InstallUpdateResponse struct {
 
 func (x *InstallUpdateResponse) Reset() {
 	*x = InstallUpdateResponse{}
-	mi := &file_system_proto_msgTypes[9]
+	mi := &file_v1_system_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -609,7 +609,7 @@ func (x *InstallUpdateResponse) String() string {
 func (*InstallUpdateResponse) ProtoMessage() {}
 
 func (x *InstallUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_system_proto_msgTypes[9]
+	mi := &file_v1_system_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -622,7 +622,7 @@ func (x *InstallUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InstallUpdateResponse.ProtoReflect.Descriptor instead.
 func (*InstallUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_system_proto_rawDescGZIP(), []int{9}
+	return file_v1_system_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *InstallUpdateResponse) GetStarted() bool {
@@ -639,11 +639,11 @@ func (x *InstallUpdateResponse) GetStatus() string {
 	return ""
 }
 
-var File_system_proto protoreflect.FileDescriptor
+var File_v1_system_proto protoreflect.FileDescriptor
 
-const file_system_proto_rawDesc = "" +
+const file_v1_system_proto_rawDesc = "" +
 	"\n" +
-	"\fsystem.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"\xe7\x01\n" +
+	"\x0fv1/system.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"\xe7\x01\n" +
 	"\n" +
 	"UpdateInfo\x12)\n" +
 	"\x10update_available\x18\x01 \x01(\bR\x0fupdateAvailable\x12'\n" +
@@ -696,22 +696,24 @@ const file_system_proto_rawDesc = "" +
 	"\rSystemService\x12R\n" +
 	"\rGetSystemInfo\x12\x1f.sleepi.v1.GetSystemInfoRequest\x1a .sleepi.v1.GetSystemInfoResponse\x12L\n" +
 	"\vCheckUpdate\x12\x1d.sleepi.v1.CheckUpdateRequest\x1a\x1e.sleepi.v1.CheckUpdateResponse\x12R\n" +
-	"\rInstallUpdate\x12\x1f.sleepi.v1.InstallUpdateRequest\x1a .sleepi.v1.InstallUpdateResponseB6Z4github.com/yourorg/sleepi/api/gen/sleepi/v1;sleepiv1b\x06proto3"
+	"\rInstallUpdate\x12\x1f.sleepi.v1.InstallUpdateRequest\x1a .sleepi.v1.InstallUpdateResponseB\x99\x01\n" +
+	"\rcom.sleepi.v1B\vSystemProtoP\x01Z6github.com/lakrizz/sleepi/api/protobuf/gen/v1;sleepiv1\xa2\x02\x03SXX\xaa\x02\tSleepi.V1\xca\x02\tSleepi\\V1\xe2\x02\x15Sleepi\\V1\\GPBMetadata\xea\x02\n" +
+	"Sleepi::V1b\x06proto3"
 
 var (
-	file_system_proto_rawDescOnce sync.Once
-	file_system_proto_rawDescData []byte
+	file_v1_system_proto_rawDescOnce sync.Once
+	file_v1_system_proto_rawDescData []byte
 )
 
-func file_system_proto_rawDescGZIP() []byte {
-	file_system_proto_rawDescOnce.Do(func() {
-		file_system_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_system_proto_rawDesc), len(file_system_proto_rawDesc)))
+func file_v1_system_proto_rawDescGZIP() []byte {
+	file_v1_system_proto_rawDescOnce.Do(func() {
+		file_v1_system_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_v1_system_proto_rawDesc), len(file_v1_system_proto_rawDesc)))
 	})
-	return file_system_proto_rawDescData
+	return file_v1_system_proto_rawDescData
 }
 
-var file_system_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
-var file_system_proto_goTypes = []any{
+var file_v1_system_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_v1_system_proto_goTypes = []any{
 	(*UpdateInfo)(nil),            // 0: sleepi.v1.UpdateInfo
 	(*ResourceUsage)(nil),         // 1: sleepi.v1.ResourceUsage
 	(*AppStats)(nil),              // 2: sleepi.v1.AppStats
@@ -725,7 +727,7 @@ var file_system_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 	(*durationpb.Duration)(nil),   // 11: google.protobuf.Duration
 }
-var file_system_proto_depIdxs = []int32{
+var file_v1_system_proto_depIdxs = []int32{
 	10, // 0: sleepi.v1.UpdateInfo.build_date:type_name -> google.protobuf.Timestamp
 	10, // 1: sleepi.v1.SystemInfo.last_boot:type_name -> google.protobuf.Timestamp
 	11, // 2: sleepi.v1.SystemInfo.uptime:type_name -> google.protobuf.Duration
@@ -747,26 +749,26 @@ var file_system_proto_depIdxs = []int32{
 	0,  // [0:8] is the sub-list for field type_name
 }
 
-func init() { file_system_proto_init() }
-func file_system_proto_init() {
-	if File_system_proto != nil {
+func init() { file_v1_system_proto_init() }
+func file_v1_system_proto_init() {
+	if File_v1_system_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_system_proto_rawDesc), len(file_system_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_system_proto_rawDesc), len(file_v1_system_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_system_proto_goTypes,
-		DependencyIndexes: file_system_proto_depIdxs,
-		MessageInfos:      file_system_proto_msgTypes,
+		GoTypes:           file_v1_system_proto_goTypes,
+		DependencyIndexes: file_v1_system_proto_depIdxs,
+		MessageInfos:      file_v1_system_proto_msgTypes,
 	}.Build()
-	File_system_proto = out.File
-	file_system_proto_goTypes = nil
-	file_system_proto_depIdxs = nil
+	File_v1_system_proto = out.File
+	file_v1_system_proto_goTypes = nil
+	file_v1_system_proto_depIdxs = nil
 }
