@@ -1,7 +1,21 @@
 package main
 
-import "log/slog"
+import (
+	"log/slog"
+	"os"
+	"time"
+
+	"github.com/lmittmann/tint"
+)
 
 func main() {
-	slog.Info("hi?")
+	lg := slog.New(
+		tint.NewHandler(os.Stdout, &tint.Options{
+			AddSource:  true,
+			Level:      slog.LevelDebug,
+			TimeFormat: time.Kitchen,
+		}),
+	)
+	slog.SetDefault(lg)
+
 }

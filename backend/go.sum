@@ -1,2 +1,4 @@
 github.com/fhs/gompd v1.0.1 h1:kBcAhjnAPJQAylZXR0TeH+d2vpjawXlTtKYguqNlF4A=
 github.com/fhs/gompd v1.0.1/go.mod h1:b219/mNa9PvRqvkUip51b23hGL3iX4d4q3gNXdtrD04=
+github.com/lmittmann/tint v1.1.2 h1:2CQzrL6rslrsyjqLDwD11bZ5OpLBPU+g3G/r5LSfS8w=
+github.com/lmittmann/tint v1.1.2/go.mod h1:HIS3gSy7qNwGCj+5oRjAutErFBl4BzdQP6cJZ0NfMwE=
