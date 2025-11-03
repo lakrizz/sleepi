@@ -9,9 +9,20 @@ import (
 
 	sleepiv1 "github.com/lakrizz/sleepi/api/protobuf/gen/v1"
 	"github.com/lakrizz/sleepi/api/protobuf/gen/v1/sleepiv1connect"
+	"github.com/lakrizz/sleepi/internal/infra/grpc"
 )
 
 type AlarmHandler struct {
+}
+
+func RegisterAlarmHandler(server *grpc.Server) error {
+	h := &AlarmHandler{}
+
+	// directly register on the concrete server
+	server.RegisterHandler(sleepiv1connect.NewAlarmServiceHandler(h))
+	slog.Info("registered alarmhandler")
+
+	return nil
 }
 
 var _ sleepiv1connect.AlarmServiceHandler = (*AlarmHandler)(nil)

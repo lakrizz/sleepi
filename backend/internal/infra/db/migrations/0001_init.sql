@@ -1,5 +1,5 @@
--- alarms.sql
--- Table for main alarm objects
+-- +goose Up
+
 CREATE TABLE alarms (
     id TEXT PRIMARY KEY,                         -- UUID
     label TEXT NOT NULL,
@@ -13,12 +13,6 @@ CREATE TABLE alarms (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Optional: trigger for automatic updated_at management
-CREATE TRIGGER update_alarm_timestamp
-AFTER UPDATE ON alarms
-BEGIN
-    UPDATE alarms SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-END;
 
 -- Table for weekday repetitions (repeated Weekday field)
 -- Assuming Weekday enum: MONDAY=1 .. SUNDAY=7
@@ -60,11 +54,6 @@ CREATE TABLE playlists (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER update_playlist_timestamp
-AFTER UPDATE ON playlists
-BEGIN
-    UPDATE playlists SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-END;
 
 CREATE TABLE playlist_files (
     playlist_id TEXT NOT NULL,
@@ -93,12 +82,6 @@ CREATE TABLE sleepscapes (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER update_sleepscape_timestamp
-AFTER UPDATE ON sleepscapes
-BEGIN
-    UPDATE sleepscapes SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-END;
-
 -- --- SYSTEM SNAPSHOT CACHE ----------------------------------------------
 CREATE TABLE system_info_cache (
     id INTEGER PRIMARY KEY CHECK (id = 1),
@@ -122,3 +105,28 @@ CREATE TABLE system_info_cache (
     temperature_c REAL,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+-- +goose Down
+
+-- --- SLEEPSCAPES --------------------------------------------------------
+DROP TABLE IF EXISTS sleepscapes;
+
+-- --- PLAYLISTS ----------------------------------------------------------
+DROP TABLE IF EXISTS playlist_files;
+DROP TABLE IF EXISTS playlists;
+
+-- --- MEDIA FILES --------------------------------------------------------
+DROP TABLE IF EXISTS media_files;
+
+-- --- ALARMS -------------------------------------------------------------
+DROP VIEW IF EXISTS alarm_with_days;
+DROP INDEX IF EXISTS idx_alarm_repeat_days_alarm_id;
+DROP TABLE IF EXISTS alarm_repeat_days;
+DROP TABLE IF EXISTS alarms;
+
+-- --- SYSTEM SNAPSHOT CACHE ----------------------------------------------
+DROP TABLE IF EXISTS system_info_cache;
+
+

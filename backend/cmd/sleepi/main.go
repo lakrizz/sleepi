@@ -2,25 +2,19 @@ package main
 
 import (
 	"log/slog"
-	"os"
-	"time"
 
-	"github.com/lmittmann/tint"
-
-	"github.com/lakrizz/sleepi/infra/grpc"
+	"github.com/lakrizz/sleepi/internal/app"
 )
 
 func main() {
-	lg := slog.New(
-		tint.NewHandler(os.Stdout, &tint.Options{
-			AddSource:  true,
-			Level:      slog.LevelDebug,
-			TimeFormat: time.Kitchen,
-		}),
-	)
-	slog.SetDefault(lg)
+	a, err := app.New()
+	if err != nil {
+		slog.Error("could not initialize app", "error", err)
+	}
 
-	slog.Info("HI!")
+	if err := a.Start(); err != nil {
+		slog.Error("ungraceful shutdown", "reason", err)
+	}
 
-	grpc.New()
+	slog.Info("graceful shutdown completed")
 }
