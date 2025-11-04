@@ -6,6 +6,7 @@ import (
 	"log/slog"
 
 	"github.com/lakrizz/sleepi/internal/infra/db"
+	"github.com/lakrizz/sleepi/internal/repositories"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -26,5 +27,16 @@ func (a *App) initDatabase() error {
 
 	a.DB = sqldb
 
+	// sqlc queries
+	queries := db.New(sqldb)
+	a.Queries = queries
+
+	// now repositories
+	alarmRepository, err := repositories.NewAlarmsRepository(a.Queries)
+	if err != nil {
+		return fmt.Errorf("could not initalize alarm repository: %w", err)
+	}
+
+	a.AlarmRepository = alarmRepository
 	return nil
 }

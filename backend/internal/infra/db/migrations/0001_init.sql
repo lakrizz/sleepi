@@ -7,8 +7,8 @@ CREATE TABLE alarms (
     enabled BOOLEAN NOT NULL DEFAULT TRUE,
     warmup_duration INTEGER DEFAULT 0,           -- seconds
     led_target TEXT,                             -- JSON or serialized RGB
-    music_playlist_id TEXT,
-    music_file_id TEXT,
+    playable_id TEXT,
+    weekdays TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

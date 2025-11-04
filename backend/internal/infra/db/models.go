@@ -9,16 +9,16 @@ import (
 )
 
 type Alarm struct {
-	ID              string
-	Label           string
-	Time            string
-	Enabled         bool
-	WarmupDuration  sql.NullInt64
-	LedTarget       sql.NullString
-	MusicPlaylistID sql.NullString
-	MusicFileID     sql.NullString
-	CreatedAt       sql.NullTime
-	UpdatedAt       sql.NullTime
+	ID             string
+	Label          string
+	Time           string
+	Enabled        bool
+	WarmupDuration sql.NullInt64
+	LedTarget      sql.NullString
+	PlayableID     sql.NullString
+	Weekdays       sql.NullString
+	CreatedAt      sql.NullTime
+	UpdatedAt      sql.NullTime
 }
 
 type AlarmRepeatDay struct {
@@ -27,17 +27,17 @@ type AlarmRepeatDay struct {
 }
 
 type AlarmWithDay struct {
-	ID              string
-	Label           string
-	Time            string
-	Enabled         bool
-	WarmupDuration  sql.NullInt64
-	LedTarget       sql.NullString
-	MusicPlaylistID sql.NullString
-	MusicFileID     sql.NullString
-	CreatedAt       sql.NullTime
-	UpdatedAt       sql.NullTime
-	RepeatDays      string
+	ID             string
+	Label          string
+	Time           string
+	Enabled        bool
+	WarmupDuration sql.NullInt64
+	LedTarget      sql.NullString
+	PlayableID     sql.NullString
+	Weekdays       sql.NullString
+	CreatedAt      sql.NullTime
+	UpdatedAt      sql.NullTime
+	RepeatDays     string
 }
 
 type MediaFile struct {

@@ -1,6 +1,6 @@
 -- name: CreateAlarm :exec
 INSERT INTO alarms (
-    id, label, time, enabled, warmup_duration, led_target, music_playlist_id, music_file_id
+    id, label, time, enabled, warmup_duration, led_target, playable_id, weekdays
 ) VALUES (
     ?, ?, ?, ?, ?, ?, ?, ?
 );
@@ -13,7 +13,7 @@ SELECT * FROM alarms ORDER BY time;
 
 -- name: UpdateAlarm :exec
 UPDATE alarms
-SET label = ?, time = ?, enabled = ?, warmup_duration = ?, led_target = ?, music_playlist_id = ?, music_file_id = ?
+SET label = ?, time = ?, enabled = ?, warmup_duration = ?, led_target = ?, playable_id = ?, weekdays = ?
 WHERE id = ?;
 
 -- name: DeleteAlarm :exec

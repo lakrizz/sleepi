@@ -12,21 +12,21 @@ import (
 
 const createAlarm = `-- name: CreateAlarm :exec
 INSERT INTO alarms (
-    id, label, time, enabled, warmup_duration, led_target, music_playlist_id, music_file_id
+    id, label, time, enabled, warmup_duration, led_target, playable_id, weekdays
 ) VALUES (
     ?, ?, ?, ?, ?, ?, ?, ?
 )
 `
 
 type CreateAlarmParams struct {
-	ID              string
-	Label           string
-	Time            string
-	Enabled         bool
-	WarmupDuration  sql.NullInt64
-	LedTarget       sql.NullString
-	MusicPlaylistID sql.NullString
-	MusicFileID     sql.NullString
+	ID             string
+	Label          string
+	Time           string
+	Enabled        bool
+	WarmupDuration sql.NullInt64
+	LedTarget      sql.NullString
+	PlayableID     sql.NullString
+	Weekdays       sql.NullString
 }
 
 func (q *Queries) CreateAlarm(ctx context.Context, arg CreateAlarmParams) error {
@@ -37,8 +37,8 @@ func (q *Queries) CreateAlarm(ctx context.Context, arg CreateAlarmParams) error 
 		arg.Enabled,
 		arg.WarmupDuration,
 		arg.LedTarget,
-		arg.MusicPlaylistID,
-		arg.MusicFileID,
+		arg.PlayableID,
+		arg.Weekdays,
 	)
 	return err
 }
@@ -53,7 +53,7 @@ func (q *Queries) DeleteAlarm(ctx context.Context, id string) error {
 }
 
 const getAlarm = `-- name: GetAlarm :one
-SELECT id, label, time, enabled, warmup_duration, led_target, music_playlist_id, music_file_id, created_at, updated_at FROM alarms WHERE id = ?
+SELECT id, label, time, enabled, warmup_duration, led_target, playable_id, weekdays, created_at, updated_at FROM alarms WHERE id = ?
 `
 
 func (q *Queries) GetAlarm(ctx context.Context, id string) (Alarm, error) {
@@ -66,8 +66,8 @@ func (q *Queries) GetAlarm(ctx context.Context, id string) (Alarm, error) {
 		&i.Enabled,
 		&i.WarmupDuration,
 		&i.LedTarget,
-		&i.MusicPlaylistID,
-		&i.MusicFileID,
+		&i.PlayableID,
+		&i.Weekdays,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -75,7 +75,7 @@ func (q *Queries) GetAlarm(ctx context.Context, id string) (Alarm, error) {
 }
 
 const listAlarms = `-- name: ListAlarms :many
-SELECT id, label, time, enabled, warmup_duration, led_target, music_playlist_id, music_file_id, created_at, updated_at FROM alarms ORDER BY time
+SELECT id, label, time, enabled, warmup_duration, led_target, playable_id, weekdays, created_at, updated_at FROM alarms ORDER BY time
 `
 
 func (q *Queries) ListAlarms(ctx context.Context) ([]Alarm, error) {
@@ -94,8 +94,8 @@ func (q *Queries) ListAlarms(ctx context.Context) ([]Alarm, error) {
 			&i.Enabled,
 			&i.WarmupDuration,
 			&i.LedTarget,
-			&i.MusicPlaylistID,
-			&i.MusicFileID,
+			&i.PlayableID,
+			&i.Weekdays,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 		); err != nil {
@@ -128,19 +128,19 @@ func (q *Queries) ToggleAlarm(ctx context.Context, arg ToggleAlarmParams) error 
 
 const updateAlarm = `-- name: UpdateAlarm :exec
 UPDATE alarms
-SET label = ?, time = ?, enabled = ?, warmup_duration = ?, led_target = ?, music_playlist_id = ?, music_file_id = ?
+SET label = ?, time = ?, enabled = ?, warmup_duration = ?, led_target = ?, playable_id = ?, weekdays = ?
 WHERE id = ?
 `
 
 type UpdateAlarmParams struct {
-	Label           string
-	Time            string
-	Enabled         bool
-	WarmupDuration  sql.NullInt64
-	LedTarget       sql.NullString
-	MusicPlaylistID sql.NullString
-	MusicFileID     sql.NullString
-	ID              string
+	Label          string
+	Time           string
+	Enabled        bool
+	WarmupDuration sql.NullInt64
+	LedTarget      sql.NullString
+	PlayableID     sql.NullString
+	Weekdays       sql.NullString
+	ID             string
 }
 
 func (q *Queries) UpdateAlarm(ctx context.Context, arg UpdateAlarmParams) error {
@@ -150,8 +150,8 @@ func (q *Queries) UpdateAlarm(ctx context.Context, arg UpdateAlarmParams) error 
 		arg.Enabled,
 		arg.WarmupDuration,
 		arg.LedTarget,
-		arg.MusicPlaylistID,
-		arg.MusicFileID,
+		arg.PlayableID,
+		arg.Weekdays,
 		arg.ID,
 	)
 	return err

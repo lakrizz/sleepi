@@ -9,13 +9,21 @@ import (
 
 	"github.com/lmittmann/tint"
 
+	"github.com/lakrizz/sleepi/internal/infra/db"
 	"github.com/lakrizz/sleepi/internal/infra/grpc"
 	"github.com/lakrizz/sleepi/internal/infra/grpc/handlers"
+	"github.com/lakrizz/sleepi/internal/repositories"
+	"github.com/lakrizz/sleepi/internal/usecases/alarms"
 )
 
 type App struct {
-	Server *grpc.Server
-	DB     *sql.DB
+	Server  *grpc.Server
+	DB      *sql.DB
+	Queries *db.Queries
+
+	// Alarm Stuff
+	AlarmUsecases   *alarms.AlarmsUseCases
+	AlarmRepository *repositories.AlarmsRepository
 }
 
 func New() (*App, error) {
@@ -48,9 +56,13 @@ func New() (*App, error) {
 	// instantiate services
 
 	// create usecase instances
+	err = app.initUsecases()
+	if err != nil {
+		return nil, err
+	}
 
 	// instantiate handlers
-	handlers.RegisterAlarmHandler(app.Server)
+	handlers.RegisterAlarmHandler(app.Server, app.AlarmUsecases)
 
 	// debug?
 	app.Server.DebugRoutes()

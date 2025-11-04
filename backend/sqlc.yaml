@@ -2,7 +2,7 @@ version: "2"
 sql:
   - engine: "sqlite"
     queries: "internal/infra/db/static"
-    schema: "internal/infra/db/migrations/0001_init_up.sql"
+    schema: "internal/infra/db/migrations/0001_init.sql"
     gen:
       go:
         package: "db"
