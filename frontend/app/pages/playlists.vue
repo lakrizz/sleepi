@@ -28,7 +28,7 @@
             <div>
               <div class="playlist-name">{{ pl.name }}</div>
               <div class="playlist-meta">
-                {{ pl.files.length }} files • {{ formatTotalLength(pl.files) }}
+                {{ pl.files.length }} files
               </div>
             </div>
             <div class="d-flex align-center gap-1">
@@ -108,16 +108,6 @@ const savePlaylist = (payload) => {
 
 const deletePlaylist = (id) => {
   playlists.value = playlists.value.filter(p => p.id !== id)
-}
-
-const formatTotalLength = (files) => {
-  const totalSec = files.reduce((acc, f) => {
-    const [m, s] = f.length.split(':').map(Number)
-    return acc + m * 60 + s
-  }, 0)
-  const mm = Math.floor(totalSec / 60)
-  const ss = (totalSec % 60).toString().padStart(2, '0')
-  return `${mm}:${ss}`
 }
 </script>
 

@@ -16,6 +16,7 @@ INSERT INTO alarms (
 ) VALUES (
     ?, ?, ?, ?, ?, ?, ?, ?
 )
+RETURNING id
 `
 
 type CreateAlarmParams struct {
@@ -23,7 +24,7 @@ type CreateAlarmParams struct {
 	Label          string
 	Time           string
 	Enabled        bool
-	WarmupDuration sql.NullInt64
+	WarmupDuration sql.NullString
 	LedTarget      sql.NullString
 	PlayableID     sql.NullString
 	Weekdays       sql.NullString
@@ -136,7 +137,7 @@ type UpdateAlarmParams struct {
 	Label          string
 	Time           string
 	Enabled        bool
-	WarmupDuration sql.NullInt64
+	WarmupDuration sql.NullString
 	LedTarget      sql.NullString
 	PlayableID     sql.NullString
 	Weekdays       sql.NullString

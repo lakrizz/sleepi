@@ -4,18 +4,20 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/k0kubun/pp"
-
 	"github.com/lakrizz/sleepi/internal/domain/alarms/entities"
+	"github.com/lakrizz/sleepi/internal/mapper"
 )
 
 func (auc *AlarmsUseCases) ListAlarms(ctx context.Context) ([]*entities.Alarm, error) {
-	alarms, err := auc.AlarmsRepository.ListAlarms(ctx)
+	dbAlarms, err := auc.AlarmsRepository.ListAlarms(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("could not list alarms: %w", err)
 	}
 
-	pp.Println(alarms)
-
-	return nil, nil
+	// now convert them to the domain
+	domainAlarms := make([]*entities.Alarm, len(dbAlarms))
+	for i, v := range dbAlarms {
+		domainAlarms[i] = mapper.AlarmDatabaseToDomain(&v)
+	}
+	return domainAlarms, nil
 }

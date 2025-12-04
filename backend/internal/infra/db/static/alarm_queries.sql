@@ -3,7 +3,8 @@ INSERT INTO alarms (
     id, label, time, enabled, warmup_duration, led_target, playable_id, weekdays
 ) VALUES (
     ?, ?, ?, ?, ?, ?, ?, ?
-);
+)
+RETURNING id;
 
 -- name: GetAlarm :one
 SELECT * FROM alarms WHERE id = ?;

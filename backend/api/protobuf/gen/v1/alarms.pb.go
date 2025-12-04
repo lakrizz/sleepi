@@ -9,7 +9,7 @@ package sleepiv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	_ "google.golang.org/protobuf/types/known/durationpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -24,18 +24,17 @@ const (
 )
 
 type Alarm struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // uuid
-	Label           string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
-	Time            string                 `protobuf:"bytes,3,opt,name=time,proto3" json:"time,omitempty"`                                                              // "HH:MM" (24h)
-	RepeatDays      []Weekday              `protobuf:"varint,4,rep,packed,name=repeat_days,json=repeatDays,proto3,enum=sleepi.v1.Weekday" json:"repeat_days,omitempty"` // empty => one-time
-	Enabled         bool                   `protobuf:"varint,5,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	WarmupDuration  *durationpb.Duration   `protobuf:"bytes,10,opt,name=warmup_duration,json=warmupDuration,proto3" json:"warmup_duration,omitempty"`      // e.g. 15m
-	LedTarget       *RGB                   `protobuf:"bytes,11,opt,name=led_target,json=ledTarget,proto3" json:"led_target,omitempty"`                     // LED target color
-	MusicPlaylistId string                 `protobuf:"bytes,12,opt,name=music_playlist_id,json=musicPlaylistId,proto3" json:"music_playlist_id,omitempty"` // playlist id, optional
-	MusicFileId     string                 `protobuf:"bytes,13,opt,name=music_file_id,json=musicFileId,proto3" json:"music_file_id,omitempty"`             // alternative single file id, optional
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             *string                `protobuf:"bytes,1,opt,name=id,proto3,oneof" json:"id,omitempty"` // uuid
+	Label          string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	Time           string                 `protobuf:"bytes,3,opt,name=time,proto3" json:"time,omitempty"`                                                              // "HH:MM" (24h)
+	RepeatDays     []Weekday              `protobuf:"varint,4,rep,packed,name=repeat_days,json=repeatDays,proto3,enum=sleepi.v1.Weekday" json:"repeat_days,omitempty"` // empty => one-time
+	Enabled        bool                   `protobuf:"varint,5,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	WarmupDuration string                 `protobuf:"bytes,10,opt,name=warmup_duration,json=warmupDuration,proto3" json:"warmup_duration,omitempty"` // e.g. 15m
+	LedTarget      *RGB                   `protobuf:"bytes,11,opt,name=led_target,json=ledTarget,proto3" json:"led_target,omitempty"`                // LED target color
+	PlayableId     string                 `protobuf:"bytes,12,opt,name=playable_id,json=playableId,proto3" json:"playable_id,omitempty"`             // playlist id, optional
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Alarm) Reset() {
@@ -69,8 +68,8 @@ func (*Alarm) Descriptor() ([]byte, []int) {
 }
 
 func (x *Alarm) GetId() string {
-	if x != nil {
-		return x.Id
+	if x != nil && x.Id != nil {
+		return *x.Id
 	}
 	return ""
 }
@@ -103,11 +102,11 @@ func (x *Alarm) GetEnabled() bool {
 	return false
 }
 
-func (x *Alarm) GetWarmupDuration() *durationpb.Duration {
+func (x *Alarm) GetWarmupDuration() string {
 	if x != nil {
 		return x.WarmupDuration
 	}
-	return nil
+	return ""
 }
 
 func (x *Alarm) GetLedTarget() *RGB {
@@ -117,16 +116,9 @@ func (x *Alarm) GetLedTarget() *RGB {
 	return nil
 }
 
-func (x *Alarm) GetMusicPlaylistId() string {
+func (x *Alarm) GetPlayableId() string {
 	if x != nil {
-		return x.MusicPlaylistId
-	}
-	return ""
-}
-
-func (x *Alarm) GetMusicFileId() string {
-	if x != nil {
-		return x.MusicFileId
+		return x.PlayableId
 	}
 	return ""
 }
@@ -571,120 +563,25 @@ func (*DeleteAlarmResponse) Descriptor() ([]byte, []int) {
 	return file_v1_alarms_proto_rawDescGZIP(), []int{10}
 }
 
-type ToggleAlarmRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Enabled       bool                   `protobuf:"varint,2,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ToggleAlarmRequest) Reset() {
-	*x = ToggleAlarmRequest{}
-	mi := &file_v1_alarms_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ToggleAlarmRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ToggleAlarmRequest) ProtoMessage() {}
-
-func (x *ToggleAlarmRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_alarms_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ToggleAlarmRequest.ProtoReflect.Descriptor instead.
-func (*ToggleAlarmRequest) Descriptor() ([]byte, []int) {
-	return file_v1_alarms_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *ToggleAlarmRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *ToggleAlarmRequest) GetEnabled() bool {
-	if x != nil {
-		return x.Enabled
-	}
-	return false
-}
-
-type ToggleAlarmResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Alarm         *Alarm                 `protobuf:"bytes,1,opt,name=alarm,proto3" json:"alarm,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ToggleAlarmResponse) Reset() {
-	*x = ToggleAlarmResponse{}
-	mi := &file_v1_alarms_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ToggleAlarmResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ToggleAlarmResponse) ProtoMessage() {}
-
-func (x *ToggleAlarmResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_alarms_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ToggleAlarmResponse.ProtoReflect.Descriptor instead.
-func (*ToggleAlarmResponse) Descriptor() ([]byte, []int) {
-	return file_v1_alarms_proto_rawDescGZIP(), []int{12}
-}
-
-func (x *ToggleAlarmResponse) GetAlarm() *Alarm {
-	if x != nil {
-		return x.Alarm
-	}
-	return nil
-}
-
 var File_v1_alarms_proto protoreflect.FileDescriptor
 
 const file_v1_alarms_proto_rawDesc = "" +
 	"\n" +
-	"\x0fv1/alarms.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x0fv1/common.proto\"\xd3\x02\n" +
-	"\x05Alarm\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x0fv1/alarms.proto\x12\tsleepi.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x0fv1/common.proto\"\x95\x02\n" +
+	"\x05Alarm\x12\x13\n" +
+	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x88\x01\x01\x12\x14\n" +
 	"\x05label\x18\x02 \x01(\tR\x05label\x12\x12\n" +
 	"\x04time\x18\x03 \x01(\tR\x04time\x123\n" +
 	"\vrepeat_days\x18\x04 \x03(\x0e2\x12.sleepi.v1.WeekdayR\n" +
 	"repeatDays\x12\x18\n" +
-	"\aenabled\x18\x05 \x01(\bR\aenabled\x12B\n" +
+	"\aenabled\x18\x05 \x01(\bR\aenabled\x12'\n" +
 	"\x0fwarmup_duration\x18\n" +
-	" \x01(\v2\x19.google.protobuf.DurationR\x0ewarmupDuration\x12-\n" +
+	" \x01(\tR\x0ewarmupDuration\x12-\n" +
 	"\n" +
-	"led_target\x18\v \x01(\v2\x0e.sleepi.v1.RGBR\tledTarget\x12*\n" +
-	"\x11music_playlist_id\x18\f \x01(\tR\x0fmusicPlaylistId\x12\"\n" +
-	"\rmusic_file_id\x18\r \x01(\tR\vmusicFileId\"8\n" +
+	"led_target\x18\v \x01(\v2\x0e.sleepi.v1.RGBR\tledTarget\x12\x1f\n" +
+	"\vplayable_id\x18\f \x01(\tR\n" +
+	"playableIdB\x05\n" +
+	"\x03_id\"8\n" +
 	"\x11ListAlarmsRequest\x12#\n" +
 	"\x04page\x18\x01 \x01(\v2\x0f.sleepi.v1.PageR\x04page\"m\n" +
 	"\x12ListAlarmsResponse\x12(\n" +
@@ -704,20 +601,14 @@ const file_v1_alarms_proto_rawDesc = "" +
 	"\x05alarm\x18\x01 \x01(\v2\x10.sleepi.v1.AlarmR\x05alarm\"$\n" +
 	"\x12DeleteAlarmRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"\x15\n" +
-	"\x13DeleteAlarmResponse\">\n" +
-	"\x12ToggleAlarmRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\aenabled\x18\x02 \x01(\bR\aenabled\"=\n" +
-	"\x13ToggleAlarmResponse\x12&\n" +
-	"\x05alarm\x18\x01 \x01(\v2\x10.sleepi.v1.AlarmR\x05alarm2\xd6\x03\n" +
+	"\x13DeleteAlarmResponse2\x88\x03\n" +
 	"\fAlarmService\x12I\n" +
 	"\n" +
 	"ListAlarms\x12\x1c.sleepi.v1.ListAlarmsRequest\x1a\x1d.sleepi.v1.ListAlarmsResponse\x12C\n" +
 	"\bGetAlarm\x12\x1a.sleepi.v1.GetAlarmRequest\x1a\x1b.sleepi.v1.GetAlarmResponse\x12L\n" +
 	"\vCreateAlarm\x12\x1d.sleepi.v1.CreateAlarmRequest\x1a\x1e.sleepi.v1.CreateAlarmResponse\x12L\n" +
 	"\vUpdateAlarm\x12\x1d.sleepi.v1.UpdateAlarmRequest\x1a\x1e.sleepi.v1.UpdateAlarmResponse\x12L\n" +
-	"\vDeleteAlarm\x12\x1d.sleepi.v1.DeleteAlarmRequest\x1a\x1e.sleepi.v1.DeleteAlarmResponse\x12L\n" +
-	"\vToggleAlarm\x12\x1d.sleepi.v1.ToggleAlarmRequest\x1a\x1e.sleepi.v1.ToggleAlarmResponseB\x99\x01\n" +
+	"\vDeleteAlarm\x12\x1d.sleepi.v1.DeleteAlarmRequest\x1a\x1e.sleepi.v1.DeleteAlarmResponseB\x99\x01\n" +
 	"\rcom.sleepi.v1B\vAlarmsProtoP\x01Z6github.com/lakrizz/sleepi/api/protobuf/gen/v1;sleepiv1\xa2\x02\x03SXX\xaa\x02\tSleepi.V1\xca\x02\tSleepi\\V1\xe2\x02\x15Sleepi\\V1\\GPBMetadata\xea\x02\n" +
 	"Sleepi::V1b\x06proto3"
 
@@ -733,7 +624,7 @@ func file_v1_alarms_proto_rawDescGZIP() []byte {
 	return file_v1_alarms_proto_rawDescData
 }
 
-var file_v1_alarms_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_v1_alarms_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_v1_alarms_proto_goTypes = []any{
 	(*Alarm)(nil),               // 0: sleepi.v1.Alarm
 	(*ListAlarmsRequest)(nil),   // 1: sleepi.v1.ListAlarmsRequest
@@ -746,44 +637,37 @@ var file_v1_alarms_proto_goTypes = []any{
 	(*UpdateAlarmResponse)(nil), // 8: sleepi.v1.UpdateAlarmResponse
 	(*DeleteAlarmRequest)(nil),  // 9: sleepi.v1.DeleteAlarmRequest
 	(*DeleteAlarmResponse)(nil), // 10: sleepi.v1.DeleteAlarmResponse
-	(*ToggleAlarmRequest)(nil),  // 11: sleepi.v1.ToggleAlarmRequest
-	(*ToggleAlarmResponse)(nil), // 12: sleepi.v1.ToggleAlarmResponse
-	(Weekday)(0),                // 13: sleepi.v1.Weekday
-	(*durationpb.Duration)(nil), // 14: google.protobuf.Duration
-	(*RGB)(nil),                 // 15: sleepi.v1.RGB
-	(*Page)(nil),                // 16: sleepi.v1.Page
-	(*PageResult)(nil),          // 17: sleepi.v1.PageResult
+	(Weekday)(0),                // 11: sleepi.v1.Weekday
+	(*RGB)(nil),                 // 12: sleepi.v1.RGB
+	(*Page)(nil),                // 13: sleepi.v1.Page
+	(*PageResult)(nil),          // 14: sleepi.v1.PageResult
 }
 var file_v1_alarms_proto_depIdxs = []int32{
-	13, // 0: sleepi.v1.Alarm.repeat_days:type_name -> sleepi.v1.Weekday
-	14, // 1: sleepi.v1.Alarm.warmup_duration:type_name -> google.protobuf.Duration
-	15, // 2: sleepi.v1.Alarm.led_target:type_name -> sleepi.v1.RGB
-	16, // 3: sleepi.v1.ListAlarmsRequest.page:type_name -> sleepi.v1.Page
-	0,  // 4: sleepi.v1.ListAlarmsResponse.alarms:type_name -> sleepi.v1.Alarm
-	17, // 5: sleepi.v1.ListAlarmsResponse.result:type_name -> sleepi.v1.PageResult
-	0,  // 6: sleepi.v1.GetAlarmResponse.alarm:type_name -> sleepi.v1.Alarm
-	0,  // 7: sleepi.v1.CreateAlarmRequest.alarm:type_name -> sleepi.v1.Alarm
-	0,  // 8: sleepi.v1.CreateAlarmResponse.alarm:type_name -> sleepi.v1.Alarm
-	0,  // 9: sleepi.v1.UpdateAlarmRequest.alarm:type_name -> sleepi.v1.Alarm
-	0,  // 10: sleepi.v1.UpdateAlarmResponse.alarm:type_name -> sleepi.v1.Alarm
-	0,  // 11: sleepi.v1.ToggleAlarmResponse.alarm:type_name -> sleepi.v1.Alarm
-	1,  // 12: sleepi.v1.AlarmService.ListAlarms:input_type -> sleepi.v1.ListAlarmsRequest
-	3,  // 13: sleepi.v1.AlarmService.GetAlarm:input_type -> sleepi.v1.GetAlarmRequest
-	5,  // 14: sleepi.v1.AlarmService.CreateAlarm:input_type -> sleepi.v1.CreateAlarmRequest
-	7,  // 15: sleepi.v1.AlarmService.UpdateAlarm:input_type -> sleepi.v1.UpdateAlarmRequest
-	9,  // 16: sleepi.v1.AlarmService.DeleteAlarm:input_type -> sleepi.v1.DeleteAlarmRequest
-	11, // 17: sleepi.v1.AlarmService.ToggleAlarm:input_type -> sleepi.v1.ToggleAlarmRequest
-	2,  // 18: sleepi.v1.AlarmService.ListAlarms:output_type -> sleepi.v1.ListAlarmsResponse
-	4,  // 19: sleepi.v1.AlarmService.GetAlarm:output_type -> sleepi.v1.GetAlarmResponse
-	6,  // 20: sleepi.v1.AlarmService.CreateAlarm:output_type -> sleepi.v1.CreateAlarmResponse
-	8,  // 21: sleepi.v1.AlarmService.UpdateAlarm:output_type -> sleepi.v1.UpdateAlarmResponse
-	10, // 22: sleepi.v1.AlarmService.DeleteAlarm:output_type -> sleepi.v1.DeleteAlarmResponse
-	12, // 23: sleepi.v1.AlarmService.ToggleAlarm:output_type -> sleepi.v1.ToggleAlarmResponse
-	18, // [18:24] is the sub-list for method output_type
-	12, // [12:18] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	11, // 0: sleepi.v1.Alarm.repeat_days:type_name -> sleepi.v1.Weekday
+	12, // 1: sleepi.v1.Alarm.led_target:type_name -> sleepi.v1.RGB
+	13, // 2: sleepi.v1.ListAlarmsRequest.page:type_name -> sleepi.v1.Page
+	0,  // 3: sleepi.v1.ListAlarmsResponse.alarms:type_name -> sleepi.v1.Alarm
+	14, // 4: sleepi.v1.ListAlarmsResponse.result:type_name -> sleepi.v1.PageResult
+	0,  // 5: sleepi.v1.GetAlarmResponse.alarm:type_name -> sleepi.v1.Alarm
+	0,  // 6: sleepi.v1.CreateAlarmRequest.alarm:type_name -> sleepi.v1.Alarm
+	0,  // 7: sleepi.v1.CreateAlarmResponse.alarm:type_name -> sleepi.v1.Alarm
+	0,  // 8: sleepi.v1.UpdateAlarmRequest.alarm:type_name -> sleepi.v1.Alarm
+	0,  // 9: sleepi.v1.UpdateAlarmResponse.alarm:type_name -> sleepi.v1.Alarm
+	1,  // 10: sleepi.v1.AlarmService.ListAlarms:input_type -> sleepi.v1.ListAlarmsRequest
+	3,  // 11: sleepi.v1.AlarmService.GetAlarm:input_type -> sleepi.v1.GetAlarmRequest
+	5,  // 12: sleepi.v1.AlarmService.CreateAlarm:input_type -> sleepi.v1.CreateAlarmRequest
+	7,  // 13: sleepi.v1.AlarmService.UpdateAlarm:input_type -> sleepi.v1.UpdateAlarmRequest
+	9,  // 14: sleepi.v1.AlarmService.DeleteAlarm:input_type -> sleepi.v1.DeleteAlarmRequest
+	2,  // 15: sleepi.v1.AlarmService.ListAlarms:output_type -> sleepi.v1.ListAlarmsResponse
+	4,  // 16: sleepi.v1.AlarmService.GetAlarm:output_type -> sleepi.v1.GetAlarmResponse
+	6,  // 17: sleepi.v1.AlarmService.CreateAlarm:output_type -> sleepi.v1.CreateAlarmResponse
+	8,  // 18: sleepi.v1.AlarmService.UpdateAlarm:output_type -> sleepi.v1.UpdateAlarmResponse
+	10, // 19: sleepi.v1.AlarmService.DeleteAlarm:output_type -> sleepi.v1.DeleteAlarmResponse
+	15, // [15:20] is the sub-list for method output_type
+	10, // [10:15] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_v1_alarms_proto_init() }
@@ -792,13 +676,14 @@ func file_v1_alarms_proto_init() {
 		return
 	}
 	file_v1_common_proto_init()
+	file_v1_alarms_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_alarms_proto_rawDesc), len(file_v1_alarms_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

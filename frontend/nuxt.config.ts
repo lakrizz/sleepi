@@ -11,6 +11,10 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
   ],
 
+  plugins: [
+    '~/plugins/suppress-warnings',
+  ],
+
   ssr: true,
 
   // when enabling ssr option you need to disable inlineStyles and maybe devLogs

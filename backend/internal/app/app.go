@@ -11,7 +11,7 @@ import (
 
 	"github.com/lakrizz/sleepi/internal/infra/db"
 	"github.com/lakrizz/sleepi/internal/infra/grpc"
-	"github.com/lakrizz/sleepi/internal/infra/grpc/handlers"
+	alarmHandler "github.com/lakrizz/sleepi/internal/infra/grpc/handlers/alarms"
 	"github.com/lakrizz/sleepi/internal/repositories"
 	"github.com/lakrizz/sleepi/internal/usecases/alarms"
 )
@@ -62,7 +62,7 @@ func New() (*App, error) {
 	}
 
 	// instantiate handlers
-	handlers.RegisterAlarmHandler(app.Server, app.AlarmUsecases)
+	alarmHandler.RegisterAlarmHandler(app.Server, app.AlarmUsecases)
 
 	// debug?
 	app.Server.DebugRoutes()

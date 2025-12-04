@@ -19,8 +19,8 @@ type Alarm struct {
 	Label          string
 	TimeOfDay      shared.TimeOfDay // e.g. 07:30
 	Enabled        bool
-	WarmupDuration time.Duration
-	LEDTarget      *shared.RGB      // optional
+	WarmupDuration string
+	LEDTarget      shared.RGB       // optional
 	Playable       uuid.UUID        // playlist or file reference
 	Repeat         []shared.Weekday // MONDAY..SUNDAY
 	CreatedAt      time.Time
@@ -32,8 +32,8 @@ func NewAlarm(
 	timeOfDay shared.TimeOfDay,
 	playable uuid.UUID,
 	repeat []shared.Weekday,
-	warmup time.Duration,
-	ledTarget *shared.RGB,
+	warmup string,
+	ledTarget shared.RGB,
 ) (*Alarm, error) {
 	if label == "" {
 		return nil, errors.New("label cannot be empty")

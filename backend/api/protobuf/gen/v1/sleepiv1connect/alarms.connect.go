@@ -46,9 +46,6 @@ const (
 	// AlarmServiceDeleteAlarmProcedure is the fully-qualified name of the AlarmService's DeleteAlarm
 	// RPC.
 	AlarmServiceDeleteAlarmProcedure = "/sleepi.v1.AlarmService/DeleteAlarm"
-	// AlarmServiceToggleAlarmProcedure is the fully-qualified name of the AlarmService's ToggleAlarm
-	// RPC.
-	AlarmServiceToggleAlarmProcedure = "/sleepi.v1.AlarmService/ToggleAlarm"
 )
 
 // AlarmServiceClient is a client for the sleepi.v1.AlarmService service.
@@ -58,7 +55,6 @@ type AlarmServiceClient interface {
 	CreateAlarm(context.Context, *connect_go.Request[v1.CreateAlarmRequest]) (*connect_go.Response[v1.CreateAlarmResponse], error)
 	UpdateAlarm(context.Context, *connect_go.Request[v1.UpdateAlarmRequest]) (*connect_go.Response[v1.UpdateAlarmResponse], error)
 	DeleteAlarm(context.Context, *connect_go.Request[v1.DeleteAlarmRequest]) (*connect_go.Response[v1.DeleteAlarmResponse], error)
-	ToggleAlarm(context.Context, *connect_go.Request[v1.ToggleAlarmRequest]) (*connect_go.Response[v1.ToggleAlarmResponse], error)
 }
 
 // NewAlarmServiceClient constructs a client for the sleepi.v1.AlarmService service. By default, it
@@ -96,11 +92,6 @@ func NewAlarmServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+AlarmServiceDeleteAlarmProcedure,
 			opts...,
 		),
-		toggleAlarm: connect_go.NewClient[v1.ToggleAlarmRequest, v1.ToggleAlarmResponse](
-			httpClient,
-			baseURL+AlarmServiceToggleAlarmProcedure,
-			opts...,
-		),
 	}
 }
 
@@ -111,7 +102,6 @@ type alarmServiceClient struct {
 	createAlarm *connect_go.Client[v1.CreateAlarmRequest, v1.CreateAlarmResponse]
 	updateAlarm *connect_go.Client[v1.UpdateAlarmRequest, v1.UpdateAlarmResponse]
 	deleteAlarm *connect_go.Client[v1.DeleteAlarmRequest, v1.DeleteAlarmResponse]
-	toggleAlarm *connect_go.Client[v1.ToggleAlarmRequest, v1.ToggleAlarmResponse]
 }
 
 // ListAlarms calls sleepi.v1.AlarmService.ListAlarms.
@@ -139,11 +129,6 @@ func (c *alarmServiceClient) DeleteAlarm(ctx context.Context, req *connect_go.Re
 	return c.deleteAlarm.CallUnary(ctx, req)
 }
 
-// ToggleAlarm calls sleepi.v1.AlarmService.ToggleAlarm.
-func (c *alarmServiceClient) ToggleAlarm(ctx context.Context, req *connect_go.Request[v1.ToggleAlarmRequest]) (*connect_go.Response[v1.ToggleAlarmResponse], error) {
-	return c.toggleAlarm.CallUnary(ctx, req)
-}
-
 // AlarmServiceHandler is an implementation of the sleepi.v1.AlarmService service.
 type AlarmServiceHandler interface {
 	ListAlarms(context.Context, *connect_go.Request[v1.ListAlarmsRequest]) (*connect_go.Response[v1.ListAlarmsResponse], error)
@@ -151,7 +136,6 @@ type AlarmServiceHandler interface {
 	CreateAlarm(context.Context, *connect_go.Request[v1.CreateAlarmRequest]) (*connect_go.Response[v1.CreateAlarmResponse], error)
 	UpdateAlarm(context.Context, *connect_go.Request[v1.UpdateAlarmRequest]) (*connect_go.Response[v1.UpdateAlarmResponse], error)
 	DeleteAlarm(context.Context, *connect_go.Request[v1.DeleteAlarmRequest]) (*connect_go.Response[v1.DeleteAlarmResponse], error)
-	ToggleAlarm(context.Context, *connect_go.Request[v1.ToggleAlarmRequest]) (*connect_go.Response[v1.ToggleAlarmResponse], error)
 }
 
 // NewAlarmServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -185,11 +169,6 @@ func NewAlarmServiceHandler(svc AlarmServiceHandler, opts ...connect_go.HandlerO
 		svc.DeleteAlarm,
 		opts...,
 	)
-	alarmServiceToggleAlarmHandler := connect_go.NewUnaryHandler(
-		AlarmServiceToggleAlarmProcedure,
-		svc.ToggleAlarm,
-		opts...,
-	)
 	return "/sleepi.v1.AlarmService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AlarmServiceListAlarmsProcedure:
@@ -202,8 +181,6 @@ func NewAlarmServiceHandler(svc AlarmServiceHandler, opts ...connect_go.HandlerO
 			alarmServiceUpdateAlarmHandler.ServeHTTP(w, r)
 		case AlarmServiceDeleteAlarmProcedure:
 			alarmServiceDeleteAlarmHandler.ServeHTTP(w, r)
-		case AlarmServiceToggleAlarmProcedure:
-			alarmServiceToggleAlarmHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -231,8 +208,4 @@ func (UnimplementedAlarmServiceHandler) UpdateAlarm(context.Context, *connect_go
 
 func (UnimplementedAlarmServiceHandler) DeleteAlarm(context.Context, *connect_go.Request[v1.DeleteAlarmRequest]) (*connect_go.Response[v1.DeleteAlarmResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("sleepi.v1.AlarmService.DeleteAlarm is not implemented"))
-}
-
-func (UnimplementedAlarmServiceHandler) ToggleAlarm(context.Context, *connect_go.Request[v1.ToggleAlarmRequest]) (*connect_go.Response[v1.ToggleAlarmResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("sleepi.v1.AlarmService.ToggleAlarm is not implemented"))
 }

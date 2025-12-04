@@ -1,3 +1,118 @@
+
+<script setup>
+import { ref, computed, watch } from "vue";
+
+/* ----------------------------------
+   PROPS
+---------------------------------- */
+const props = defineProps({
+  modelValue: { type: Boolean, default: false },
+  playlists: { type: Array, default: () => [] },
+  alarm: { type: Object, default: null },  // nullable
+});
+const emit = defineEmits(["update:modelValue", "save"]);
+
+/* ----------------------------------
+   DIALOG CONTROL
+---------------------------------- */
+const isOpen = computed({
+  get: () => props.modelValue,
+  set: (v) => emit("update:modelValue", v),
+});
+
+/* ----------------------------------
+   ENUM VALUES FROM BACKEND
+---------------------------------- */
+const weekdays = [
+  { short: "M",  value: "WEEKDAY_MONDAY", id: 1 },
+  { short: "T",  value: "WEEKDAY_TUESDAY", id: 2 },
+  { short: "W",  value: "WEEKDAY_WEDNESDAY", id: 3 },
+  { short: "T",  value: "WEEKDAY_THURSDAY", id: 4 },
+  { short: "F",  value: "WEEKDAY_FRIDAY", id: 5 },
+  { short: "S",  value: "WEEKDAY_SATURDAY", id: 6 },
+  { short: "S",  value: "WEEKDAY_SUNDAY", id: 7 },
+];
+
+/* ----------------------------------
+   CREATE A VALID PROTO ALARM STRUCT
+---------------------------------- */
+function emptyAlarm() {
+  return {
+    id: "",                             // backend assigns ID on create
+    label: "",
+    time: "07:00",
+    repeatDays: [],
+    enabled: true,
+    warmupDuration: "0s",               // protobuf duration
+    ledTarget: { r: 255, g: 200, b: 150 },
+    playableId: "",
+  };
+}
+
+/* ----------------------------------
+   EDIT STATE
+---------------------------------- */
+const editable = ref(emptyAlarm());
+const editableColor = ref({ r: 255, g: 200, b: 150 });
+
+const isEditMode = computed(() => !!editable.value.id);
+
+/* warmup slider stored in minutes,
+   but backend wants protobuf duration "Xs"
+*/
+const warmupMinutes = ref(0);
+
+/* ----------------------------------
+   INIT WHEN OPENING DIALOG
+---------------------------------- */
+function init() {
+  const src = props.alarm ?? emptyAlarm();
+
+  editable.value = JSON.parse(JSON.stringify(src));
+
+  // parse warmup "Xs" → minutes
+  if (typeof src.warmupDuration === "string") {
+    const seconds = parseInt(src.warmupDuration.replace("s", "")) || 0;
+    warmupMinutes.value = Math.round(seconds / 60);
+  }
+
+  editableColor.value = {
+    r: src.ledTarget?.r ?? 255,
+    g: src.ledTarget?.g ?? 200,
+    b: src.ledTarget?.b ?? 150,
+  };
+}
+
+watch(() => props.alarm, init, { immediate: true });
+watch(isOpen, (v) => v && init());
+
+/* Keep LED color linked */
+watch(editableColor, (rgb) => {
+  editable.value.ledTarget = { ...rgb };
+});
+
+/* ----------------------------------
+   CLOSE & SAVE
+---------------------------------- */
+function close() {
+  isOpen.value = false;
+}
+
+function save() {
+  const out = JSON.parse(JSON.stringify(editable.value));
+
+  // Convert minutes → "Xs" protobuf duratio
+  out.warmupDuration = {
+  seconds: BigInt(warmupMinutes.value * 60),
+  nanos: 0,
+};
+
+console.log("saving", out)
+  emit("save", out);
+  close();
+}
+</script>
+
 <template>
   <v-dialog v-model="isOpen" max-width="500">
     <v-card class="editor-card">
@@ -6,45 +121,54 @@
       </v-card-title>
 
       <v-card-text class="d-flex flex-column gap-4">
-        <!-- Name -->
+
+        <!-- NAME -->
         <v-text-field
-          v-model="editableAlarm.label"
+          v-model="editable.label"
           label="Name"
           variant="outlined"
           density="comfortable"
         />
 
-        <!-- Time -->
+        <!-- TIME -->
         <v-text-field
-          v-model="editableAlarm.time"
+          v-model="editable.time"
           label="Time"
           type="time"
           variant="outlined"
           density="comfortable"
         />
 
-        <!-- Repeat Days -->
+        <!-- REPEAT DAYS -->
         <div>
           <div class="text-body-2 mb-1">Repeat Days</div>
+
           <v-btn-toggle
-            v-model="editableAlarm.repeatDays"
+            v-model="editable.repeatDays"
             multiple
             variant="default"
             color="var(--color-primary)"
             class="day-toggle"
           >
-            <v-btn v-for="(day, idx) in dayNames" :key="idx" :value="idx" size="small"
-                          class="day-btn">
-              {{ day.short }}
+            <v-btn
+              v-for="d in weekdays"
+              :key="d.value"
+              :value="d.id"
+              size="small"
+              class="day-btn"
+            >
+              {{ d.short }}
             </v-btn>
           </v-btn-toggle>
         </div>
 
-        <!-- Warmup Duration -->
+        <!-- WARMUP (in minutes) -->
         <div>
-          <div class="text-body-2 mb-1">Warmup Duration: {{ editableAlarm.warmupDuration }} min</div>
+          <div class="text-body-2 mb-1">
+            Warmup Duration: {{ warmupMinutes }} min
+          </div>
           <v-slider
-            v-model="editableAlarm.warmupDuration"
+            v-model="warmupMinutes"
             :min="0"
             :max="60"
             :step="5"
@@ -52,9 +176,10 @@
           />
         </div>
 
-        <!-- LED Color Picker -->
+        <!-- LED COLOR PICKER -->
         <div class="mb-8">
           <div class="text-body-2 mb-1">LED Color</div>
+
           <v-color-picker
             v-model="editableColor"
             mode="rgb"
@@ -63,9 +188,9 @@
           />
         </div>
 
-        <!-- Playlist Selector -->
+        <!-- PLAYLIST -->
         <v-select
-          v-model="editableAlarm.musicTarget"
+          v-model="editable.playableId"
           label="Playlist"
           :items="playlists"
           item-title="label"
@@ -83,103 +208,22 @@
   </v-dialog>
 </template>
 
-<script setup>
-import { computed, ref, watch } from 'vue'
-
-const props = defineProps({
-  modelValue: { type: Boolean, default: false },   // open/close
-  alarm: { type: Object, default: null },          // existing alarm or null
-  playlists: { type: Array, default: () => [] },   // [{ id, label }]
-})
-
-const emit = defineEmits(['update:modelValue', 'save'])
-
-const isOpen = computed({
-  get: () => props.modelValue,
-  set: v => emit('update:modelValue', v),
-})
-
-const dayNames = [
-  { short: 'M', full: 'Monday' },
-  { short: 'T', full: 'Tuesday' },
-  { short: 'W', full: 'Wednesday' },
-  { short: 'T', full: 'Thursday' },
-  { short: 'F', full: 'Friday' },
-  { short: 'S', full: 'Saturday' },
-  { short: 'S', full: 'Sunday' },
-]
-
-// local editable state
-const editableAlarm = ref(makeEmptyAlarm())
-const editableColor  = ref({ r: 255, g: 200, b: 150 })
-
-const isEditMode = computed(() => !!editableAlarm.value.id)
-
-// --- helpers ---
-function makeEmptyAlarm () {
-  return {
-    id: null,
-    label: '',
-    time: '07:00',
-    repeatDays: [],
-    warmupDuration: 10,
-    ledTarget: { r: 255, g: 200, b: 150 },
-    musicTarget: '',
-    enabled: true,
-  }
-}
-function cloneAlarm(a) {
-  return a ? JSON.parse(JSON.stringify(a)) : makeEmptyAlarm()
-}
-function initFromProps() {
-  const next = cloneAlarm(props.alarm)
-  editableAlarm.value = next
-  editableColor.value = {
-    r: next.ledTarget?.r ?? 255,
-    g: next.ledTarget?.g ?? 200,
-    b: next.ledTarget?.b ?? 150,
-  }
-}
-
-// keep ledTarget in sync when user changes the picker
-watch(editableColor, (rgb) => {
-  editableAlarm.value.ledTarget = { r: rgb.r, g: rgb.g, b: rgb.b }
-})
-
-// re-init when: dialog opens or incoming alarm changes
-watch(() => props.alarm, initFromProps, { immediate: true, deep: true })
-watch(isOpen, (open) => { if (open) initFromProps() })
-
-function close() { isOpen.value = false }
-
-function save() {
-  const payload = cloneAlarm(editableAlarm.value)
-  // if editing, keep id; if new, let parent assign or do it here:
-  // payload.id ||= Date.now()
-  emit('save', payload)
-  close()
-}
-</script>
-
 <style scoped>
 .editor-card {
   background-color: var(--color-bg);
   color: var(--color-surface);
   border-radius: 12px;
 }
-
 .day-toggle {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
-
-.v-color-picker {
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
+.day-btn {
+  background-color: var(--inactive-bg);
 }
-
-        .day-btn {
-background-color: var(--inactive-bg);
-        }
+.v-color-picker {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
 </style>

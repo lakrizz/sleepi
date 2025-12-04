@@ -1,3 +1,89 @@
+<script setup>
+import { ref } from "vue";
+import AlarmEditor from "~/components/alarms/AlarmEditor.vue";
+import { createClient } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
+import { AlarmService } from "@/api/gen/v1/alarms_pb";
+
+// state
+const alarms = ref([]);
+const selectedAlarm = ref(null);
+const showEditor = ref(false);
+
+// client
+const transport = createConnectTransport({
+  baseUrl: "http://localhost:8080",
+});
+const client = createClient(AlarmService, transport);
+
+// ---- Load alarms on mount ----
+const loadAlarms = async () => {
+  const resp = await client.listAlarms({});
+  console.log(resp);
+  alarms.value = resp.alarms ?? [];
+};
+loadAlarms();
+
+// ---- Open / Edit / Add ----
+const onAddAlarm = () => {
+  selectedAlarm.value = null; // new entry
+  showEditor.value = true;
+};
+
+const editAlarm = async (alarm) => {
+  // load from backend to avoid stale data
+  const resp = await client.getAlarm({ id: alarm.id });
+  selectedAlarm.value = structuredClone(resp.alarm);
+  showEditor.value = true;
+};
+
+// ---- Save (Create or Update) ----
+const saveAlarm = async (alarm) => {
+  if (!alarm.id) {
+    // CREATE
+    console.log("wanting to save", alarm)
+    client.createAlarm({alarm}, (err, res) => {
+      console.log("err", err, "res", res)
+      if (!err) {
+        alarms.value.push(resp.alarm);
+      }
+    })
+    
+  } else {
+    // UPDATE
+    const resp = await client.updateAlarm({ alarm });
+    const idx = alarms.value.findIndex((a) => a.id === alarm.id);
+    if (idx !== -1) alarms.value[idx] = resp.alarm;
+  }
+
+  showEditor.value = false;
+  selectedAlarm.value = null;
+};
+
+// ---- Delete ----
+const deleteAlarm = async (id) => {
+  await client.deleteAlarm({ id });
+  alarms.value = alarms.value.filter((a) => a.id !== id);
+};
+
+// ---- Formatting helpers ----
+const formatTime = (t) => t;
+
+const formatRepeat = (days) => {
+  const d = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days.length ? days.map((x) => d[x]).join(", ") : "One-time";
+};
+
+// playlists (static example)
+const playlistOptions = [
+  { id: "1c0f8591-28c3-4a51-8088-99ce60ef5665", label: "Morning Vibes" },
+  { id: "669aa8ca-c3a6-4cd9-abe9-d449f8cff60d", label: "Energetic Boost" },
+  { id: "a4d2693a-61a3-4c95-aafc-bcf2fee79735", label: "Relax & Dream" },
+];
+</script>
+
+
+
 <template>
   <v-container fluid class="alarm-list">
     <AlarmEditor
@@ -33,7 +119,11 @@
       >
         <v-card
           class="alarm-card"
-          :style="{ borderLeft: alarm.enabled ? '4px solid var(--color-primary)' : '4px solid var(--color-border)' }"
+          :style="{
+            borderLeft: alarm.enabled
+              ? '4px solid var(--color-primary)'
+              : '4px solid var(--color-border)'
+          }"
         >
           <v-card-title class="d-flex align-center justify-space-between">
             <div>
@@ -50,21 +140,24 @@
           <v-card-text class="alarm-details">
             <div class="detail">
               <v-icon icon="mdi-timer-sand" size="18" />
-              Warmup: {{ alarm.warmupDuration }} min
+              Warmup:
+              {{ alarm.warmupDuration?.seconds ?? 0 }} sec
             </div>
 
-            <!-- LED Color Swatch -->
             <div class="detail led-strip">
               <v-icon icon="mdi-lightbulb-on" size="18" />
               <span>LED:</span>
 
-              <v-tooltip text="rgb({{ alarm.ledTarget.r }}, {{ alarm.ledTarget.g }}, {{ alarm.ledTarget.b }})" location="top">
+              <v-tooltip
+                :text="`rgb(${alarm.ledTarget?.r}, ${alarm.ledTarget?.g}, ${alarm.ledTarget?.b})`"
+                location="top"
+              >
                 <template #activator="{ props }">
                   <div
                     v-bind="props"
                     class="led-color"
                     :style="{
-                      backgroundColor: `rgb(${alarm.ledTarget.r}, ${alarm.ledTarget.g}, ${alarm.ledTarget.b})`
+                      backgroundColor: `rgb(${alarm.ledTarget?.r}, ${alarm.ledTarget?.g}, ${alarm.ledTarget?.b})`
                     }"
                   />
                 </template>
@@ -73,106 +166,29 @@
 
             <div class="detail">
               <v-icon icon="mdi-music" size="18" />
-              Playlist: {{ alarm.musicTarget }}
+              Playlist: {{ alarm.playableId }}
             </div>
           </v-card-text>
 
           <v-card-actions>
-            <v-btn icon="mdi-pencil" variant="text" @click="editAlarm(alarm)" color="var(--color-primary)" />
-            <v-btn icon="mdi-delete" variant="text" @click="deleteAlarm(alarm.id)" color="var(--color-primary-dark)" />
+            <v-btn
+              icon="mdi-pencil"
+              variant="text"
+              @click="editAlarm(alarm)"
+              color="var(--color-primary)"
+            />
+            <v-btn
+              icon="mdi-delete"
+              variant="text"
+              @click="deleteAlarm(alarm.id)"
+              color="var(--color-primary-dark)"
+            />
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import AlarmEditor from '~/components/alarms/AlarmEditor.vue'
-
-const showEditor = ref(false)
-const selectedAlarm = ref(null)
-
-const playlistOptions = [
-  { id: 'playlist_morning_vibes', label: 'Morning Vibes' },
-  { id: 'playlist_energetic', label: 'Energetic Boost' },
-  { id: 'playlist_relax', label: 'Relax & Dream' },
-]
-
-const onAddAlarm = () => {
-  selectedAlarm.value = null
-  showEditor.value = true
-}
-
-const editAlarm = (alarm) => {
-  selectedAlarm.value = { ...alarm }
-  showEditor.value = true
-}
-
-const saveAlarm = (newAlarm) => {
-console.log("newAlarm", newAlarm)
-  if (newAlarm.id) {
-  console.log("updating", "newAlarm")
-    // update existing
-    const idx = alarms.value.findIndex(a => a.id === newAlarm.id)
-    if (idx !== -1) alarms.value[idx] = newAlarm
-  } else {
-  console.log("creating", newAlarm)
-    // create new
-    newAlarm.id = Date.now()
-    alarms.value.push(newAlarm)
-  }
-}
-
-const alarms = ref([
-  {
-    id: 1,
-    label: 'Morning Routine',
-    time: '07:30',
-    repeatDays: [1, 2, 3, 4, 5],
-    enabled: true,
-    warmupDuration: 15,
-    ledTarget: { r: 255, g: 180, b: 120 },
-    musicTarget: 'playlist_morning_vibes',
-  },
-  {
-    id: 2,
-    label: 'Workout',
-    time: '18:00',
-    repeatDays: [1, 3, 5],
-    enabled: false,
-    warmupDuration: 5,
-    ledTarget: { r: 100, g: 255, b: 180 },
-    musicTarget: 'playlist_energetic',
-  },
-  {
-    id: 3,
-    label: 'Weekend Chill',
-    time: '09:00',
-    repeatDays: [6, 0],
-    enabled: true,
-    warmupDuration: 20,
-    ledTarget: { r: 255, g: 120, b: 120 },
-    musicTarget: 'playlist_relax',
-  },
-])
-
-
-const deleteAlarm = (id) => {
-  console.log('Delete alarm id:', id)
-}
-
-const formatTime = (time) => {
-  const [h, m] = time.split(':')
-  return `${h}:${m}`
-}
-
-const formatRepeat = (days) => {
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  return days && days.length ? days.map(d => dayNames[d]).join(', ') : 'One-time'
-}
-</script>
 
 <style scoped>
 .alarm-list {

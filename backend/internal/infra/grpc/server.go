@@ -4,32 +4,47 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+
+	"github.com/go-chi/cors"
+
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-michi/michi"
 )
 
 type Server struct {
 	srv *http.Server
-	mux *http.ServeMux
+	mux *michi.Router
 
 	routes []string
 }
 
 func New() (*Server, error) {
-	mux := http.NewServeMux()
+	michi := michi.NewRouter()
+
+	c := cors.Handler(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{
+			"GET", "POST", "PUT", "DELETE", "OPTIONS",
+		},
+		AllowedHeaders: []string{"*"},
+		ExposedHeaders: []string{"*"},
+	})
+
+	michi.Use(middleware.Logger)
 
 	p := new(http.Protocols)
-
 	p.SetHTTP1(true)
-	p.SetUnencryptedHTTP2(true)
+	p.SetUnencryptedHTTP2(false)
 
 	s := &http.Server{
-		Addr:      "localhost:8080",
-		Handler:   mux,
+		Addr:      ":8080",
+		Handler:   c(michi),
 		Protocols: p,
 	}
 
 	server := &Server{
 		srv:    s,
-		mux:    mux,
+		mux:    michi,
 		routes: make([]string, 0),
 	}
 

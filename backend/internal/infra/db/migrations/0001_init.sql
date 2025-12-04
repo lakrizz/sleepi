@@ -5,7 +5,7 @@ CREATE TABLE alarms (
     label TEXT NOT NULL,
     time TEXT NOT NULL,                          -- "HH:MM"
     enabled BOOLEAN NOT NULL DEFAULT TRUE,
-    warmup_duration INTEGER DEFAULT 0,           -- seconds
+    warmup_duration TEXT DEFAULT 0,           -- seconds
     led_target TEXT,                             -- JSON or serialized RGB
     playable_id TEXT,
     weekdays TEXT,

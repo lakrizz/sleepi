@@ -8,6 +8,8 @@ plugins:
     opt:
       - paths=source_relative
       - simple
+  - remote: buf.build/bufbuild/es:v2.10.0
+    out: ../../../frontend/app/api/gen
 managed:
   enabled: true
   override:

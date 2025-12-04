@@ -12,3 +12,12 @@ const (
 	Friday
 	Saturday
 )
+
+func ParseWeekdays(input []int) []Weekday {
+	res := make([]Weekday, len(input))
+	for i, v := range input {
+		res[i] = Weekday(v)
+	}
+
+	return res
+}

@@ -10,26 +10,71 @@ import (
 )
 
 type AlarmsRepository struct {
-	Queries *db.Queries
+	queries *db.Queries
 }
 
 func NewAlarmsRepository(queries *db.Queries) (*AlarmsRepository, error) {
 	return &AlarmsRepository{
-		Queries: queries,
+		queries: queries,
 	}, nil
 }
 
-func (ar *AlarmsRepository) ListAlarms(ctx context.Context) ([]*entities.Alarm, error) {
-	dbAlarms, err := ar.Queries.ListAlarms(ctx)
+func (ar *AlarmsRepository) ListAlarms(ctx context.Context) ([]db.Alarm, error) {
+	dbAlarms, err := ar.queries.ListAlarms(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("could not retrieve alarms from db: %w", err)
 	}
 
-	// now convert them to the domain
-	domainAlarms := make([]*entities.Alarm, len(dbAlarms))
-	for _, v := range dbAlarms {
-		domainAlarms = append(domainAlarms, mapper.AlarmDatabaseToDomain(&v))
+	return dbAlarms, nil
+}
+
+func (ar *AlarmsRepository) AddAlarm(ctx context.Context, alarm *entities.Alarm) (*entities.Alarm, error) {
+	dbAlarm := mapper.DomainAlarmToDatabase(alarm)
+
+	params := db.CreateAlarmParams{
+		ID:             dbAlarm.ID,
+		Label:          dbAlarm.Label,
+		Time:           dbAlarm.Time,
+		Enabled:        dbAlarm.Enabled,
+		WarmupDuration: dbAlarm.WarmupDuration,
+		LedTarget:      dbAlarm.LedTarget,
+		PlayableID:     dbAlarm.PlayableID,
+		Weekdays:       dbAlarm.Weekdays,
+	}
+	err := ar.queries.CreateAlarm(ctx, params)
+	if err != nil {
+		return nil, fmt.Errorf("could not create alarm in db: %w", err)
 	}
 
-	return domainAlarms, nil
+	return alarm, nil
+}
+
+func (ar AlarmsRepository) GetAlarm(ctx context.Context, id string) (*entities.Alarm, error) {
+	dbAlarm, err := ar.queries.GetAlarm(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return mapper.AlarmDatabaseToDomain(&dbAlarm), nil
+}
+
+func (ar *AlarmsRepository) UpdateAlarm(ctx context.Context, alarm *entities.Alarm) error {
+	dbAlarm := mapper.DomainAlarmToDatabase(alarm)
+
+	params := db.UpdateAlarmParams{
+		Label:          dbAlarm.Label,
+		Time:           dbAlarm.Time,
+		Enabled:        dbAlarm.Enabled,
+		WarmupDuration: dbAlarm.WarmupDuration,
+		LedTarget:      dbAlarm.LedTarget,
+		PlayableID:     dbAlarm.PlayableID,
+		Weekdays:       dbAlarm.Weekdays,
+		ID:             dbAlarm.ID,
+	}
+
+	return ar.queries.UpdateAlarm(ctx, params)
+}
+
+func (ar *AlarmsRepository) DeleteAlarm(ctx context.Context, id entities.AlarmID) error {
+	return ar.queries.DeleteAlarm(ctx, string(id))
 }

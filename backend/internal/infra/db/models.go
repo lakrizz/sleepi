@@ -13,7 +13,7 @@ type Alarm struct {
 	Label          string
 	Time           string
 	Enabled        bool
-	WarmupDuration sql.NullInt64
+	WarmupDuration sql.NullString
 	LedTarget      sql.NullString
 	PlayableID     sql.NullString
 	Weekdays       sql.NullString
@@ -31,7 +31,7 @@ type AlarmWithDay struct {
 	Label          string
 	Time           string
 	Enabled        bool
-	WarmupDuration sql.NullInt64
+	WarmupDuration sql.NullString
 	LedTarget      sql.NullString
 	PlayableID     sql.NullString
 	Weekdays       sql.NullString
